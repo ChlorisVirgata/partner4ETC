@@ -19,7 +19,7 @@ import java.util.Map;
 public class RedirectController {
     @RequestMapping("/merchantManage")
     public String merchantManage() {
-        return "merchantManage";
+        return "demo";
     }
 
     @GetMapping("/getList")
@@ -126,25 +126,25 @@ public class RedirectController {
             arrayList.clear();
             arrayList.add(map);
         }
-        return new ResponseData().success(arrayList);
+        return ResponseData.success().setData(arrayList);
     }
 
     @PostMapping("/delById")
     @ResponseBody
     public ResponseData getList(String id) {
-        return new ResponseData().success(id);
+        return ResponseData.success(id);
     }
 
     @PostMapping("/editById")
     @ResponseBody
     public ResponseData editById(String id) {
-        return new ResponseData().success(id);
+        return ResponseData.success(id);
     }
 
     @PostMapping("/add")
     @ResponseBody
     public ResponseData add() {
-        return new ResponseData().success(null);
+        return ResponseData.success(null);
     }
 
     @GetMapping("/getById")
@@ -162,6 +162,6 @@ public class RedirectController {
         map.put("classify", "程序员");
         map.put("wealth", "78900");
         arrayList.add(map);
-        return new ResponseData().success(arrayList);
+        return ResponseData.success().setData(arrayList);
     }
 }

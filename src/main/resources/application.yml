@@ -42,8 +42,8 @@ spring:
   #数据源配置
   datasource:
     url: jdbc:oracle:thin:@10.48.1.253:1521:ora11g
-    username:
-    password:
+    username: zjallinpaytest
+    password: zjallinpaytest
     driverClassName: oracle.jdbc.OracleDriver
     #连接池的配置信息
     initialSize: 5
@@ -63,10 +63,9 @@ spring:
     filters: stat,slf4j,config
     #connectionProperties: config.decrypt=true;config.decrypt.key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAL4bOnHeX9yIZv0t3i+WPsMszD01jpEEsHbdLY2Sy9akFSe0ShkLwelz/s/EP2mVpLe3V3stSG0/lecXDRA1RGUCAwEAAQ==
 
-#mybatis配置
-mybatis:
-  mapper-locations: classpath:mapper/*Mapper.xml
-  type-aliases-package: com.allinpay.repository.domain
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*.xml
+  type-aliases-package: com.allinpay.entity
 
 # 分页配置
 pagehelper:

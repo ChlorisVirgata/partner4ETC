@@ -27,7 +27,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             //设置返回的属性值，依据此值进行解析
             response: {
                 statusName: 'code',
-                statusCode: 200,
+                statusCode: 00000,
                 msgName: 'msg',
                 dataName: 'data'
             },
@@ -79,7 +79,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             // async: false,
             dataType: 'json',
             success: function (data) {
-                if (data.code == "200") {
+                if (data.code == "00000") {
                     var index = layer.alert("编辑成功", function () {
                         //点击确认按钮执行回调函数
                         layer.closeAll();
@@ -109,7 +109,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             },
             dataType: 'json',
             success: function (data) {
-                if (data.code == "200") {
+                if (data.code == "00000") {
                     var index = layer.alert("添加成功", function () {
                         //点击确认按钮执行回调函数
                         layer.closeAll();
@@ -140,7 +140,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                     },
                     dataType: 'json',
                     success: function (data) {
-                        if (data.code == "200") {
+                        if (data.code == "00000") {
                             layer.close(index);
                             search();
                         } else {
@@ -163,7 +163,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 },
                 dataType: 'json',
                 success: function (data) {
-                    if (data.code == "200") {
+                    if (data.code == "00000") {
                         var myData = data.data[0];
                         $("#editUsername").val(myData.username);
                         $("#editExperience").val(myData.experience);
