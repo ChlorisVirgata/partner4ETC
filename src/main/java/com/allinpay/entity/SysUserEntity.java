@@ -76,8 +76,14 @@ public class SysUserEntity implements Serializable {
     /**
      * 创建时间
      */
+    @TableField("CREATE_TIME")
     private Date createTime;
 
+    @TableField("UPDATE_TIME")
+    private Date updateTime;
+
+    @TableField("LAST_LOGIN_TIME")
+    private Date lastLoginTime;
     /**
      * 部门ID
      */

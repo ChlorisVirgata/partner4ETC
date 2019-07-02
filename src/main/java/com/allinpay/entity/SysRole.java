@@ -66,7 +66,9 @@ public class SysRole extends BaseEntity {
     /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @TableField("CREATE_TIME")
     private Date createTime;
 
+    @TableField("UPDATE_TIME")
+    private Date updateTime;
 }

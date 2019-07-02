@@ -87,7 +87,6 @@ public class SysMenuController extends BaseController {
     /**
      * 保存
      */
-    //@SysLog("保存菜单")
     @RequestMapping("/save")
     @RequiresPermissions("sys:menu:save")
     public ResponseData save(@RequestBody SysMenuEntity menu) {
@@ -102,7 +101,6 @@ public class SysMenuController extends BaseController {
     /**
      * 修改
      */
-    //@SysLog("修改菜单")
     @RequestMapping("/update")
     @RequiresPermissions("sys:menu:update")
     public ResponseData update(@RequestBody SysMenuEntity menu) {
@@ -117,7 +115,6 @@ public class SysMenuController extends BaseController {
     /**
      * 删除
      */
-    //@SysLog("删除菜单")
     @RequestMapping("/delete")
     @RequiresPermissions("sys:menu:delete")
     public ResponseData delete(Integer menuId) {
