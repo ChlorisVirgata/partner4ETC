@@ -1,12 +1,12 @@
 package com.allinpay;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import tk.mybatis.spring.annotation.MapperScan;
 
 @SpringBootApplication
-@MapperScan("com.allinpay.repository.mapper")
+@MapperScan("com.allinpay.mapper")
 @EnableScheduling
 public class ETCManageApplication {
 

@@ -2,7 +2,7 @@
 <!--设置log4j2的自身log级别为INFO-->
 <configuration status="INFO">
     <properties>
-        <property name="LOG_HOME">ETCManage_log/logs</property>
+        <property name="LOG_HOME">logs</property>
         <property name="INFO_LOG_FILE_NAME">ETCManage_info</property>
         <property name="WARN_LOG_FILE_NAME">ETCManage_warn</property>
         <property name="ERROR_LOG_FILE_NAME">ETCManage_error</property>

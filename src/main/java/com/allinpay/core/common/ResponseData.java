@@ -1,16 +1,67 @@
 package com.allinpay.core.common;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
-@Setter
-@Getter
-@ToString
-public class ResponseData<T> {
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * 返回数据
+ *
+ * @author 吴超
+ */
+public class ResponseData<T> extends HashMap<String, Object> {
+    private static final Long serialVersionUID = 1L;
+    private T data;
     private String code;
     private String msg;
-    private T data;
+
+    public ResponseData() {
+        put("code", 0);
+        put("msg", "success");
+    }
+
+    public static ResponseData error() {
+        return error(500, "未知异常，请联系管理员");
+    }
+
+    public static ResponseData error(String msg) {
+        return error(500, msg);
+    }
+
+    public static ResponseData error(int code, String msg) {
+        ResponseData responseData = new ResponseData();
+        responseData.put("code", code);
+        responseData.put("msg", msg);
+        return responseData;
+    }
+
+    public static ResponseData ok(String msg) {
+        ResponseData responseData = new ResponseData();
+        responseData.put("msg", msg);
+        return responseData;
+    }
+
+    public static ResponseData ok(Map<String, Object> map) {
+        ResponseData responseData = new ResponseData();
+        responseData.putAll(map);
+        return responseData;
+    }
+
+    public static ResponseData ok() {
+        return new ResponseData();
+    }
+
+    @Override
+    public ResponseData put(String key, Object value) {
+        super.put(key, value);
+        return this;
+    }
+
+    public ResponseData setData(T data) {
+        this.data = data;
+        return this;
+    }
 
     private ResponseData(String code, String msg) {
         this.code = code;
@@ -29,8 +80,4 @@ public class ResponseData<T> {
         return new ResponseData(code, message);
     }
 
-    public ResponseData<T> setData(T data) {
-        this.data = data;
-        return this;
-    }
 }
