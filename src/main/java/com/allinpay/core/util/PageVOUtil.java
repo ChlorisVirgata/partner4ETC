@@ -16,7 +16,7 @@ public class PageVOUtil {
     /**
      * 将pageInfo中的分页信息转换到PageVO中
      */
-    public static <K, E> PageVO<K> convert(PageInfo<E> pageInfo) {
+    public static <K> PageVO<K> convert(PageInfo<K> pageInfo) {
         PageVO<K> pageVO = new PageVO<>();
         pageVO.setPageNum(pageInfo.getPageNum());
         pageVO.setPageSize(pageInfo.getPageSize());
@@ -27,6 +27,7 @@ public class PageVOUtil {
         pageVO.setPrePage(pageInfo.getPrePage());
         pageVO.setNextPage(pageInfo.getNextPage());
         pageVO.setLastPage(pageInfo.getNavigateLastPage());
+        pageVO.setList(pageInfo.getList());
         return pageVO;
     }
 }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.allinpay.mapper.PartnerAuditMapper">
+    <resultMap id="BaseResultMap" type="com.allinpay.entity.PartnerAudit">
+        <id column="PARTNER_ID" property="partnerId" jdbcType="VARCHAR"/>
+        <result column="PARTNER_NAME" property="partnerName" jdbcType="VARCHAR"/>
+        <result column="PARTNER_TYPE" property="partnerType" jdbcType="VARCHAR"/>
+        <result column="BUSINESS_LICENCE_NO" property="businessLicenceNo" jdbcType="VARCHAR"/>
+        <result column="RANK" property="rank" jdbcType="NUMERIC"/>
+        <result column="SALER" property="saler" jdbcType="VARCHAR"/>
+        <result column="LEGAL_NAME" property="legalName" jdbcType="VARCHAR"/>
+        <result column="LEGAL_ID" property="legalId" jdbcType="VARCHAR"/>
+        <result column="LEGAL_PHONE" property="legalPhone" jdbcType="VARCHAR"/>
+        <result column="CONTACTOR" property="contactor" jdbcType="VARCHAR"/>
+        <result column="CONTACT_PHONE" property="contactPhone" jdbcType="VARCHAR"/>
+        <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="NUMERIC"/>
+        <!--<result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>-->
+        <!--<result column="MODIFY_TIME" property="modifyTime" jdbcType="DATE"/>-->
+        <result column="SYS_USER" property="sysUser" jdbcType="VARCHAR"/>
+        <result column="FAIL_REASON" property="failReason" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+      KID,EMAIL,PASSWORD,NICKNAME,STATUS,IS_VERIFY
+    </sql>
+
+    <select id="selectList" resultMap="BaseResultMap" parameterType="com.allinpay.entity.PartnerAudit">
+        select * from T_ETC_PARTNER_AUDIT partner_audit
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="audit.partnerName != null and audit.partnerName != ''">
+                AND PARTNER_NAME like '%' || #{audit.partnerName} || '%'
+            </if>
+            <if test="audit.saler != null and audit.saler != ''">
+                AND SALER like '%' || #{audit.saler} || '%'
+            </if>
+            AND STATUS = 0
+        </trim>
+    </select>
+</mapper>

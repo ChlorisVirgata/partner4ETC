@@ -1,6 +1,5 @@
 package com.allinpay.service.impl;
 
-import com.allinpay.core.common.Constant;
 import com.allinpay.entity.SysMenuEntity;
 import com.allinpay.entity.SysRoleMenu;
 import com.allinpay.mapper.SysMenuMapper;
@@ -89,10 +88,10 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenuEntity
 
         for (SysMenuEntity entity : menuList) {
             //目录
-            if (entity.getType() == Constant.MenuType.CATALOG.getValue()) {
-                entity.setList(getMenuTreeList(queryListParentId(entity.getMenuId(), menuIdList), menuIdList));
-            }
-            subMenuList.add(entity);
+//            if (entity.getType() == Constant.MenuType.CATALOG.getValue()) {
+//                entity.setList(getMenuTreeList(queryListParentId(entity.getMenuId(), menuIdList), menuIdList));
+//            }
+//            subMenuList.add(entity);
         }
 
         return subMenuList;
