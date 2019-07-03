@@ -1,67 +1,16 @@
 package com.allinpay.core.common;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * 返回数据
- *
- * @author 吴超
- */
-public class ResponseData<T> extends HashMap<String, Object> {
-    private static final Long serialVersionUID = 1L;
-    private T data;
+@Setter
+@Getter
+@ToString
+public class ResponseData<T> {
     private String code;
     private String msg;
-
-    public ResponseData() {
-        put("code", 0);
-        put("msg", "success");
-    }
-
-    public static ResponseData error() {
-        return error(500, "未知异常，请联系管理员");
-    }
-
-    public static ResponseData error(String msg) {
-        return error(500, msg);
-    }
-
-    public static ResponseData error(int code, String msg) {
-        ResponseData responseData = new ResponseData();
-        responseData.put("code", code);
-        responseData.put("msg", msg);
-        return responseData;
-    }
-
-    public static ResponseData ok(String msg) {
-        ResponseData responseData = new ResponseData();
-        responseData.put("msg", msg);
-        return responseData;
-    }
-
-    public static ResponseData ok(Map<String, Object> map) {
-        ResponseData responseData = new ResponseData();
-        responseData.putAll(map);
-        return responseData;
-    }
-
-    public static ResponseData ok() {
-        return new ResponseData();
-    }
-
-    @Override
-    public ResponseData put(String key, Object value) {
-        super.put(key, value);
-        return this;
-    }
-
-    public ResponseData setData(T data) {
-        this.data = data;
-        return this;
-    }
+    private T data;
 
     private ResponseData(String code, String msg) {
         this.code = code;
@@ -69,7 +18,7 @@ public class ResponseData<T> extends HashMap<String, Object> {
     }
 
     public static ResponseData success() {
-        return new ResponseData("00000", "");
+        return new ResponseData("00000", "success");
     }
 
     public static ResponseData success(String message) {
@@ -80,4 +29,8 @@ public class ResponseData<T> extends HashMap<String, Object> {
         return new ResponseData(code, message);
     }
 
+    public ResponseData<T> setData(T data) {
+        this.data = data;
+        return this;
+    }
 }

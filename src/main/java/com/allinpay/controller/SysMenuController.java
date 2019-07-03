@@ -1,7 +1,6 @@
 package com.allinpay.controller;
 
 import com.allinpay.core.common.BaseController;
-import com.allinpay.core.common.Constant;
 import com.allinpay.core.common.ResponseData;
 import com.allinpay.core.util.RRException;
 import com.allinpay.entity.SysMenuEntity;
@@ -15,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+
+//import com.allinpay.core.common.Constant;
 
 /**
  * 系统菜单
@@ -34,7 +35,7 @@ public class SysMenuController extends BaseController {
     public ResponseData nav() {
         List<SysMenuEntity> menuList = sysMenuService.getUserMenuList(getUserId());
         //List<SysMenuEntity> menuList = sysMenuService.getUserMenuList(1);
-        return ResponseData.ok().put("menuList", menuList);
+        return ResponseData.success().setData(menuList);
     }
 
     /**
@@ -71,7 +72,7 @@ public class SysMenuController extends BaseController {
         root.setOpen(true);
         menuList.add(root);
 
-        return ResponseData.ok().put("menuList", menuList);
+        return ResponseData.success().setData(menuList);
     }
 
     /**
@@ -81,7 +82,7 @@ public class SysMenuController extends BaseController {
     @RequiresPermissions("sys:menu:info")
     public ResponseData info(@PathVariable("menuId") Integer menuId) {
         SysMenuEntity menu = sysMenuService.getById(menuId);
-        return ResponseData.ok().put("menu", menu);
+        return ResponseData.success().setData(menu);
     }
 
     /**
@@ -95,7 +96,7 @@ public class SysMenuController extends BaseController {
 
         sysMenuService.save(menu);
 
-        return ResponseData.ok();
+        return ResponseData.success();
     }
 
     /**
@@ -109,7 +110,7 @@ public class SysMenuController extends BaseController {
 
         sysMenuService.updateById(menu);
 
-        return ResponseData.ok();
+        return ResponseData.success();
     }
 
     /**
@@ -119,18 +120,18 @@ public class SysMenuController extends BaseController {
     @RequiresPermissions("sys:menu:delete")
     public ResponseData delete(Integer menuId) {
         if (menuId <= 31) {
-            return ResponseData.error("系统菜单，不能删除");
+            return ResponseData.failure("", "系统菜单，不能删除");
         }
 
         //判断是否有子菜单或按钮
         List<SysMenuEntity> menuList = sysMenuService.queryListParentId(menuId);
         if (menuList.size() > 0) {
-            return ResponseData.error("请先删除子菜单或按钮");
+            return ResponseData.failure("", "请先删除子菜单或按钮");
         }
 
         sysMenuService.delete(menuId);
 
-        return ResponseData.ok();
+        return ResponseData.success();
     }
 
     /**
@@ -146,34 +147,34 @@ public class SysMenuController extends BaseController {
         }
 
         //菜单
-        if (menu.getType() == Constant.MenuType.MENU.getValue()) {
-            if (StringUtils.isBlank(menu.getUrl())) {
-                throw new RRException("菜单URL不能为空");
-            }
-        }
-
-        //上级菜单类型
-        int parentType = Constant.MenuType.CATALOG.getValue();
-        if (menu.getParentId() != 0) {
-            SysMenuEntity parentMenu = sysMenuService.getById(menu.getParentId());
-            parentType = parentMenu.getType();
-        }
-
-        //目录、菜单
-        if (menu.getType() == Constant.MenuType.CATALOG.getValue() ||
-                menu.getType() == Constant.MenuType.MENU.getValue()) {
-            if (parentType != Constant.MenuType.CATALOG.getValue()) {
-                throw new RRException("上级菜单只能为目录类型");
-            }
-            return;
-        }
-
-        //按钮
-        if (menu.getType() == Constant.MenuType.BUTTON.getValue()) {
-            if (parentType != Constant.MenuType.MENU.getValue()) {
-                throw new RRException("上级菜单只能为菜单类型");
-            }
-            return;
-        }
+//        if (menu.getType() == Constant.MenuType.MENU.getValue()) {
+//            if (StringUtils.isBlank(menu.getUrl())) {
+//                throw new RRException("菜单URL不能为空");
+//            }
+//        }
+//
+//        //上级菜单类型
+//        int parentType = Constant.MenuType.CATALOG.getValue();
+//        if (menu.getParentId() != 0) {
+//            SysMenuEntity parentMenu = sysMenuService.getById(menu.getParentId());
+//            parentType = parentMenu.getType();
+//        }
+//
+//        //目录、菜单
+//        if (menu.getType() == Constant.MenuType.CATALOG.getValue() ||
+//                menu.getType() == Constant.MenuType.MENU.getValue()) {
+//            if (parentType != Constant.MenuType.CATALOG.getValue()) {
+//                throw new RRException("上级菜单只能为目录类型");
+//            }
+//            return;
+//        }
+//
+//        //按钮
+//        if (menu.getType() == Constant.MenuType.BUTTON.getValue()) {
+//            if (parentType != Constant.MenuType.MENU.getValue()) {
+//                throw new RRException("上级菜单只能为菜单类型");
+//            }
+//            return;
+//        }
     }
 }
