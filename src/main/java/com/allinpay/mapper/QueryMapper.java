@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface QueryMapper {
     List queryOrgInfo(@Param("orgque") OrgQueryVo orgque);
+
+    void blockOrg(String departid);
 }

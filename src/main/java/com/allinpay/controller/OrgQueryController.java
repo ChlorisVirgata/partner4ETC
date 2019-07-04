@@ -23,9 +23,18 @@ public class OrgQueryController {
     public ResponseData queryOrgInfo(OrgQueryVo orgque){
         PageVO<OrgQueryBack> querylist=orgquery.queryorginfo(orgque);
         return ResponseData.success().setData(querylist);
-    };
+    }
 
-
-
+    /**
+     * 冻结机构
+     *
+     * @param departid
+     * @return
+     */
+    @GetMapping("/org/blockorg")
+    public ResponseData blockOrg(String departid) {
+        orgquery.blockOrg(departid);
+        return ResponseData.success().setData(null);
+    }
 
 }

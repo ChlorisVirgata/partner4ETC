@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/org/enter")
 public class OrgEnterController {
-    @GetMapping("/audit")
+    @GetMapping("/senAudit")
     public ResponseData approve() {
         return null;
     }

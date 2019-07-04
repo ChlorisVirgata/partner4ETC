@@ -26,9 +26,9 @@ public class RedirectController {
         return "/orgmanage/orgAudit";
     }
 
-    @RequestMapping("/channel/channelquery")
-    public String channelquery() {
-        return "/channel/channelquery";
+    @RequestMapping("/orgquery")
+    public String orgQuery() {
+        return "/dataquery/orgQuery";
     }
 
     @RequestMapping("/orgLogout")

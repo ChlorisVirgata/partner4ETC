@@ -26,10 +26,13 @@ public class OrgQueryBack extends PartnerAudit{
     private Date modifyTime;
 
     /**
-     * 状态
+     * 状态（汉子）
      */
     private String parstatus;
 
+    /**
+     * 机构地址
+     */
     private String partner_address;
     private String license;
     private String id_front;

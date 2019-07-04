@@ -10,7 +10,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
         table.render({
             //表格生成的位置：#ID
             elem: '#test',
-            //请求地址
+            //请求地址getList
             url: '/web/getList',
             //是否分页
             page: true,
@@ -27,7 +27,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             //设置返回的属性值，依据此值进行解析
             response: {
                 statusName: 'code',
-                statusCode: 00000,
+                statusCode: '00000',
                 msgName: 'msg',
                 dataName: 'data'
             },
@@ -53,13 +53,13 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
     //页面加载就查询列表
     search();
     //条件查询
-    $("#queryBtn").on("click", function () {
-        var index = layer.alert("立即提交", function () {
-            layer.close(index);
-            search();
-        })
-
-    });
+    // $("#queryBtn").on("click", function () {
+    //     var index = layer.alert("立即提交", function () {
+    //         layer.close(index);
+    //         search();
+    //     })
+    //
+    // });
 
     //重置参数
     $("#resetBtn").on("click", function () {
@@ -204,3 +204,10 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
         });
     }
 });
+
+function query() {
+    var index = layer.alert("立即提交", function () {
+        layer.close(index);
+        search();
+    })
+}

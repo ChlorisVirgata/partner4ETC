@@ -4,7 +4,6 @@ import com.allinpay.core.common.PageVO;
 import com.allinpay.core.util.PageVOUtil;
 import com.allinpay.entity.OrgQueryBack;
 import com.allinpay.entity.OrgQueryVo;
-import com.allinpay.entity.PartnerAudit;
 import com.allinpay.mapper.QueryMapper;
 import com.allinpay.service.IOrgQueryService;
 import com.github.pagehelper.PageHelper;
@@ -21,12 +20,14 @@ public class OrgQueryServiceImpl implements IOrgQueryService {
 
     @Override
     public PageVO<OrgQueryBack> queryorginfo(OrgQueryVo orgque) {
-
         PageHelper.startPage(orgque.getPageNum(), orgque.getPageSize());
         List<OrgQueryBack> partnerAuditList = queryMapper.queryOrgInfo(orgque);
         PageVO<OrgQueryBack> pageVO = PageVOUtil.convert(new PageInfo(partnerAuditList));
         return pageVO;
+    }
 
-//        return queryMapper.queryOrgInfo(orgque);
+    @Override
+    public void blockOrg(String departid) {
+        queryMapper.blockOrg(departid);
     }
 }

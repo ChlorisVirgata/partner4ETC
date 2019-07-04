@@ -45,19 +45,22 @@
         left join T_ETC_PARTNER_STATUS parstatus on parinfo.status = parstatus.DICT_ID
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="orgque.partnerId != null and orgque.partnerId != ''">
-                AND PARTNER_ID =#{orgque.partnerId}
+                AND parinfo.PARTNER_ID =#{orgque.partnerId}
             </if>
             <if test="orgque.partnerName != null and orgque.partnerName != ''">
-                AND PARTNER_NAME like '%' || #{orgque.partnerName} || '%'
+                AND parinfo.PARTNER_NAME like '%' || #{orgque.partnerName} || '%'
             </if>
             <if test="orgque.partnerType != null and orgque.partnerType != ''">
-                AND PARTNER_TYPE =#{orgque.partnerType}
+                AND parinfo.PARTNER_TYPE =#{orgque.partnerType}
+            </if>
+            <if test="orgque.sbstatus != null and orgque.sbstatus != ''">
+                AND parinfo.STATUS in ${orgque.sbstatus}
             </if>
             <if test="orgque.status != null and orgque.status != ''">
-                AND STATUS =#{orgque.status}
+                AND parinfo.STATUS =#{orgque.status}
             </if>
             <if test="orgque.parentId != null and orgque.parentId != ''">
-                AND PARENT_ID =#{orgque.parentId}
+                AND parinfo.PARENT_ID =#{orgque.parentId}
             </if>
 
             <if test="orgque.createTimeStart != null">
@@ -66,15 +69,13 @@
             <if test="orgque.modifyTimeStart != null">
                 AND MODIFY_TIME between #{orgque.modifyTimeStart} and #{orgque.modifyTimeEnd}
             </if>
-
-<!--            <if test="orgque.modifyTimeStart != null and orgque.modifyTimeStart != ''">-->
-<!--                AND MODIFY_TIME between-->
-<!--                to_date(to_char(#{orgque.modifyTimeStart},'Dy Mon DD HH24:MI:SS "CST" YYYY'),'Dy Mon DD HH24:MI:SS "CST" YYYY','NLS_DATE_LANGUAGE = American')-->
-<!--                and  to_date(to_char(#{orgque.modifyTimeEnd},'Dy Mon DD HH24:MI:SS "CST" YYYY'),'Dy Mon DD HH24:MI:SS "CST" YYYY','NLS_DATE_LANGUAGE = American')-->
-<!--            </if>-->
-<!--            <if test="audit.saler != null and audit.saler != ''">
-                AND SALER like '%' || #{audit.saler} || '%'
-            </if>-->
         </trim>
+        order by parinfo.CREATE_TIME desc
     </select>
+
+    <update id="blockOrg" parameterType="String">
+        update T_ETC_PARTNER_INFO
+        set STATUS='3',MODIFY_TIME=sysdate
+        WHERE partner_id=#{partnerId}
+    </update>
 </mapper>

@@ -15,25 +15,74 @@
         <result column="CONTACT_PHONE" property="contactPhone" jdbcType="VARCHAR"/>
         <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR"/>
         <result column="STATUS" property="status" jdbcType="NUMERIC"/>
-        <!--<result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>-->
-        <!--<result column="MODIFY_TIME" property="modifyTime" jdbcType="DATE"/>-->
+        <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
+        <result column="MODIFY_TIME" property="modifyTime" jdbcType="DATE"/>
         <result column="SYS_USER" property="sysUser" jdbcType="VARCHAR"/>
         <result column="FAIL_REASON" property="failReason" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-      KID,EMAIL,PASSWORD,NICKNAME,STATUS,IS_VERIFY
+        PARTNER_ID,PARTNER_NAME,PARTNER_TYPE,BUSINESS_LICENCE_NO,RANK,SALER,LEGAL_NAME,LEGAL_ID,LEGAL_PHONE,CONTACTOR,CONTACT_PHONE,
+        PARENT_ID,STATUS,CREATE_TIME,MODIFY_TIME,SYS_USER,FAIL_REASON
     </sql>
 
-    <select id="selectList" resultMap="BaseResultMap" parameterType="com.allinpay.entity.PartnerAudit">
+    <select id="selectList" resultMap="BaseResultMap" parameterType="com.allinpay.controller.query.OrgAuditQuery">
         select * from T_ETC_PARTNER_AUDIT partner_audit
         <trim prefix="WHERE" prefixOverrides="AND">
-            <if test="audit.partnerName != null and audit.partnerName != ''">
-                AND PARTNER_NAME like '%' || #{audit.partnerName} || '%'
+            <if test="query.partnerName != null and query.partnerName != ''">
+                AND PARTNER_NAME like '%' || #{query.partnerName} || '%'
             </if>
-            <if test="audit.saler != null and audit.saler != ''">
-                AND SALER like '%' || #{audit.saler} || '%'
+            <if test="query.saler != null and query.saler != ''">
+                AND SALER like '%' || #{query.saler} || '%'
             </if>
-            AND STATUS = 0
+            <if test="query.createStartTime != null">
+                AND CREATE_TIME &gt;= #{query.createStartTime} AND CREATE_TIME &lt;= #{query.createEndTime}
+            </if>
+            <if test="query.modifyStartTime != null">
+                AND MODIFY_TIME &gt;= #{query.modifyStartTime} AND CREATE_TIME &lt;= #{query.modifyEndTime}
+            </if>
+            AND STATUS = 4
         </trim>
     </select>
+
+    <select id="selectModifyList" resultMap="BaseResultMap"
+            parameterType="com.allinpay.controller.query.OrgModifyQuery">
+        select * from (select * from T_ETC_PARTNER_AUDIT partner_audit
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="query.partnerId != null and query.partnerId != ''">
+                AND PARTNER_ID like '%' || #{query.partnerId} || '%'
+            </if>
+            <if test="query.partnerName != null and query.partnerName != ''">
+                AND PARTNER_NAME like '%' || #{query.partnerName} || '%'
+            </if>
+            <if test="query.partnertType != null and query.partnertType != ''">
+                AND PARTNER_TYPE like '%' || #{query.partnertType} || '%'
+            </if>
+            <if test="query.parentId!= null and query.parentId != ''">
+                AND PARENT_ID like '%' || #{query.parentId} || '%'
+            </if>
+            <if test="query.createStartTime != null">
+                AND CREATE_TIME &gt;= #{query.createStartTime} AND CREATE_TIME &lt;= #{query.createEndTime}
+            </if>
+            <if test="query.modifyStartTime != null">
+                AND MODIFY_TIME &gt;= #{query.modifyStartTime} AND CREATE_TIME &lt;= #{query.modifyEndTime}
+            </if>
+            AND STATUS != 4
+        </trim>
+        ) where partner_id
+        not in (select partner_id from T_ETC_PARTNER_INFO where status in (2,3))
+        union
+        select * from T_ETC_PARTNER_STORAGE;
+    </select>
+
+    <select id="selectOne" parameterType="string" resultMap="BaseResultMap">
+      select * from T_ETC_PARTNER_AUDIT where PARTNER_ID = #{partnerId} AND STATUS = 4
+    </select>
+    <update id="updateRefuseStatus">
+        update T_ETC_PARTNER_AUDIT set STATUS = 6, FAIL_REASON = #{failReason}, MODIFY_TIME = to_date(to_char(sysdate, 'yyyy-MM-dd')，'yyyy-MM-dd')
+        WHERE PARTNER_ID = #{partnerId}
+    </update>
+    <update id="updateApproveStatus">
+        update T_ETC_PARTNER_AUDIT set STATUS = 5, FAIL_REASON = #{failReason}, MODIFY_TIME = to_date(to_char(sysdate, 'yyyy-MM-dd')，'yyyy-MM-dd')
+        WHERE PARTNER_ID = #{partnerId}
+    </update>
 </mapper>

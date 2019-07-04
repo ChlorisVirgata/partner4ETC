@@ -10,8 +10,8 @@
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
-    <div th:include="header :: header"></div>
-    <div th:include="menu :: menu"></div>
+    <div th:include="/common/header :: header"></div>
+    <div th:include="/common/menu :: menu"></div>
     <!--查询页面 -->
     <div class="layui-body">
         <!--面包屑-->
@@ -40,7 +40,7 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button class="layui-btn" id="queryBtn" lay-filter="formDemo" lay-submit>查询</button>
+                <button class="layui-btn" id="queryBtn" lay-filter="formDemo" lay-submit onclick="query()">查询</button>
                 <button class="layui-btn layui-btn-normal" id="addBtn">新增</button>
                 <button class="layui-btn layui-btn-primary" id="resetBtn" type="reset">重置</button>
             </div>
@@ -48,7 +48,7 @@
         <!-- 数据展示 table框 -->
         <table class="layui-hide" id="test" lay-filter="test"></table>
     </div>
-    <div th:include="footer :: footer"></div>
+    <div th:include="/common/footer :: footer"></div>
 
     <!--新增页面 -->
     <form class="layui-form" id="addForm" style="display:none;margin: 10px;">

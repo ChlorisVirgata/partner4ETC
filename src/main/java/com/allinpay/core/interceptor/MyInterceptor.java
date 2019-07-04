@@ -1,7 +1,7 @@
 package com.allinpay.core.interceptor;
 
 import com.allinpay.core.annotation.MyAnnotation;
-import lombok.extern.slf4j.Slf4j;
+import groovy.util.logging.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -21,11 +21,11 @@ public class MyInterceptor implements HandlerInterceptor {
         boolean annotationPresent = method.isAnnotationPresent(MyAnnotation.class);
         if (annotationPresent) {
             MyAnnotation annotation = method.getAnnotation(MyAnnotation.class);
-            log.info(annotation.name());
+//            log.info(annotation.name());
         }
         String url = httpServletRequest.getRequestURI();
         if ("/error".equals(url)) {
-            log.warn("未找到指定资源{}", url);
+//            log.warn("未找到指定资源{}", url);
         }
         return true;
     }

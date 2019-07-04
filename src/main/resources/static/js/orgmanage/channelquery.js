@@ -26,6 +26,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 partnerId: $("#chanelid").val(),//机构编号
                 partnerName: $("#chanelname").val(),//机构名称
                 partnerType: $("#chanetype").val(),//机构类型
+                sbstatus: "('1','2','3','4','5','6')",//默认查询状态
                 status: $("#chanelstatus").val(),//机构状态
                 // createTime:new Date($("#creatdate").val().split(" ")[0].split('-')[0], $("#creatdate").val().split(" ")[0].split('-')[1]-1, $("#creatdate").val().split(" ")[0].split('-')[2]),
                 // modifyTime:new Date($("#modifydate").val().split(" ")[0].split('-')[0], $("#modifydate").val().split(" ")[0].split('-')[1]-1, $("#modifydate").val().split(" ")[0].split('-')[2])
@@ -33,8 +34,8 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 // createTimeStart:"2019-07-03",
                 createTimeStart: $("#creatdate").val()==""?"":$("#creatdate").val().substr(0,10),//查询创建时间起
                 createTimeEnd:$("#creatdate").val()==""?"":$("#creatdate").val().substr(12,11),//查询创建时间止
-                modifyTimeStart:$("#modifydate").val()==""?"":$("#modifydate").val().substr(0,10),//修改时间起
-                modifyTimeEnd:$("#modifydate").val()==""?"":$("#modifydate").val().substr(12,11)
+                modifyTimeStart: $("#modifydate").val() == "" ? "" : $("#modifydate").val().substr(0, 10),//更新时间起
+                modifyTimeEnd: $("#modifydate").val() == "" ? "" : $("#modifydate").val().substr(12, 11)//更新时间止
             },
             //分页信息
             request: {
@@ -78,22 +79,24 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             limit: 2,
             //单元格设置
             cols: [[
-                {field: 'partnerId', width: 100, title: '机构编号', sort: true},
-                {field: 'PARTNER_NAME', width: 100, title: '机构名称'},
-                {field: 'PARTNER_TYPE', width: 100, title: '机构类型', sort: true},
-                {field: 'SALER', width: 100, title: '推广人', sort: true,hide:true},
-                {field: 'LEGAL_NAME', width: 100, title: '法人姓名', sort: true,hide:true},
-                {field: 'LEGAL_ID', width: 100, title: '法人身份证', sort: true,hide:true},
-                {field: 'LEGAL_PHONE', width: 100, title: '法人联系方式', sort: true,hide:true},
-                {field: 'CONTACTOR', width: 100, title: '机构联系人', sort: true,hide:true},
-                {field: 'CONTACT_PHONE', width: 100, title: '联系人电话', sort: true,hide:true},
-                {field: 'PARENT_ID', width: 100, title: '父机构编号'},
-                {field: 'BUSINESS_LICENCE_NO',width: 120, title: '营业执照编号'},
-                // {field: 'experience', title: '机构地址', sort: true},
-                {field: 'STATUS', width: 120,title: '机构状态', sort: true},
+                {field: 'partnerId', width: 100, title: '机构编号'},
+                {field: 'partnerName', width: 100, title: '机构名称'},
+                {field: 'partnerType', width: 100, title: '机构类型'},
+                {field: 'partner_address', width: 100, title: '机构地址', hide: true},
+                {field: 'saler', width: 100, title: '推广人', hide: true},
+                {field: 'legalName', width: 100, title: '法人姓名', hide: true},
+                {field: 'legalId', width: 100, title: '法人身份证', hide: true},
+                {field: 'legalPhone', width: 100, title: '法人联系方式', hide: true},
+                {field: 'contactor', width: 100, title: '机构联系人', hide: true},
+                {field: 'contactPhone', width: 100, title: '联系人电话', hide: true},
+                {field: 'parentId', width: 100, title: '父机构编号'},
+                {field: 'businessLicenceNo', width: 120, title: '营业执照编号'},
+                {field: 'partner_address', width: 100, title: '机构地址'},
+                {field: 'parstatus', width: 120, title: '机构状态'},
+                {field: 'failReason', width: 120, title: '审核意见'},
                 {field: 'createTime', width: 100,title: '创建时间'},
-                {field: 'modifyTime', width: 100, title: '更新时间', sort: true},
-                {field: 'SYS_USER', width: 100, title: '最后操作人', sort: true}
+                {field: 'modifyTime', width: 100, title: '更新时间'},
+                {field: 'sysUser', width: 100, title: '最后操作人'}
             ]]
         });
 
@@ -124,22 +127,22 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
 
     function showinfo(data){
 
-        $("#chanelidshow").val(data.PARTNER_ID);
-        $("#chanelnameshow").val(data.PARTNER_NAME);
-        $("#chaneltypeshow").val(data.PARTNER_TYPE);
-        $("#partneridshow").val(data.PARENT_ID);
+        $("#chanelidshow").val(data.partnerId);//机构编号
+        $("#chanelnameshow").val(data.partnerName);//机构名称
+        $("#chaneltypeshow").val(data.partnerType);//机构类型
+        $("#partneridshow").val(data.parentId);//父机构编号
 
-        $("#registidshow").val(data.BUSINESS_LICENCE_NO);
-        // $("#chaneladdressshow").val(data.PARTNER_ID);
-        $("#leglnameshow").val(data.LEGAL_NAME);
-        $("#legldcardshow").val(data.LEGAL_ID);
-        $("#leglphoneshow").val(data.LEGAL_PHONE);
-        $("#chanelpersonshow").val(data.CONTACTOR);
-        $("#chanelpersonphoneshow").val(data.CONTACT_PHONE);
-        $("#chanelstatusshow").val(data.STATUS);
-        $("#creattimeshow").val(data.CREATE_TIME);
-        $("#modifytimeshow").val(data.MODIFY_TIME);
-        // $("#approvalopinionshow").val(data.PARTNER_ID);//审批意见
+        $("#registidshow").val(data.businessLicenceNo);//营业执照编号
+        $("#chaneladdressshow").val(data.partner_address);//机构地址
+        $("#leglnameshow").val(data.legalName);//法人姓名
+        $("#legldcardshow").val(data.legalId);//法人证件号
+        $("#leglphoneshow").val(data.legalPhone);//法人身份证号
+        $("#chanelpersonshow").val(data.contactor);//机构联系人
+        $("#chanelpersonphoneshow").val(data.contactPhone);//联系人电话
+        $("#chanelstatusshow").val(data.parstatus);//机构状态
+        $("#creattimeshow").val(data.createTime);//创建时间
+        $("#modifytimeshow").val(data.modifyTime);//更新时间
+        $("#approvalopinionshow").val(data.failReason);//审批意见
         // $("#secretkeyshow").val(data.PARTNER_ID);//秘钥
 
         //打开模态框
@@ -180,17 +183,4 @@ function query(){
 function back(){
     //点击确认按钮执行回调函数
     layer.closeAll();
-}
-
-//获取当前时间，格式YYYY-MM-DD
-function getNowFormatDate() {//获取当前时间
-    var date = new Date();
-    var seperator1 = "-";
-    var seperator2 = ":";
-    var month = date.getMonth() + 1<10? "0"+(date.getMonth() + 1):date.getMonth() + 1;
-    var strDate = date.getDate()<10? "0" + date.getDate():date.getDate();
-    var currentdate = date.getFullYear() + seperator1  + month  + seperator1  + strDate
-        + " "  + date.getHours()  + seperator2  + date.getMinutes()
-        + seperator2 + date.getSeconds();
-    return currentdate;
 }

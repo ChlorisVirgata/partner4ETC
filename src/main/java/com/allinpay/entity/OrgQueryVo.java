@@ -1,7 +1,6 @@
 package com.allinpay.entity;
 
 import com.allinpay.core.common.BaseEntity;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,6 +13,11 @@ import java.util.Date;
 @Getter
 @ToString
 public class OrgQueryVo extends BaseEntity {
+
+    /**
+     * 区别几个模块标志
+     */
+    private String flag;//orgquery:机构信息查询
     /**
      * 机构编号
      */
@@ -66,6 +70,11 @@ public class OrgQueryVo extends BaseEntity {
      * 审核状态 审核中、审核通过、审核未通过
      */
     private Integer status;
+
+    /**
+     * 封装多状态的sb
+     */
+    private String sbstatus;
     /**
      * 查询创建时间起始
      */
