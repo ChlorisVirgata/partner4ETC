@@ -1,15 +1,17 @@
 package com.allinpay.entity;
 
-import com.allinpay.core.common.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.Date;
 
 
 @Setter
 @Getter
 @ToString
-public class PartnerAudit extends BaseEntity {
+public class PartnerAudit {
     /**
      * 机构编号
      */
@@ -59,17 +61,19 @@ public class PartnerAudit extends BaseEntity {
      */
     private String parentId;
     /**
-     * 审核状态 审核中、审核通过、审核未通过
+     * 审核状态 4审核中、5审核通过、6审核未通过
      */
     private Integer status;
     /**
      * 创建时间
      */
-//  private Date createTime;
-//  /**
-//   * 更新时间
-//   */
-//  private Date modifyTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date createTime;
+    /**
+     * 更新时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date modifyTime;
     /**
      * 操作人
      */

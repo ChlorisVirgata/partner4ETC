@@ -60,7 +60,7 @@ public class PartnerInfo {
      */
     private String parentId;
     /**
-     * 审核状态 审核中、审核通过、审核未通过
+     * 机构状态 1 正常 2 注销 3 冻结 4 审核中 6 审核失败
      */
     private Integer status;
     /**

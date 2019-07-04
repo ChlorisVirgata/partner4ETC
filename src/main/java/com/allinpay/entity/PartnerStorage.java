@@ -59,7 +59,7 @@ public class PartnerStorage {
      */
     private String parentId;
     /**
-     * 未提交状态
+     * 7 未提交状态
      */
     private Integer status;
     /**
