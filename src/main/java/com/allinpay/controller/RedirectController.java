@@ -25,4 +25,29 @@ public class RedirectController {
     public String orgAudit() {
         return "/orgmanage/orgAudit";
     }
+
+    @RequestMapping("/channel/channelquery")
+    public String channelquery() {
+        return "/channel/channelquery";
+    }
+
+    @RequestMapping("/orgLogout")
+    public String orgLogout() {
+        return "/orgmanage/orgLogout";
+    }
+
+    @RequestMapping("/orgBlocking")
+    public String orgBlocking() {
+        return "/orgmanage/orgBlocking";
+    }
+
+    @RequestMapping("/userHairpin")
+    public String userHairpin() {
+        return "/dataquery/userhairpin";
+    }
+
+    @RequestMapping("/passageMoney")
+    public String passageMoney() {
+        return "/dataquery/passagemoney";
+    }
 }
