@@ -74,14 +74,14 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             // },
 
             //每页展示的条数
-            limits: [2, 4, 6],
+            limits: [5, 10],
             //每页默认显示的数量
-            limit: 2,
+            limit: 5,
             //单元格设置
             cols: [[
                 {field: 'partnerId', width: 100, title: '机构编号'},
                 {field: 'partnerName', width: 100, title: '机构名称'},
-                {field: 'partnerType', width: 100, title: '机构类型'},
+                {field: 'partnerType', width: 80, title: '机构类型'},
                 {field: 'partner_address', width: 100, title: '机构地址', hide: true},
                 {field: 'saler', width: 100, title: '推广人', hide: true},
                 {field: 'legalName', width: 100, title: '法人姓名', hide: true},
@@ -94,8 +94,8 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 {field: 'partner_address', width: 100, title: '机构地址'},
                 {field: 'parstatus', width: 120, title: '机构状态'},
                 {field: 'failReason', width: 120, title: '审核意见'},
-                {field: 'createTime', width: 100,title: '创建时间'},
-                {field: 'modifyTime', width: 100, title: '更新时间'},
+                {field: 'createTimeX', width: 100, title: '创建时间'},
+                {field: 'modifyTimeX', width: 100, title: '更新时间'},
                 {field: 'sysUser', width: 100, title: '最后操作人'}
             ]]
         });
@@ -131,7 +131,6 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
         $("#chanelnameshow").val(data.partnerName);//机构名称
         $("#chaneltypeshow").val(data.partnerType);//机构类型
         $("#partneridshow").val(data.parentId);//父机构编号
-
         $("#registidshow").val(data.businessLicenceNo);//营业执照编号
         $("#chaneladdressshow").val(data.partner_address);//机构地址
         $("#leglnameshow").val(data.legalName);//法人姓名
@@ -140,8 +139,8 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
         $("#chanelpersonshow").val(data.contactor);//机构联系人
         $("#chanelpersonphoneshow").val(data.contactPhone);//联系人电话
         $("#chanelstatusshow").val(data.parstatus);//机构状态
-        $("#creattimeshow").val(data.createTime);//创建时间
-        $("#modifytimeshow").val(data.modifyTime);//更新时间
+        $("#creattimeshow").val(data.createTimeX);//创建时间
+        $("#modifytimeshow").val(data.modifyTimeX);//更新时间
         $("#approvalopinionshow").val(data.failReason);//审批意见
         // $("#secretkeyshow").val(data.PARTNER_ID);//秘钥
 

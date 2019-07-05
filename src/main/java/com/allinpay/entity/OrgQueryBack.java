@@ -1,29 +1,30 @@
 package com.allinpay.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Date;
-
+/**
+ * 机构信息查询返回信息实体类
+ *
+ * @author xuming
+ * @date 2019-07-02
+ */
 @Setter
 @Getter
 @ToString
 public class OrgQueryBack extends PartnerAudit{
 
-
     /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
-    private Date createTime;
+    private String createTimeX;
+
     /**
      * 更新时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
-    private Date modifyTime;
+    private String modifyTimeX;
 
     /**
      * 状态（汉子）

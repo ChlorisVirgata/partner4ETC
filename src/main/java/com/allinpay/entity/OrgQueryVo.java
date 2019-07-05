@@ -8,16 +8,17 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
-
 @Setter
 @Getter
 @ToString
+/**
+ * 信息查询封装参数基本实体类
+ *
+ * @author xuming
+ * @date 2019-07-02
+ */
 public class OrgQueryVo extends BaseEntity {
 
-    /**
-     * 区别几个模块标志
-     */
-    private String flag;//orgquery:机构信息查询
     /**
      * 机构编号
      */
@@ -103,8 +104,4 @@ public class OrgQueryVo extends BaseEntity {
      * 操作人
      */
     private String sysUser;
-    /**
-     * 审核失败原因
-     */
-    private String failReason;
 }
