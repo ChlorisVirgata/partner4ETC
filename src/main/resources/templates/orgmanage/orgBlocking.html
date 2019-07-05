@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<script src="/static/layui/layui.js"></script>
+<script src="/static/js/orgmanage/orgBlocking.js" th:inline="none"></script>
+<link href="/static/layui/css/layui.css" media="all" rel="stylesheet">
+<style>
+    .layui-input-inline {
+        width: 200px;
+    }
+
+    .layui-input-block {
+        width: 190px;
+    }
+
+    .querydiv {
+        margin-left: 20px;
+    }
+</style>
+<script>
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        //查询时间起（创建时间）
+        laydate.render({
+            elem: '#creatdate',
+            type: 'date',
+            range: '~',
+            format: 'yyyy-MM-dd'
+        });
+        //查询时间止（截止时间）
+        laydate.render({
+            elem: '#modifydate',
+            type: 'date',
+            range: '~',
+            format: 'yyyy-MM-dd'
+        });
+    });
+</script>
+
+<head>
+    <meta charset="utf-8">
+    <meta content="webkit" name="renderer">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <title>机构信息查询</title>
+    <link href="/static/layui/css/layui.css" rel="stylesheet">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:include="/common/header :: header"></div>
+    <div th:include="/common/menu :: menu"></div>
+    <!--查询页面 -->
+    <div class="layui-body">
+        <!--面包屑-->
+        <div style="margin: 10px">
+            <span class="layui-breadcrumb">
+                <a href="">机构管理</a>
+                <a><cite>机构信息冻结</cite></a>
+            </span>
+        </div>
+
+        <!--查询条件-->
+        <form action="" class="layui-form" id="queryform">
+            <div class="layui-form-item" style="margin-top: 20px;">
+                <div class="layui-inline">
+                    <label class="layui-form-label">机构编号：</label>
+                    <div class="layui-input-inline">
+                        <input autocomplete="off" class="layui-input" id="chanelid" placeholder="输入完整信息" type="text">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">机构名称：</label>
+                    <div class="layui-input-inline">
+                        <input autocomplete="off" class="layui-input" id="chanelname" placeholder="可输入部分信息"
+                               type="text">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">机构类型：</label>
+                    <div class="layui-input-block">
+                        <select id="chanetype" lay-verify="required">
+                            <option value=""></option>
+                            <option value="00">银行</option>
+                            <option value="01">汽车服务</option>
+                            <option value="02">互联网平台</option>
+                            <option value="03">其他</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">机构状态：</label>
+                    <div class="layui-input-block">
+                        <select id="chanelstatus" lay-verify="required">
+                            <option value=""></option>
+                            <option value="1">正常</option>
+                            <!--                            <option value="2">注销</option>-->
+                            <option value="3">冻结</option>
+                            <!--                            <option value="4">审核中</option>
+                                                        <option value="5">审核成功</option>
+                                                        <option value="6">审核失败</option>-->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline" style="margin-left: 10px;">
+                    <label class="layui-form-label">创建时间：</label>
+                    <div class="layui-input-inline">
+                        <input class="layui-input" id="creatdate" placeholder="开始时间~结束时间" type="text">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">更新时间：</label>
+                    <div class="layui-input-inline">
+                        <input class="layui-input" id="modifydate" placeholder="开始时间~结束时间" type="text">
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+        <div class="querydiv">
+            <button class="layui-btn" id="queryBtn" lay-filter="formDemo" lay-submit>查询</button>
+        </div>
+
+        <!-- 数据展示 table框 -->
+        <table class="layui-hide" id="orginfotable" lay-filter="orginfotable"></table>
+    </div>
+    <div th:include="/common/footer :: footer"></div>
+
+    <!--操作菜单页面-->
+    <div id="operator" style="display: none;">
+
+
+        <script id="operators" type="text/html">
+            {{#  if(d.parstatus == "冻结"){ }}
+            <a class="layui-btn layui-btn-xs" id="unbl" lay-event="unblock">解冻</a>
+            {{#  } }}
+            {{#  if(d.parstatus == "正常"){ }}
+            <a class="layui-btn layui-btn-xs" id="bl" lay-event="block">冻结</a>
+            {{#  } }}
+        </script>
+    </div>
+</div>
+</body>
+</html>

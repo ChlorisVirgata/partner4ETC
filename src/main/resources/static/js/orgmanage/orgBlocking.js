@@ -1,0 +1,180 @@
+//element 展示左边菜单栏; 预加载需要使用的模块
+//由于layer弹层依赖jQuery，所以可以直接得到
+var layer = null;
+layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
+    var table = layui.table;
+    var $ = layui.$;
+    layer = layui.layer;
+    var form = layui.form;
+
+    //初始化开始查询时间
+    // var inittime = getNowFormatDate();
+    // $("#creatdate").val(inittime);
+    // $("#modifydate").val(inittime);
+
+    //抽取查询方法
+    var search = function () {
+        table.render({
+            //表格生成的位置：#ID
+            elem: '#orginfotable',
+            //请求地址getList
+            url: '/query/org/getList',
+            //是否分页
+            page: true,
+            //请求参数
+            where: {
+                partnerId: $("#chanelid").val(),//机构编号
+                partnerName: $("#chanelname").val(),//机构名称
+                partnerType: $("#chanetype").val(),//机构类型
+                status: $("#chanelstatus").val(),//机构状态
+                sbstatus: "('1','3')",//默认查询状态
+                // createTime:new Date($("#creatdate").val().split(" ")[0].split('-')[0], $("#creatdate").val().split(" ")[0].split('-')[1]-1, $("#creatdate").val().split(" ")[0].split('-')[2]),
+                // modifyTime:new Date($("#modifydate").val().split(" ")[0].split('-')[0], $("#modifydate").val().split(" ")[0].split('-')[1]-1, $("#modifydate").val().split(" ")[0].split('-')[2])
+
+                // createTimeStart:"2019-07-03",
+                createTimeStart: $("#creatdate").val() == "" ? "" : $("#creatdate").val().substr(0, 10),//查询创建时间起
+                createTimeEnd: $("#creatdate").val() == "" ? "" : $("#creatdate").val().substr(12, 11),//查询创建时间止
+                modifyTimeStart: $("#modifydate").val() == "" ? "" : $("#modifydate").val().substr(0, 10),//修改时间起
+                modifyTimeEnd: $("#modifydate").val() == "" ? "" : $("#modifydate").val().substr(12, 11)
+            },
+            //分页信息
+            request: {
+                pageName: 'pageNum',
+                limitName: 'pageSize'
+            },
+
+            //处理返回参数
+            parseData: function (res) {
+
+                if (res.data.total == 0) {
+                    var index = layer.alert("无数据，请修改查询条件", function () {
+                        layer.close(index);
+                    })
+                    return {
+                        "code": res.code,
+                        "msg": "无数据",
+                        "count": res.data.total,
+                        "data": res.data.list
+                    };
+                }
+                return {
+                    "code": res.code,
+                    "msg": res.msg,
+                    "count": res.data.total,
+                    "data": res.data.list
+                };
+            },
+
+
+            //每页展示的条数
+            limits: [5, 10],
+            //每页默认显示的数量
+            limit: 5,
+            //单元格设置
+            cols: [[
+                {field: 'partnerId', width: 100, title: '机构编号'},
+                {field: 'partnerName', width: 100, title: '机构名称'},
+                {field: 'partnerType', width: 100, title: '机构类型'},
+                {field: 'parentId', width: 100, title: '父机构编号'},
+                {field: 'partner_address', width: 100, title: '机构地址'},
+                {field: 'saler', width: 100, title: '推广人'},
+                {field: 'parstatus', width: 120, title: '机构状态'},
+                {field: 'createTimeX', width: 100, title: '创建时间'},
+                {field: 'modifyTimeX', width: 100, title: '更新时间'},
+                {field: 'sysUser', width: 100, title: '最后操作人'},
+                {fixed: 'right', width: 120, title: '操作', toolbar: '#operators'}
+            ]]
+        });
+    };
+
+    //页面加载就查询列表
+    search();
+
+    //条件查询
+    $("#queryBtn").on("click", function () {
+        // var index = layer.alert("立即提交", function () {
+        //     layer.close(index);
+        search();
+        // })
+
+    });
+
+
+    //冻结
+    $("#block").on("click", function () {
+        var index = layer.alert("确认冻结？", function () {
+            layer.close(index);
+            // search();
+        })
+    });
+
+
+    //监听table行工具事件 如详情、编辑、删除操作
+    table.on('tool(orginfotable)', function (obj) {
+        //获取所在行的数据
+        var data = obj.data;
+        //删除
+        if (obj.event === 'block') {
+            var index = layer.confirm('确定冻结？', function () {
+                $.ajax({
+                    url: '/query/org/blockOrg',
+                    type: 'post',
+                    data: {
+                        partnerId: data.partnerId,
+                        status: '3'
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.code == "00000") {
+                            layer.close(index);
+                            search();
+                            layer.alert("冻结成功！");
+                        } else {
+                            layer.alert("冻结失败！");
+                        }
+                    },
+                    error: function () {
+                        layer.alert("冻结失败，请重试！");
+                    }
+                });
+            });
+            //编辑
+        } else if (obj.event === 'unblock') {
+            var index = layer.confirm('确定解冻？', function () {
+                //先通过后台查询数据，渲染页面后打开模态框
+                $.ajax({
+                    url: '/query/org/blockOrg',
+                    type: 'post',
+                    data: {
+                        partnerId: data.partnerId,
+                        status: '1'
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.code == "00000") {
+                            layer.close(index);
+                            search();
+                            layer.alert("解冻成功！");
+                        } else {
+                            layer.alert("解冻失败！");
+                        }
+                    },
+                    error: function () {
+                        layer.alert("解冻失败，请重试！");
+                    }
+                });
+            });
+        }
+    });
+
+
+    //监听form表单提交事件 防止页面跳转
+    form.on('submit(backbtn)', function (data) {
+        return false;
+    });
+
+    form.on('submit(addFilter)', function (data) {
+        return false;
+    });
+});
+
