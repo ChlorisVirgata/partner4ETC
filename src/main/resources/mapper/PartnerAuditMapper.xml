@@ -22,7 +22,7 @@
     </resultMap>
     <sql id="Base_Column_List">
         PARTNER_ID,PARTNER_NAME,PARTNER_TYPE,BUSINESS_LICENCE_NO,RANK,SALER,LEGAL_NAME,LEGAL_ID,LEGAL_PHONE,CONTACTOR,CONTACT_PHONE,
-        PARENT_ID,STATUS,CREATE_TIME,MODIFY_TIME,SYS_USER,FAIL_REASON
+        PARENT_ID,STATUS,CREATE_TIME,MODIFY_TIME,SYS_USER,FAIL_REASON,ID_FRONT,ID_BACK,LICENSE,AGREEMENT,PARTNER_ADDRESS
     </sql>
 
     <select id="selectList" resultMap="BaseResultMap" parameterType="com.allinpay.controller.query.OrgAuditQuery">
@@ -54,8 +54,8 @@
             <if test="query.partnerName != null and query.partnerName != ''">
                 AND PARTNER_NAME like '%' || #{query.partnerName} || '%'
             </if>
-            <if test="query.partnertType != null and query.partnertType != ''">
-                AND PARTNER_TYPE like '%' || #{query.partnertType} || '%'
+            <if test="query.partnerType != null and query.partnerType != ''">
+                AND PARTNER_TYPE like '%' || #{query.partnerType} || '%'
             </if>
             <if test="query.parentId!= null and query.parentId != ''">
                 AND PARENT_ID like '%' || #{query.parentId} || '%'
@@ -68,10 +68,10 @@
             </if>
             AND STATUS != 4
         </trim>
-        ) where partner_id
-        not in (select partner_id from T_ETC_PARTNER_INFO where status in (2,3))
+        ) where PARTNER_ID
+        not in (select PARTNER_ID from T_ETC_PARTNER_INFO where STATUS in (2,3))
         union
-        select * from T_ETC_PARTNER_STORAGE;
+        select * from T_ETC_PARTNER_STORAGE
     </select>
 
     <select id="selectOne" parameterType="string" resultMap="BaseResultMap">
@@ -84,5 +84,59 @@
     <update id="updateApproveStatus">
         update T_ETC_PARTNER_AUDIT set STATUS = 5, FAIL_REASON = #{failReason}, MODIFY_TIME = to_date(to_char(sysdate, 'yyyy-MM-dd')，'yyyy-MM-dd')
         WHERE PARTNER_ID = #{partnerId}
+    </update>
+    <insert id="insert" parameterType="com.allinpay.entity.PartnerAudit">
+        insert into T_ETC_PARTNER_AUDIT (<include refid="Base_Column_List"/>)
+        values (#{audit.partnerId,jdbcType=VARCHAR},
+        #{audit.partnerName,jdbcType=VARCHAR},
+        #{audit.partnerType,jdbcType=VARCHAR},
+        #{audit.businessLicenceNo,jdbcType=VARCHAR},
+        #{audit.rank,jdbcType=NUMERIC},
+        #{audit.saler,jdbcType=VARCHAR},
+        #{audit.legalName,jdbcType=VARCHAR},
+        #{audit.legalId,jdbcType=VARCHAR},
+        #{audit.legalPhone,jdbcType=VARCHAR},
+        #{audit.contactor,jdbcType=VARCHAR},
+        #{audit.contactPhone,jdbcType=VARCHAR},
+        #{audit.parentId,jdbcType=VARCHAR},
+        #{audit.status,jdbcType=NUMERIC},
+        #{audit.createTime,jdbcType=DATE},
+        #{audit.modifyTime,jdbcType=DATE},
+        #{audit.sysUser,jdbcType=VARCHAR},
+        #{audit.failReason,jdbcType=VARCHAR},
+        #{audit.idFront,jdbcType=VARCHAR},
+        #{audit.idBack,jdbcType=VARCHAR},
+        #{audit.license,jdbcType=VARCHAR},
+        #{audit.agreement,jdbcType=VARCHAR},
+        #{audit.partnerAddress,jdbcType=VARCHAR}
+        )
+    </insert>
+    <delete id="delete" parameterType="string">
+        delete from T_ETC_PARTNER_AUDIT where PARTNER_ID = #{partnerId}
+    </delete>
+    <update id="update" parameterType="com.allinpay.entity.PartnerAudit">
+        update T_ETC_PARTNER_AUDIT set
+        PARTNER_ID = #{audit.partnerId,jdbcType=VARCHAR},
+        PARTNER_NAME = #{audit.partnerName,jdbcType=VARCHAR},
+        PARTNER_TYPE = #{audit.partnerType,jdbcType=VARCHAR},
+        BUSINESS_LICENCE_NO = #{audit.businessLicenceNo,jdbcType=VARCHAR},
+        RANK = #{audit.rank,jdbcType=NUMERIC},
+        SALER = #{audit.saler,jdbcType=VARCHAR},
+        LEGAL_NAME = #{audit.legalName,jdbcType=VARCHAR},
+        LEGAL_ID = #{audit.legalId,jdbcType=VARCHAR},
+        LEGAL_PHONE = #{audit.legalPhone,jdbcType=VARCHAR},
+        CONTACTOR = #{audit.contactor,jdbcType=VARCHAR},
+        CONTACT_PHONE = #{audit.contactPhone,jdbcType=VARCHAR},
+        PARENT_ID = #{audit.parentId,jdbcType=VARCHAR},
+        STATUS = #{audit.status,jdbcType=NUMERIC},
+        MODIFY_TIME = #{audit.modifyTime,jdbcType=DATE},
+        SYS_USER = #{audit.sysUser,jdbcType=VARCHAR},
+        FAIL_REASON = #{audit.failReason,jdbcType=VARCHAR},
+        ID_FRONT = #{audit.idFront,jdbcType=VARCHAR},
+        ID_BACK = #{audit.idBack,jdbcType=VARCHAR},
+        LICENSE = #{audit.license,jdbcType=VARCHAR},
+        AGREEMENT = #{audit.agreement,jdbcType=VARCHAR},
+        PARTNER_ADDRESS = #{audit.partnerAddress,jdbcType=VARCHAR}
+        WHERE PARTNER_ID = #{audit.partnerId}
     </update>
 </mapper>

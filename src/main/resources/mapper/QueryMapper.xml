@@ -147,4 +147,7 @@
         --,SYS_USER={#orgque.sysUser}
         WHERE partner_id=#{orgque.partnerId}
     </update>
+    <select id="selectNormalList" resultMap="BaseResultMap">
+      select * from T_ETC_PARTNER_INFO where STATUS = 1
+    </select>
 </mapper>

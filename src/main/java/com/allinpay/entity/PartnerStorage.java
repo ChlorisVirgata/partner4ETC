@@ -74,4 +74,34 @@ public class PartnerStorage {
      * 操作人
      */
     private String sysUser;
+
+    /**
+     * 审核结果 冗余字段
+     */
+    private String failReason;
+
+    /**
+     * 机构地址
+     */
+    private String partnerAddress;
+
+    /**
+     * 营业执照地址
+     */
+    private String license;
+
+    /**
+     * 身份证正面地址
+     */
+    private String idFront;
+
+    /**
+     * 身份证反面地址
+     */
+    private String idBack;
+
+    /**
+     * 协议图片
+     */
+    private String agreement;
 }

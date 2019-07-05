@@ -9,4 +9,6 @@ public interface PartnerInfoMapper {
     int updateApproveStatus(@Param("partnerId") String partnerId);
 
     int updateApproveData(@Param("partnerInfo") PartnerInfo partnerInfo);
+
+    int insert(@Param("partnerInfo") PartnerInfo partnerInfo);
 }

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * 机构信息、通行记录、用户发卡数据查询，机构冻结、解冻、注销处理
  * Controller
@@ -71,6 +73,12 @@ public class OrgQueryController {
 //        orgque.setSysUser(user);
         orgquery.blockOrg(orgque);
         return ResponseData.success().setData(null);
+    }
+
+    @GetMapping("/org/normalOrgList")
+    public ResponseData normalOrgList() {
+        List<PartnerInfo> partnerInfoList = orgquery.selectByNormalStatus();
+        return ResponseData.success().setData(partnerInfoList);
     }
 
 }

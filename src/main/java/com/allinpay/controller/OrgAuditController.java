@@ -30,18 +30,33 @@ public class OrgAuditController {
         return ResponseData.success().setData(pageVO);
     }
 
+    /**
+     * @Description: 根据机构id查询机构信息
+     * @Param: [partnerId]
+     * @Return: com.allinpay.core.common.ResponseData
+     */
     @GetMapping("/getOne")
     public ResponseData getOne(@RequestParam String partnerId) {
         PartnerAudit partnerAudit = auditService.selectByPartnerId(partnerId);
         return ResponseData.success().setData(partnerAudit);
     }
 
+    /**
+     * @Description: 审核通过
+     * @Param: [audit]
+     * @Return: com.allinpay.core.common.ResponseData
+     */
     @PostMapping("/approve")
     public ResponseData approve(PartnerAudit audit) {
         auditService.auditApprove(audit);
         return ResponseData.success().setData(null);
     }
 
+    /**
+     * @Description: 审核失败
+     * @Param: [partnerId，failReason]
+     * @Return: com.allinpay.core.common.ResponseData
+     */
     @PostMapping("/refuse")
     public ResponseData refuse(@RequestParam String partnerId,
                                @RequestParam String failReason) {

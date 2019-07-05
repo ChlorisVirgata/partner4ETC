@@ -2,9 +2,61 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.allinpay.mapper.PartnerStorageMapper">
     <resultMap id="BaseResultMap" type="com.allinpay.entity.PartnerStorage">
-
+        <id column="PARTNER_ID" property="partnerId" jdbcType="VARCHAR"/>
+        <result column="PARTNER_NAME" property="partnerName" jdbcType="VARCHAR"/>
+        <result column="PARTNER_TYPE" property="partnerType" jdbcType="VARCHAR"/>
+        <result column="BUSINESS_LICENCE_NO" property="businessLicenceNo" jdbcType="VARCHAR"/>
+        <result column="RANK" property="rank" jdbcType="NUMERIC"/>
+        <result column="SALER" property="saler" jdbcType="VARCHAR"/>
+        <result column="LEGAL_NAME" property="legalName" jdbcType="VARCHAR"/>
+        <result column="LEGAL_ID" property="legalId" jdbcType="VARCHAR"/>
+        <result column="LEGAL_PHONE" property="legalPhone" jdbcType="VARCHAR"/>
+        <result column="CONTACTOR" property="contactor" jdbcType="VARCHAR"/>
+        <result column="CONTACT_PHONE" property="contactPhone" jdbcType="VARCHAR"/>
+        <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="NUMERIC"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
+        <result column="MODIFY_TIME" property="modifyTime" jdbcType="DATE"/>
+        <result column="SYS_USER" property="sysUser" jdbcType="VARCHAR"/>
+        <result column="FAIL_REASON" property="failReason" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-      KID,EMAIL,PASSWORD,NICKNAME,STATUS,IS_VERIFY
+        PARTNER_ID,PARTNER_NAME,PARTNER_TYPE,BUSINESS_LICENCE_NO,RANK,SALER,LEGAL_NAME,LEGAL_ID,LEGAL_PHONE,CONTACTOR,CONTACT_PHONE,
+        PARENT_ID,STATUS,CREATE_TIME,MODIFY_TIME,SYS_USER,FAIL_REASON,ID_FRONT,ID_BACK,LICENSE,AGREEMENT,PARTNER_ADDRESS
     </sql>
+    <insert id="insert" parameterType="com.allinpay.entity.PartnerStorage">
+        insert into T_ETC_PARTNER_STORAGE (<include refid="Base_Column_List"/>)
+        values (#{storage.partnerId,jdbcType=VARCHAR},
+        #{storage.partnerName,jdbcType=VARCHAR},
+        #{storage.partnerType,jdbcType=VARCHAR},
+        #{storage.businessLicenceNo,jdbcType=VARCHAR},
+        #{storage.rank,jdbcType=NUMERIC},
+        #{storage.saler,jdbcType=VARCHAR},
+        #{storage.legalName,jdbcType=VARCHAR},
+        #{storage.legalId,jdbcType=VARCHAR},
+        #{storage.legalPhone,jdbcType=VARCHAR},
+        #{storage.contactor,jdbcType=VARCHAR},
+        #{storage.contactPhone,jdbcType=VARCHAR},
+        #{storage.parentId,jdbcType=VARCHAR},
+        #{storage.status,jdbcType=NUMERIC},
+        #{storage.createTime,jdbcType=DATE},
+        #{storage.modifyTime,jdbcType=DATE},
+        #{storage.sysUser,jdbcType=VARCHAR},
+        #{storage.failReason,jdbcType=VARCHAR},
+        #{storage.idFront,jdbcType=VARCHAR},
+        #{storage.idBack,jdbcType=VARCHAR},
+        #{storage.license,jdbcType=VARCHAR},
+        #{storage.agreement,jdbcType=VARCHAR},
+        #{storage.partnerAddress,jdbcType=VARCHAR}
+        )
+    </insert>
+    <select id="selectOne" parameterType="string" resultMap="BaseResultMap">
+        select * from T_ETC_PARTNER_STORAGE where PARTNER_ID = #{partnerId}
+    </select>
+    <delete id="delete" parameterType="string">
+        delete from T_ETC_PARTNER_STORAGE where PARTNER_ID = #{partnerId}
+    </delete>
+    <update id="update" parameterType="com.allinpay.entity.PartnerStorage">
+
+    </update>
 </mapper>

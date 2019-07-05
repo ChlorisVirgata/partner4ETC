@@ -79,7 +79,7 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate'], function () {
                 {field: 'failReason', title: '审核意见', width: 90},
                 {field: 'createTime', title: '创建时间', width: 90},
                 {field: 'modifyTime', title: '审核时间', width: 90},
-                {field: 'center', title: '操作', toolbar: '#operator', width: 65}
+                {fixed: 'right', title: '操作', toolbar: '#operator', width: 65}
             ]]
         });
     };

@@ -9,11 +9,11 @@
     <link href="/static/layui/css/layui.css" rel="stylesheet">
     <style type="text/css">
         .layui-form-label {
-            width: 100px;
+            width: 115px;
         }
 
         .layui-input-block {
-            margin-left: 55px;
+            margin-left: 40px;
         }
 
         .layui-upload-img {
@@ -55,7 +55,7 @@
                     <label class="layui-form-label">机构类型</label>
                     <div class="layui-input-inline" style="width: 200px;">
                         <select id="partnerType">
-                            <option value="">全部</option>
+                            <option value="">请选择</option>
                             <option value="00">银行</option>
                             <option value="01">汽车服务</option>
                             <option value="02">互联网平台</option>
@@ -104,23 +104,23 @@
           style="display: none;margin: 10px; text-align: center">
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">机构编号</label>
+                <label class="layui-form-label">机构编号<span style="color: red">*</span></label>
                 <div class="layui-input-inline" style="width: 200px;">
                     <input class="layui-input" name="partnerId" readonly type="text">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">机构名称</label>
+                <label class="layui-form-label">机构名称<span style="color: red">*</span></label>
                 <div class="layui-input-inline" style="width: 200px;">
-                    <input class="layui-input" name="partnerName" readonly type="text">
+                    <input class="layui-input" lay-verify="required" name="partnerName" type="text">
                 </div>
             </div>
         </div>
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">机构类型</label>
+                <label class="layui-form-label">机构类型<span style="color: red">*</span></label>
                 <div class="layui-input-inline" style="width: 200px;">
-                    <select name="partnerType">
+                    <select lay-verify="required" name="partnerType">
                         <option value="">全部</option>
                         <option value="00">银行</option>
                         <option value="01">汽车服务</option>
@@ -130,23 +130,31 @@
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">营业执照编号</label>
+                <label class="layui-form-label">营业执照编号<span style="color: red">*</span></label>
                 <div class="layui-input-inline" style="width: 200px;">
-                    <input class="layui-input" name="businessLicenceNo" readonly type="text">
+                    <input class="layui-input" lay-verify="required" name="businessLicenceNo" type="text">
                 </div>
             </div>
         </div>
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">机构地址</label>
+                <label class="layui-form-label">机构地址<span style="color: red">*</span></label>
                 <div class="layui-input-inline" style="width: 200px;">
-                    <input class="layui-input" name="" readonly type="partnerAddress">
+                    <input class="layui-input" lay-verify="required" name="partnerAddress" type="text">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">父机构编号</label>
-                <div class="layui-input-inline" style="width: 200px;">
-                    <input class="layui-input" name="parentId" readonly type="text">
+                <label class="layui-form-label">父级机构</label>
+                <div class="layui-input-inline" id="orgSelector" style="width: 200px;">
+                    <input class="layui-input" name="parentId" type="text">
+                    <!--<select name="parentId" lay-verify="" lay-search id="querySelect">-->
+                    <!--</select>-->
+                    <!--<div class="layui-form-select">-->
+                    <!--<div class="layui-select-title" id="showSelect">-->
+                    <!--<input type="text" placeholder="请选择" value="" class="layui-input">-->
+                    <!--<i class="layui-edge"></i>-->
+                    <!--</div>-->
+                    <!--</div>-->
                 </div>
             </div>
         </div>
@@ -154,13 +162,13 @@
             <div class="layui-inline">
                 <label class="layui-form-label">法人姓名</label>
                 <div class="layui-input-inline" style="width: 200px;">
-                    <input class="layui-input" name="legalName" readonly type="text">
+                    <input class="layui-input" name="legalName" type="text">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">法人身份证</label>
                 <div class="layui-input-inline" style="width: 200px;">
-                    <input class="layui-input" name="legalId" readonly type="text">
+                    <input class="layui-input" name="legalId" type="text">
                 </div>
             </div>
         </div>
@@ -168,13 +176,13 @@
             <div class="layui-inline">
                 <label class="layui-form-label">法人联系电话</label>
                 <div class="layui-input-inline" style="width: 200px;">
-                    <input class="layui-input" name="legalPhone" readonly type="text">
+                    <input class="layui-input" name="legalPhone" type="text">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">机构联系人</label>
                 <div class="layui-input-inline" style="width: 200px;">
-                    <input class="layui-input" name="contactor" readonly type="text">
+                    <input class="layui-input" name="contactor" type="text">
                 </div>
             </div>
         </div>
@@ -182,21 +190,13 @@
             <div class="layui-inline">
                 <label class="layui-form-label">机构联系人电话</label>
                 <div class="layui-input-inline" style="width: 200px;">
-                    <input class="layui-input" name="contactPhone" readonly type="text">
+                    <input class="layui-input" name="contactPhone" type="text">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">推广人</label>
                 <div class="layui-input-inline" style="width: 200px;">
-                    <input class="layui-input" name="saler" readonly type="text">
-                </div>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <label class="layui-form-label">机构等级</label>
-                <div class="layui-input-inline" style="width: 200px;">
-                    <input class="layui-input" name="rank" readonly type="text">
+                    <input class="layui-input" name="saler" type="text">
                 </div>
             </div>
         </div>
@@ -214,12 +214,19 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <label class="layui-form-label">法人身份图片</label>
+                <label class="layui-form-label">法人身份正面图片</label>
                 <div class="layui-upload">
-                    <button class="layui-btn" id="legalBtn" style="float: left;" type="button">上传图片</button>
-                    <div class="layui-upload-list">
-                        <img class="layui-upload-img" id="legalImg">
-                    </div>
+                    <button class="layui-btn" id="legalFrontBtn" style="float: left;" type="button">上传图片</button>
+                    <div class="layui-upload-list" id="legalFrontImg"></div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <label class="layui-form-label">法人身份反面图片</label>
+                <div class="layui-upload">
+                    <button class="layui-btn" id="legalBackBtn" style="float: left;" type="button">上传图片</button>
+                    <div class="layui-upload-list" id="legalBackImg"></div>
                 </div>
             </div>
         </div>
@@ -236,8 +243,8 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button class="layui-btn layui-btn-primary" id="editSubmit" lay-filter="editFilter" lay-submit>保存
-                </button>
+                <button class="layui-btn" id="sendAuditSubmit" lay-submit>提交审核</button>
+                <button class="layui-btn" id="editSubmit" lay-submit>保存</button>
                 <button class="layui-btn layui-btn-primary" id="cancel" type="button">取消</button>
             </div>
         </div>
@@ -245,7 +252,6 @@
     <!--操作菜单页面-->
     <div id="operator" style="display: none;">
         <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-        <a class="layui-btn layui-btn-xs" lay-event="sendAudit">提交审核</a>
     </div>
 </div>
 </body>

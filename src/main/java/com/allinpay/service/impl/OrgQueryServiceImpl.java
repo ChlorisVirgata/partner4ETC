@@ -53,4 +53,9 @@ public class OrgQueryServiceImpl implements IOrgQueryService {
         return pageVO;
     }
 
+
+    @Override
+    public List<PartnerInfo> selectByNormalStatus() {
+        return queryMapper.selectNormalList();
+    }
 }

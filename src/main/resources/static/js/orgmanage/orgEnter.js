@@ -1,75 +1,224 @@
+layui.use('jquery', function () {
+    var $ = layui.jquery;
+    //查询父级机构
+    $.ajax({
+        url: '/query/org/normalOrgList',
+        type: 'get',
+        async: false,
+        dataType: 'json',
+        success: function (data) {
+            if (data.code == "00000") {
+                var myData = data.data;
+                $("#orgSelector").find("select").html("<option value=''>请选择</option>");
+                for (var i = 0; i < myData.length; i++) {
+                    $("#orgSelector").find("select").append("<option value=" + myData[i].partnerId + ">" + myData[i].partnerName + "</option>");
+                }
+            } else {
+                layer.alert(data.msg);
+            }
+        },
+        error: function () {
+            layer.alert("操作失败，请重试！");
+        }
+    });
+});
 layui.use(['layer', 'form', 'element', 'upload'], function () {
     var layer = layui.layer;
     var form = layui.form;
     var element = layui.element;
     var upload = layui.upload;
     var $ = layui.$;
+    var btnId;
 
-    //form表单初始化
-    form.val("formFilter", {
-        "partnerName": "贤心",
-        "partnerType": "0"
-    });
-
-    var license = upload.render({
-        elem: '#licenseBtn'
-        , url: '/web/orgEnter'
-        , before: function (obj) {
-            //预读本地文件示例，不支持ie8
+    upload.render({
+        elem: '#licenseBtn',
+        field: "licenseFile",
+        accept: "images",
+        auto: false,
+        choose: function (obj) {
+            //预读选择的文件，不支持ie8
             obj.preview(function (index, file, result) {
-                $('#licenseImg').attr('src', result); //图片链接（base64）
-            });
-        }
-        , done: function (res) {
-            //如果上传失败
-            if (res.code > 0) {
-                return layer.msg('上传失败');
-            }
-        }
-        , error: function () {
-            //演示失败状态，并实现重传
-            var demoText = $('#demoText');
-            demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-            demoText.find('.demo-reload').on('click', function () {
-                uploadInst.upload();
+                //图片链接（base64）
+                $('#licenseImg').attr('src', result);
             });
         }
     });
 
-    var legal = upload.render({
-        elem: '#legalBtn'
-        , url: '/web/orgEnter'
-        , before: function (obj) {
-            //预读本地文件示例，不支持ie8
+    upload.render({
+        elem: '#legalFrontBtn',
+        field: "legalFront",
+        accept: "images",
+        auto: false,
+        choose: function (obj) {
+            //预读选择的文件，不支持ie8
             obj.preview(function (index, file, result) {
-                $('#legalImg').attr('src', result); //图片链接（base64）
+                $('#legalFrontImg').append('<img src="' + result + '" alt="' + file.name + '" class="layui-upload-img">')
             });
-        }
-        , done: function (res) {
-            //如果上传失败
-            if (res.code > 0) {
-                return layer.msg('上传失败');
-            }
         }
     });
 
-    var agreement = upload.render({
-        elem: '#agreementBtn'
-        , url: '/web/orgEnter'
-        , before: function (obj) {
-            //预读本地文件示例，不支持ie8
+    upload.render({
+        elem: '#legalBackBtn',
+        field: "legalBack",
+        accept: "images",
+        auto: false,
+        choose: function (obj) {
+            //预读选择的文件，不支持ie8
+            obj.preview(function (index, file, result) {
+                $('#legalBackImg').append('<img src="' + result + '" alt="' + file.name + '" class="layui-upload-img">')
+            });
+        }
+    });
+
+    upload.render({
+        elem: '#agreementBtn',
+        field: "agreementFile",
+        accept: "images",
+        auto: false,
+        choose: function (obj) {
+            //预读选择的文件，不支持ie8
             obj.preview(function (index, file, result) {
                 //图片链接（base64）
                 $('#agreementImg').attr('src', result);
             });
         }
-        , done: function (res) {
-            //如果上传失败
-            if (res.code > 0) {
-                return layer.msg('上传失败');
-            }
+    });
+
+    //添加
+    $("#addSubmit").on("click", function () {
+        checkParamsForAdd();
+        btnId = "addSubmit";
+    });
+
+    //提交审核
+    $("#sendAuditSubmit").on("click", function () {
+        checkParamsForSendAudit();
+        btnId = "sendAuditSubmit";
+    });
+
+    //表单参数验证
+    function checkParamsForAdd() {
+        //机构名称、机构类型、营业执照编号、机构地址 使用框架做非空校验做非空校验
+        var $parentId = $("input[name='parentId']");
+        var $legalName = $("input[name='legalName']");
+        var $contactor = $("input[name='contactor']");
+        var $saler = $("input[name='saler']");
+        var $legalId = $("input[name='legalId']");
+        var $legalPhone = $("input[name='legalPhone']");
+        var $contactPhone = $("input[name='contactPhone']");
+        var $license = $("input[name='license']");
+        var $legalFront = $("input[name='legalFront']");
+        var $legalBack = $("input[name='legalBack']");
+        var $agreement = $("input[name='agreement']");
+        //清除基础校验信息
+        $parentId.attr("lay-verify", "");
+        $legalName.attr("lay-verify", "");
+        $contactor.attr("lay-verify", "");
+        $saler.attr("lay-verify", "");
+        $legalId.attr("lay-verify", "");
+        $legalPhone.attr("lay-verify", "");
+        $contactPhone.attr("lay-verify", "");
+        //清除图片信息
+        $license.attr("lay-verify", "");
+        $legalFront.attr("lay-verify", "");
+        $legalBack.attr("lay-verify", "");
+        $agreement.attr("lay-verify", "");
+        //非空项增加校验
+        verify($legalId, "lay-verify", "identity");
+        verify($legalPhone, "lay-verify", "phone");
+        verify($contactPhone, "lay-verify", "phone");
+        return true;
+    }
+
+    function checkParamsForSendAudit() {
+        //基础字段校验
+        var $parentId = $("input[name='parentId']");
+        var $legalName = $("input[name='legalName']");
+        var $contactor = $("input[name='contactor']");
+        var $saler = $("input[name='saler']");
+        var $legalId = $("input[name='legalId']");
+        var $legalPhone = $("input[name='legalPhone']");
+        var $contactPhone = $("input[name='contactPhone']");
+        var $license = $("input[name='license']");
+        var $legalFront = $("input[name='legalFront']");
+        var $legalBack = $("input[name='legalBack']");
+        var $agreement = $("input[name='agreement']");
+        $parentId.attr("lay-verify", "required");
+        $legalName.attr("lay-verify", "required");
+        $contactor.attr("lay-verify", "required");
+        $saler.attr("lay-verify", "required");
+        $legalId.attr("lay-verify", "identity");
+        $legalPhone.attr("lay-verify", "phone");
+        $contactPhone.attr("lay-verify", "phone");
+        //图片信息
+        $license.attr("lay-verify", "required").attr("lay-reqText", "请上传营业执照图片");
+        $legalFront.attr("lay-verify", "required").attr("lay-reqText", "请上传法人身份证正面图片");
+        $legalBack.attr("lay-verify", "required").attr("lay-reqText", "请上传法人身份证反面图片");
+        $agreement.attr("lay-verify", "required").attr("lay-reqText", "请上传协议图片");
+        return true;
+    }
+
+    //给指定的$对象赋值属性
+    function verify(dom, attr, val) {
+        if ($.trim(dom.val())) {
+            dom.attr(attr, val);
+        } else {
+            dom.attr(attr, "");
         }
-    })
+    }
 
+    //监听form表单提交事件 防止页面跳转
+    form.on('submit(formFilter)', function (data) {
+        var formData = new FormData(document.getElementById("addForm"));
+        var url;
+        if (btnId = "addSubmit") {
+            url = "/org/enter/add";
+        } else if (btnId = "sendAuditSubmit") {
+            url = "/org/enter/sendAudit";
+        } else {
+            layer.alert("系统异常");
+            return;
+        }
+        $.ajax({
+            url: url,
+            type: 'post',
+            contentType: false,
+            processData: false,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+                if (data.code == "00000") {
+                    layer.alert("操作成功");
+                    formClear();
+                } else {
+                    layer.alert(data.msg);
+                }
+            },
+            error: function () {
+                layer.alert("操作失败，请重试！");
+            }
+        });
+        return false;
+    });
 
+    //清空表单数据
+    function formClear() {
+        form.val("formFilter", {
+            "partnerName": "",
+            "partnerType": "",
+            "parentId": "",
+            "businessLicenceNo": "",
+            "partnerAddress": "",
+            "legalName": "",
+            "legalId": "",
+            "legalPhone": "",
+            "contactor": "",
+            "contactPhone": "",
+            "saler": "",
+            "license": "",
+            "legalFront": "",
+            "legalBack": "",
+            "agreement": ""
+        })
+    }
 });

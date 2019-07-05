@@ -9,11 +9,11 @@
     <link href="/static/layui/css/layui.css" rel="stylesheet">
     <style type="text/css">
         .layui-form-label {
-            width: 100px;
+            width: 115px;
         }
 
         .layui-input-block {
-            margin-left: 212px;
+            margin-left: 198px;
         }
 
         .layui-upload-img {
@@ -37,15 +37,17 @@
         <form class="layui-form" id="addForm" lay-filter="formFilter" style="margin: 10px; text-align: center">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">机构名称</label>
+                    <label class="layui-form-label">机构名称<span style="color: red">*</span></label>
                     <div class="layui-input-inline" style="width: 200px;">
-                        <input autocomplete="off" class="layui-input" name="partnerName" type="text">
+                        <input autocomplete="off" class="layui-input" lay-verType="msg" lay-verify="required"
+                               name="partnerName" type="text">
+                        <p id="partnerNameMsg" style="display: none;"></p>
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">机构类型</label>
+                    <label class="layui-form-label">机构类型<span style="color: red">*</span></label>
                     <div class="layui-input-inline" style="width: 200px;">
-                        <select lay-verify="" name="partnerType" style="width: 200px">
+                        <select lay-verType="msg" lay-verify="required" name="partnerType" style="width: 200px">
                             <option value="">请选择机构类型</option>
                             <option value="00">银行</option>
                             <option value="01">汽车服务</option>
@@ -57,23 +59,26 @@
             </div>
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">营业执照编号</label>
+                    <label class="layui-form-label">营业执照编号<span style="color: red">*</span></label>
                     <div class="layui-input-inline" style="width: 200px;">
-                        <input autocomplete="off" class="layui-input" name="businessLicenseNo" type="text">
+                        <input autocomplete="off" class="layui-input" lay-verType="msg" lay-verify="required"
+                               name="businessLicenceNo" type="text">
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">机构地址</label>
+                    <label class="layui-form-label">机构地址<span style="color: red">*</span></label>
                     <div class="layui-input-inline" style="width: 200px;">
-                        <input autocomplete="off" class="layui-input" name="" type="partnerAddress">
+                        <input autocomplete="off" class="layui-input" lay-verType="msg" lay-verify="required"
+                               name="partnerAddress" type="text">
                     </div>
                 </div>
             </div>
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">父机构编号</label>
-                    <div class="layui-input-inline" style="width: 200px;">
-                        <input autocomplete="off" class="layui-input" name="parentId" type="text">
+                    <label class="layui-form-label">父级机构</label>
+                    <div class="layui-input-inline" id="orgSelector" style="width: 200px;">
+                        <select lay-search lay-verify="" name="parentId">
+                        </select>
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -87,13 +92,13 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">法人身份证</label>
                     <div class="layui-input-inline" style="width: 200px;">
-                        <input autocomplete="off" class="layui-input" lay-verify="identity" name="legalId" type="text">
+                        <input class="layui-input" name="legalId" type="text">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">法人联系电话</label>
                     <div class="layui-input-inline" style="width: 200px;">
-                        <input autocomplete="off" class="layui-input" lay-verify="phone" name="legalPhone" type="text">
+                        <input class="layui-input" name="legalPhone" type="text">
                     </div>
                 </div>
             </div>
@@ -107,24 +112,23 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">机构联系人电话</label>
                     <div class="layui-input-inline" style="width: 200px;">
-                        <input autocomplete="off" class="layui-input" lay-verify="phone" name="contactPhone"
-                               type="text">
+                        <input class="layui-input" name="contactPhone" type="text">
                     </div>
                 </div>
             </div>
             <div class="layui-form-item">
-                <div class="layui-inline">
+                <div class="layui-input-block">
                     <label class="layui-form-label">推广人</label>
                     <div class="layui-input-inline" style="width: 200px;">
                         <input autocomplete="off" class="layui-input" name="saler" type="text">
                     </div>
                 </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label">机构等级</label>
-                    <div class="layui-input-inline" style="width: 200px;">
-                        <input autocomplete="off" class="layui-input" name="rank" type="text">
-                    </div>
-                </div>
+                <!--<div class="layui-inline">-->
+                <!--<label class="layui-form-label">机构等级</label>-->
+                <!--<div class="layui-input-inline" style="width: 200px;">-->
+                <!--<input autocomplete="off" class="layui-input" name="rank" type="text">-->
+                <!--</div>-->
+                <!--</div>-->
             </div>
             <div class="layui-form-item">
                 <div class="layui-input-block">
@@ -140,12 +144,19 @@
             </div>
             <div class="layui-form-item">
                 <div class="layui-input-block">
-                    <label class="layui-form-label">法人身份图片</label>
+                    <label class="layui-form-label">法人身份正面图片</label>
                     <div class="layui-upload">
-                        <button class="layui-btn" id="legalBtn" style="float: left;" type="button">上传图片</button>
-                        <div class="layui-upload-list">
-                            <img class="layui-upload-img" id="legalImg">
-                        </div>
+                        <button class="layui-btn" id="legalFrontBtn" style="float: left;" type="button">上传图片</button>
+                        <div class="layui-upload-list" id="legalFrontImg"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <label class="layui-form-label">法人身份反面图片</label>
+                    <div class="layui-upload">
+                        <button class="layui-btn" id="legalBackBtn" style="float: left;" type="button">上传图片</button>
+                        <div class="layui-upload-list" id="legalBackImg"></div>
                     </div>
                 </div>
             </div>
@@ -162,8 +173,9 @@
             </div>
             <div class="layui-form-item">
                 <div class="layui-input-block">
-                    <button class="layui-btn" id="addSubmit" lay-filter="addFilter" lay-submit>提交审核</button>
-                    <button class="layui-btn layui-btn-primary" type="reset">保存</button>
+                    <button class="layui-btn" id="sendAuditSubmit" lay-filter="sendAuditFilter" lay-submit>提交审核</button>
+                    <button class="layui-btn layui-btn-primary" id="addSubmit" lay-filter="addFilter" lay-submit>保存
+                    </button>
                 </div>
             </div>
         </form>

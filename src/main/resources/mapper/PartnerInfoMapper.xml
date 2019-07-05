@@ -20,7 +20,8 @@
         <result column="SYS_USER" property="sysUser" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-      KID,EMAIL,PASSWORD,NICKNAME,STATUS,IS_VERIFY
+      PARTNER_ID,PARTNER_NAME,PARTNER_TYPE,BUSINESS_LICENCE_NO,RANK,SALER,LEGAL_NAME,LEGAL_ID,LEGAL_PHONE,CONTACTOR,CONTACT_PHONE,
+      PARENT_ID,STATUS,CREATE_TIME,MODIFY_TIME,SYS_USER,ID_FRONT,ID_BACK,LICENSE,AGREEMENT,PARTNER_ADDRESS
     </sql>
     <update id="updateRefuseStatus" parameterType="string">
         update T_ETC_PARTNER_INFO set STATUS = 6, MODIFY_TIME = to_date(to_char(sysdate, 'yyyy-MM-dd')，'yyyy-MM-dd')
@@ -48,5 +49,30 @@
         SYS_USER = #{partnerInfo.sysUser,jdbcType=VARCHAR}
         WHERE PARTNER_ID = #{partnerInfo.partnerId}
     </update>
+    <insert id="insert" parameterType="com.allinpay.entity.PartnerInfo">
+        insert into T_ETC_PARTNER_INFO (<include refid="Base_Column_List"/>)
+        values (#{partnerInfo.partnerId,jdbcType=VARCHAR},
+        #{partnerInfo.partnerName,jdbcType=VARCHAR},
+        #{partnerInfo.partnerType,jdbcType=VARCHAR},
+        #{partnerInfo.businessLicenceNo,jdbcType=VARCHAR},
+        #{partnerInfo.rank,jdbcType=NUMERIC},
+        #{partnerInfo.saler,jdbcType=VARCHAR},
+        #{partnerInfo.legalName,jdbcType=VARCHAR},
+        #{partnerInfo.legalId,jdbcType=VARCHAR},
+        #{partnerInfo.legalPhone,jdbcType=VARCHAR},
+        #{partnerInfo.contactor,jdbcType=VARCHAR},
+        #{partnerInfo.contactPhone,jdbcType=VARCHAR},
+        #{partnerInfo.parentId,jdbcType=VARCHAR},
+        #{partnerInfo.status,jdbcType=NUMERIC},
+        #{partnerInfo.createTime,jdbcType=DATE},
+        #{partnerInfo.modifyTime,jdbcType=DATE},
+        #{partnerInfo.sysUser,jdbcType=VARCHAR},
+        #{partnerInfo.idFront,jdbcType=VARCHAR},
+        #{partnerInfo.idBack,jdbcType=VARCHAR},
+        #{partnerInfo.license,jdbcType=VARCHAR},
+        #{partnerInfo.agreement,jdbcType=VARCHAR},
+        #{partnerInfo.partnerAddress,jdbcType=VARCHAR}
+        )
+    </insert>
 
 </mapper>

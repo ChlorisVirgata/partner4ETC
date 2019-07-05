@@ -19,4 +19,10 @@ public interface PartnerAuditMapper {
                             @Param("failReason") String failReason);
 
     List<PartnerAudit> selectModifyList(@Param("query") OrgModifyQuery query);
+
+    int insert(@Param("audit") PartnerAudit audit);
+
+    int delete(@Param("partnerId") String partnerId);
+
+    int update(@Param("audit") PartnerAudit audit);
 }

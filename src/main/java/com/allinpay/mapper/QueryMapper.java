@@ -1,9 +1,6 @@
 package com.allinpay.mapper;
 
-import com.allinpay.entity.OrgQueryVo;
-import com.allinpay.entity.PassageMoneyBack;
-import com.allinpay.entity.UserhairpinBack;
-import com.allinpay.entity.UserhairpinVo;
+import com.allinpay.entity.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -18,6 +15,9 @@ import java.util.List;
 public interface QueryMapper {
     List queryOrgInfo(@Param("orgque") OrgQueryVo orgque);
 
+    void blockOrg(String departid);
+
+    List<PartnerInfo> selectNormalList();
     void blockOrg(@Param("orgque") OrgQueryVo orgque);
 
     List<PassageMoneyBack> queryPassagemoney(@Param("passm") OrgQueryVo orgque);
