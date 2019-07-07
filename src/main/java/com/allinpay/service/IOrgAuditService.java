@@ -18,12 +18,6 @@ public interface IOrgAuditService {
      */
     PageVO<PartnerAudit> selectByCondition(OrgAuditQuery query);
 
-    /**
-     * @Description: 根据机构编号查询待审核记录
-     * @Param: partnerId
-     * @Return: PartnerAudit
-     */
-    PartnerAudit selectByPartnerId(String partnerId);
 
     /**
      * @Description: 审核未通过

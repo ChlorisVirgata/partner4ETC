@@ -76,10 +76,18 @@
         PARENT_ID = #{storage.parentId,jdbcType=VARCHAR},
         STATUS = #{storage.status,jdbcType=NUMERIC},
         SYS_USER = #{storage.sysUser,jdbcType=VARCHAR},
-        ID_FRONT = #{storage.idFront,jdbcType=VARCHAR},
-        ID_BACK = #{storage.idBack,jdbcType=VARCHAR},
-        LICENSE = #{storage.license,jdbcType=VARCHAR},
-        AGREEMENT = #{storage.agreement,jdbcType=VARCHAR},
+        <if test="storage.idFront != null and storage.idFront != ''">
+            ID_FRONT = #{storage.idFront,jdbcType=VARCHAR},
+        </if>
+        <if test="storage.idBack != null and storage.idBack != ''">
+            ID_BACK = #{storage.idBack,jdbcType=VARCHAR},
+        </if>
+        <if test="storage.license != null and storage.license != ''">
+            LICENSE = #{storage.license,jdbcType=VARCHAR},
+        </if>
+        <if test="storage.agreement != null and storage.agreement != ''">
+            AGREEMENT = #{storage.agreement,jdbcType=VARCHAR},
+        </if>
         PARTNER_ADDRESS = #{storage.partnerAddress,jdbcType=VARCHAR}
         WHERE PARTNER_ID = #{storage.partnerId}
     </update>

@@ -53,8 +53,16 @@
         CONTACT_PHONE = #{partnerInfo.contactPhone,jdbcType=VARCHAR},
         PARENT_ID = #{partnerInfo.parentId,jdbcType=VARCHAR},
         STATUS = #{partnerInfo.status,jdbcType=NUMERIC},
-        MODIFY_TIME = #{partnerInfo.modifyTime,jdbcType=VARCHAR},
-        SYS_USER = #{partnerInfo.sysUser,jdbcType=VARCHAR}
+        MODIFY_TIME = #{partnerInfo.modifyTime,jdbcType=DATE},
+        SYS_USER = #{partnerInfo.sysUser,jdbcType=VARCHAR},
+        PARTNER_ADDRESS = #{partnerInfo.partnerAddress,jdbcType=VARCHAR},
+        ID_FRONT = #{partnerInfo.idFront,jdbcType=VARCHAR},
+        ID_BACK = #{partnerInfo.idBack,jdbcType=VARCHAR},
+        LICENSE = #{partnerInfo.license,jdbcType=VARCHAR},
+        <if test="partnerInfo.secretKey != null and partnerInfo.secretKey != ''">
+            SECRET_KEY = #{partnerInfo.secretKey,jdbcType=VARCHAR},
+        </if>
+        AGREEMENT = #{partnerInfo.agreement,jdbcType=VARCHAR}
         WHERE PARTNER_ID = #{partnerInfo.partnerId}
     </update>
     <insert id="insert" parameterType="com.allinpay.entity.PartnerInfo">

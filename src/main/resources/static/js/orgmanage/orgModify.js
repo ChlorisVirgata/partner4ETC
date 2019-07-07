@@ -279,7 +279,7 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
     //表单参数验证
     function checkParamsForEdit() {
         //机构名称、机构类型、营业执照编号、机构地址 使用框架做非空校验做非空校验
-        var $parentId = $("select[name='parentId']");
+        var $parentId = $("input[name='parentId']");
         var $legalName = $("input[name='legalName']");
         var $contactor = $("input[name='contactor']");
         var $saler = $("input[name='saler']");
@@ -307,12 +307,11 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
         verify($legalId, "lay-verify", "identity");
         verify($legalPhone, "lay-verify", "phone");
         verify($contactPhone, "lay-verify", "phone");
-        return true;
     }
 
     function checkParamsForSendAudit() {
         //基础字段校验
-        var $parentId = $("select[name='parentId']");
+        var $parentId = $("input[name='parentId']");
         var $legalName = $("input[name='legalName']");
         var $contactor = $("input[name='contactor']");
         var $saler = $("input[name='saler']");
@@ -331,11 +330,18 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
         $legalPhone.attr("lay-verify", "phone");
         $contactPhone.attr("lay-verify", "phone");
         //图片信息
-        $license.attr("lay-verify", "required").attr("lay-reqText", "请上传营业执照图片");
-        $legalFront.attr("lay-verify", "required").attr("lay-reqText", "请上传法人身份证正面图片");
-        $legalBack.attr("lay-verify", "required").attr("lay-reqText", "请上传法人身份证反面图片");
-        $agreement.attr("lay-verify", "required").attr("lay-reqText", "请上传协议图片");
-        return true;
+        if (!$('#licenseImg').attr('src')) {
+            $license.attr("lay-verify", "required").attr("lay-reqText", "请上传营业执照图片");
+        }
+        if (!$('#legalFrontImg').attr('src')) {
+            $legalFront.attr("lay-verify", "required").attr("lay-reqText", "请上传法人身份证正面图片");
+        }
+        if (!$('#legalBackImg').attr('src')) {
+            $legalBack.attr("lay-verify", "required").attr("lay-reqText", "请上传法人身份证反面图片");
+        }
+        if (!$('#agreementImg').attr('src')) {
+            $agreement.attr("lay-verify", "required").attr("lay-reqText", "请上传协议图片");
+        }
     }
 
     //给指定的$对象赋值属性

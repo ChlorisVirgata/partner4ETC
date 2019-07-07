@@ -35,8 +35,6 @@ public class OrgEnterServiceImpl implements IOrgEnterService {
     private PartnerAuditMapper auditMapper;
     @Value("${orgDir}")
     private String orgDir;
-    @Value("${auditDir}")
-    private String auditDir;
     @Value("${tempDir}")
     private String tempDir;
 
@@ -68,13 +66,13 @@ public class OrgEnterServiceImpl implements IOrgEnterService {
         String partnerId = FileUtil.generatePartnerId();
         //信息存入审核表，状态置为审核中
         audit.setLicense(FileUtil.getFileName(request.getFile(CommonConstant.LICENSE_FILE),
-                auditDir + partnerId + CommonConstant.SUB_DIR_LICENSE));
+                tempDir + partnerId + CommonConstant.SUB_DIR_LICENSE));
         audit.setIdBack(FileUtil.getFileName(request.getFile(CommonConstant.BACK_FILE),
-                auditDir + partnerId + CommonConstant.SUB_DIR_BACK));
+                tempDir + partnerId + CommonConstant.SUB_DIR_BACK));
         audit.setIdFront(FileUtil.getFileName(request.getFile(CommonConstant.FRONT_FILE),
-                auditDir + partnerId + CommonConstant.SUB_DIR_FRONT));
+                tempDir + partnerId + CommonConstant.SUB_DIR_FRONT));
         audit.setAgreement(FileUtil.getFileName(request.getFile(CommonConstant.AGREEMENT_FILE),
-                auditDir + partnerId + CommonConstant.SUB_DIR_AGREEMENT));
+                tempDir + partnerId + CommonConstant.SUB_DIR_AGREEMENT));
         log.info("机构录入图片上传成功");
         audit.setSysUser("");
         audit.setCreateTime(new Date());
@@ -87,7 +85,7 @@ public class OrgEnterServiceImpl implements IOrgEnterService {
         PartnerInfo partnerInfo = new PartnerInfo();
         BeanUtils.copyProperties(audit, partnerInfo);
         try {
-            FileUtils.copyDirectory(new File(auditDir + partnerId), new File(orgDir + partnerId));
+            FileUtils.copyDirectory(new File(tempDir + partnerId), new File(orgDir + partnerId));
         } catch (Exception e) {
             log.error("文件拷贝失败", e);
             throw new AllinpayException(BizEnums.FILE_COPY_EXCEPTION.getCode(), BizEnums.FILE_COPY_EXCEPTION.getMsg());

@@ -30,16 +30,6 @@ public class OrgAuditController {
         return ResponseData.success().setData(pageVO);
     }
 
-    /**
-     * @Description: 根据机构id查询机构信息
-     * @Param: [partnerId]
-     * @Return: com.allinpay.core.common.ResponseData
-     */
-    @GetMapping("/getOne")
-    public ResponseData getOne(@RequestParam String partnerId) {
-        PartnerAudit partnerAudit = auditService.selectByPartnerId(partnerId);
-        return ResponseData.success().setData(partnerAudit);
-    }
 
     /**
      * @Description: 审核通过

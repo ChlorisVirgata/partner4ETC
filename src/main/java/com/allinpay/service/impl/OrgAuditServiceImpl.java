@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
@@ -36,8 +35,6 @@ public class OrgAuditServiceImpl implements IOrgAuditService {
     private PartnerInfoMapper infoMapper;
     @Value("${orgDir}")
     private String orgDir;
-    @Value("${auditDir}")
-    private String auditDir;
     @Value("${tempDir}")
     private String tempDir;
 
@@ -49,21 +46,12 @@ public class OrgAuditServiceImpl implements IOrgAuditService {
         return pageVO;
     }
 
-    @Override
-    public PartnerAudit selectByPartnerId(String partnerId) {
-        PartnerAudit partnerAudit = auditMapper.selectOne(partnerId);
-        if (Objects.isNull(partnerAudit)) {
-            log.error("机构编号{}信息不存在！", partnerId);
-            throw new AllinpayException("10001", "待审核机构信息不存在");
-        }
-        return partnerAudit;
-    }
 
     @Override
     public void auditRefuse(String partnerId, String failReason) {
         String sysUser = "";
         //先判断该机构是否存在
-        PartnerAudit partnerAudit = auditMapper.selectOne(partnerId);
+        PartnerAudit partnerAudit = auditMapper.selectOne(partnerId, CommonConstant.STATUS_AUDIT);
         if (Objects.isNull(partnerAudit)) {
             log.error("机构编号{}信息不存在！", partnerId);
             throw new AllinpayException(BizEnums.ORG_NOT_EXIST.getCode(), BizEnums.ORG_NOT_EXIST.getMsg());
@@ -83,7 +71,7 @@ public class OrgAuditServiceImpl implements IOrgAuditService {
             String sysUser = "";
             String secretKey = generateSecretKey();
             //先判断该机构是否存在
-            PartnerAudit partnerAudit = auditMapper.selectOne(partnerId);
+            PartnerAudit partnerAudit = auditMapper.selectOne(partnerId, CommonConstant.STATUS_AUDIT);
             if (Objects.isNull(partnerAudit)) {
                 log.error("机构编号{}信息不存在！", audit.getPartnerId());
                 throw new AllinpayException(BizEnums.ORG_NOT_EXIST.getCode(), BizEnums.ORG_NOT_EXIST.getMsg());
@@ -97,12 +85,13 @@ public class OrgAuditServiceImpl implements IOrgAuditService {
                     && CommonConstant.STATUS_AUDIT.equals(partnerInfo.getStatus())) {
                 //更改机构表中的记录为正常，更改用户名sysUser,生成秘钥
                 infoMapper.updateApproveStatus(partnerId, sysUser, secretKey);
+                log.info("机构信息审核成功，生成秘钥");
                 return;
             }
 
             //审核通过数据同步
             PartnerInfo info = new PartnerInfo();
-            BeanUtils.copyProperties(audit, info);
+            BeanUtils.copyProperties(partnerAudit, info);
             info.setStatus(CommonConstant.STATUS_NORMAL);
             //获取当前登录用户
             info.setSysUser(sysUser);
@@ -112,10 +101,12 @@ public class OrgAuditServiceImpl implements IOrgAuditService {
                 //未生成过秘钥，且机构状态是审核失败
                 info.setSecretKey(secretKey);
             }
+
             infoMapper.updateApproveData(info);
             //同步审核通过的图片到机构中
             FileUtils.deleteDirectory(new File(orgDir + partnerId));
-            FileUtils.copyDirectory(new File(auditDir + partnerId), new File(orgDir + partnerId));
+            FileUtils.copyDirectory(new File(tempDir + partnerId), new File(orgDir + partnerId));
+            log.info("机构信息审核成功，同步至机构表成功");
         } catch (AllinpayException all) {
             throw all;
         } catch (Exception e) {

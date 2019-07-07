@@ -10,7 +10,8 @@ import java.util.List;
 public interface PartnerAuditMapper {
     List<PartnerAudit> selectList(@Param("query") OrgAuditQuery query);
 
-    PartnerAudit selectOne(@Param("partnerId") String partnerId);
+    PartnerAudit selectOne(@Param("partnerId") String partnerId,
+                           @Param("status") Integer status);
 
     int updateRefuseStatus(@Param("partnerId") String partnerId,
                            @Param("failReason") String failReason,

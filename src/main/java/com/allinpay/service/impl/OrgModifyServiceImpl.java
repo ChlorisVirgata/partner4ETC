@@ -43,8 +43,6 @@ public class OrgModifyServiceImpl implements IOrgModifyService {
     private PartnerInfoMapper infoMapper;
     @Value("${orgDir}")
     private String orgDir;
-    @Value("${auditDir}")
-    private String auditDir;
     @Value("${tempDir}")
     private String tempDir;
 
@@ -85,20 +83,32 @@ public class OrgModifyServiceImpl implements IOrgModifyService {
                 storageMapper.update(storage);
                 log.info("机构信息编辑更新成功");
             } else {
-                //已审核记录（成功、失败） 删除审核表中的记录和图片
-                auditMapper.delete(partnerId);
-                FileUtils.deleteDirectory(new File(auditDir + partnerId));
-                //临时表生成一条新数据
+                //已审核记录（成功、失败） 临时表生成一条新数据
+                PartnerAudit audit = auditMapper.selectOne(partnerId, null);
+                if (StringUtils.isBlank(storage.getLicense())) {
+                    storage.setLicense(audit.getLicense());
+                }
+                if (StringUtils.isBlank(storage.getIdFront())) {
+                    storage.setIdFront(audit.getIdFront());
+                }
+                if (StringUtils.isBlank(storage.getIdBack())) {
+                    storage.setIdBack(audit.getIdBack());
+                }
+                if (StringUtils.isBlank(storage.getAgreement())) {
+                    storage.setAgreement(audit.getAgreement());
+                }
                 storage.setCreateTime(new Date());
                 storage.setStatus(CommonConstant.STATUS_TEMP);
                 storageMapper.insert(storage);
+
+                // 删除审核表中的记录
+                auditMapper.delete(partnerId);
                 log.info("删除已有审核记录，新增一条机构信息成功");
             }
-        } catch (IOException io) {
-            throw new AllinpayException(BizEnums.FILE_DELETE_EXCEPTION.getCode(), BizEnums.FILE_DELETE_EXCEPTION.getMsg());
         } catch (AllinpayException all) {
             throw all;
         } catch (Exception e) {
+            log.error("机构信息变更失败", e);
             throw new AllinpayException(BizEnums.ORG_MODIFY_FAIL.getCode(), BizEnums.ORG_MODIFY_FAIL.getMsg());
         }
     }
@@ -116,31 +126,45 @@ public class OrgModifyServiceImpl implements IOrgModifyService {
             }
 
             audit.setIdFront(FileUtil.getFileName(request.getFile(CommonConstant.FRONT_FILE),
-                    auditDir + partnerId + CommonConstant.SUB_DIR_FRONT));
+                    tempDir + partnerId + CommonConstant.SUB_DIR_FRONT));
             audit.setAgreement(FileUtil.getFileName(request.getFile(CommonConstant.AGREEMENT_FILE),
-                    auditDir + partnerId + CommonConstant.SUB_DIR_AGREEMENT));
+                    tempDir + partnerId + CommonConstant.SUB_DIR_AGREEMENT));
             audit.setLicense(FileUtil.getFileName(request.getFile(CommonConstant.LICENSE_FILE),
-                    auditDir + partnerId + CommonConstant.SUB_DIR_LICENSE));
+                    tempDir + partnerId + CommonConstant.SUB_DIR_LICENSE));
             audit.setIdBack(FileUtil.getFileName(request.getFile(CommonConstant.BACK_FILE),
-                    auditDir + partnerId + CommonConstant.SUB_DIR_BACK));
+                    tempDir + partnerId + CommonConstant.SUB_DIR_BACK));
             log.info("机构信息提交审核图片上传成功");
-            audit.setStatus(CommonConstant.STATUS_AUDIT);
             audit.setSysUser(sysUser);
             if (CommonConstant.STATUS_TEMP.equals(audit.getStatus())) {
+                audit.setStatus(CommonConstant.STATUS_AUDIT);
                 //新增一条审核中记录
+                PartnerStorage storage = storageMapper.selectOne(partnerId);
+                if (StringUtils.isBlank(audit.getIdFront())) {
+                    audit.setIdFront(storage.getIdFront());
+                }
+                if (StringUtils.isBlank(audit.getIdBack())) {
+                    audit.setIdBack(storage.getIdBack());
+                }
+                if (StringUtils.isBlank(audit.getAgreement())) {
+                    audit.setAgreement(storage.getAgreement());
+                }
+                if (StringUtils.isBlank(audit.getLicense())) {
+                    audit.setLicense(storage.getLicense());
+                }
                 audit.setCreateTime(new Date());
                 auditMapper.insert(audit);
-                //删除临时表信息和图片
+                //删除临时表信息
                 storageMapper.delete(partnerId);
-                FileUtils.deleteDirectory(new File(tempDir + partnerId));
+
                 //机构表中新增一条审核中记录
                 PartnerInfo partnerInfo = new PartnerInfo();
                 BeanUtils.copyProperties(audit, partnerInfo);
-                FileUtils.copyDirectory(new File(auditDir + partnerId), new File(orgDir + partnerId));
+                FileUtils.copyDirectory(new File(tempDir + partnerId), new File(orgDir + partnerId));
                 infoMapper.insert(partnerInfo);
                 log.info("删除临时表信息和图片，新增一条审核中记录,新增数据同步到机构表成功");
             } else {
                 //更新审核信息，状态置为审核中
+                audit.setStatus(CommonConstant.STATUS_AUDIT);
                 auditMapper.update(audit);
                 log.info("机构信息更新成功");
             }
@@ -149,6 +173,7 @@ public class OrgModifyServiceImpl implements IOrgModifyService {
         } catch (AllinpayException all) {
             throw all;
         } catch (Exception e) {
+            log.error("机构信息提交审核失败", e);
             throw new AllinpayException(BizEnums.ORG_SENDAUDIT_FAIL.getCode(), BizEnums.ORG_SENDAUDIT_FAIL.getMsg());
         }
     }

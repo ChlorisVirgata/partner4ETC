@@ -93,8 +93,11 @@
         </trim>
     </select>
 
-    <select id="selectOne" parameterType="string" resultMap="BaseResultMap">
-      select * from T_ETC_PARTNER_AUDIT where PARTNER_ID = #{partnerId} AND STATUS = 4
+    <select id="selectOne" resultMap="BaseResultMap">
+        select * from T_ETC_PARTNER_AUDIT where PARTNER_ID = #{partnerId}
+        <if test="status != null">
+            AND STATUS = #{status}
+        </if>
     </select>
     <update id="updateRefuseStatus">
         update T_ETC_PARTNER_AUDIT set STATUS = 6, FAIL_REASON = #{failReason}, MODIFY_TIME = to_date(to_char(sysdate, 'yyyy-MM-dd')，'yyyy-MM-dd'),
@@ -152,10 +155,18 @@
         MODIFY_TIME = #{audit.modifyTime,jdbcType=DATE},
         SYS_USER = #{audit.sysUser,jdbcType=VARCHAR},
         FAIL_REASON = #{audit.failReason,jdbcType=VARCHAR},
-        ID_FRONT = #{audit.idFront,jdbcType=VARCHAR},
-        ID_BACK = #{audit.idBack,jdbcType=VARCHAR},
-        LICENSE = #{audit.license,jdbcType=VARCHAR},
-        AGREEMENT = #{audit.agreement,jdbcType=VARCHAR},
+        <if test="audit.idFront != null and audit.idFront != ''">
+            ID_FRONT = #{audit.idFront,jdbcType=VARCHAR},
+        </if>
+        <if test="audit.idBack != null and audit.idBack != ''">
+            ID_BACK = #{audit.idBack,jdbcType=VARCHAR},
+        </if>
+        <if test="audit.license != null and audit.license != ''">
+            LICENSE = #{audit.license,jdbcType=VARCHAR},
+        </if>
+        <if test="audit.agreement != null and audit.agreement != ''">
+            AGREEMENT = #{audit.agreement,jdbcType=VARCHAR},
+        </if>
         PARTNER_ADDRESS = #{audit.partnerAddress,jdbcType=VARCHAR}
         WHERE PARTNER_ID = #{audit.partnerId}
     </update>
