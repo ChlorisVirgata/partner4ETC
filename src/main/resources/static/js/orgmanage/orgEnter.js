@@ -52,7 +52,7 @@ layui.use(['layer', 'form', 'element', 'upload'], function () {
         choose: function (obj) {
             //预读选择的文件，不支持ie8
             obj.preview(function (index, file, result) {
-                $('#legalFrontImg').append('<img src="' + result + '" alt="' + file.name + '" class="layui-upload-img">')
+                $('#legalFrontImg').attr('src', result);
             });
         }
     });
@@ -65,7 +65,7 @@ layui.use(['layer', 'form', 'element', 'upload'], function () {
         choose: function (obj) {
             //预读选择的文件，不支持ie8
             obj.preview(function (index, file, result) {
-                $('#legalBackImg').append('<img src="' + result + '" alt="' + file.name + '" class="layui-upload-img">')
+                $('#legalBackImg').attr('src', result);
             });
         }
     });
@@ -99,17 +99,17 @@ layui.use(['layer', 'form', 'element', 'upload'], function () {
     //表单参数验证
     function checkParamsForAdd() {
         //机构名称、机构类型、营业执照编号、机构地址 使用框架做非空校验做非空校验
-        var $parentId = $("input[name='parentId']");
+        var $parentId = $("select[name='parentId']");
         var $legalName = $("input[name='legalName']");
         var $contactor = $("input[name='contactor']");
         var $saler = $("input[name='saler']");
         var $legalId = $("input[name='legalId']");
         var $legalPhone = $("input[name='legalPhone']");
         var $contactPhone = $("input[name='contactPhone']");
-        var $license = $("input[name='license']");
+        var $license = $("input[name='licenseFile']");
         var $legalFront = $("input[name='legalFront']");
         var $legalBack = $("input[name='legalBack']");
-        var $agreement = $("input[name='agreement']");
+        var $agreement = $("input[name='agreementFile']");
         //清除基础校验信息
         $parentId.attr("lay-verify", "");
         $legalName.attr("lay-verify", "");
@@ -127,22 +127,21 @@ layui.use(['layer', 'form', 'element', 'upload'], function () {
         verify($legalId, "lay-verify", "identity");
         verify($legalPhone, "lay-verify", "phone");
         verify($contactPhone, "lay-verify", "phone");
-        return true;
     }
 
     function checkParamsForSendAudit() {
         //基础字段校验
-        var $parentId = $("input[name='parentId']");
+        var $parentId = $("select[name='parentId']");
         var $legalName = $("input[name='legalName']");
         var $contactor = $("input[name='contactor']");
         var $saler = $("input[name='saler']");
         var $legalId = $("input[name='legalId']");
         var $legalPhone = $("input[name='legalPhone']");
         var $contactPhone = $("input[name='contactPhone']");
-        var $license = $("input[name='license']");
+        var $license = $("input[name='licenseFile']");
         var $legalFront = $("input[name='legalFront']");
         var $legalBack = $("input[name='legalBack']");
-        var $agreement = $("input[name='agreement']");
+        var $agreement = $("input[name='agreementFile']");
         $parentId.attr("lay-verify", "required");
         $legalName.attr("lay-verify", "required");
         $contactor.attr("lay-verify", "required");
@@ -155,7 +154,6 @@ layui.use(['layer', 'form', 'element', 'upload'], function () {
         $legalFront.attr("lay-verify", "required").attr("lay-reqText", "请上传法人身份证正面图片");
         $legalBack.attr("lay-verify", "required").attr("lay-reqText", "请上传法人身份证反面图片");
         $agreement.attr("lay-verify", "required").attr("lay-reqText", "请上传协议图片");
-        return true;
     }
 
     //给指定的$对象赋值属性
@@ -171,9 +169,9 @@ layui.use(['layer', 'form', 'element', 'upload'], function () {
     form.on('submit(formFilter)', function (data) {
         var formData = new FormData(document.getElementById("addForm"));
         var url;
-        if (btnId = "addSubmit") {
+        if (btnId == "addSubmit") {
             url = "/org/enter/add";
-        } else if (btnId = "sendAuditSubmit") {
+        } else if (btnId == "sendAuditSubmit") {
             url = "/org/enter/sendAudit";
         } else {
             layer.alert("系统异常");
@@ -188,8 +186,10 @@ layui.use(['layer', 'form', 'element', 'upload'], function () {
             dataType: 'json',
             success: function (data) {
                 if (data.code == "00000") {
-                    layer.alert("操作成功");
-                    formClear();
+                    var index = layer.alert("操作成功", function () {
+                        layer.close(index);
+                        window.location.href = "/web/orgEnter";
+                    });
                 } else {
                     layer.alert(data.msg);
                 }
@@ -200,25 +200,4 @@ layui.use(['layer', 'form', 'element', 'upload'], function () {
         });
         return false;
     });
-
-    //清空表单数据
-    function formClear() {
-        form.val("formFilter", {
-            "partnerName": "",
-            "partnerType": "",
-            "parentId": "",
-            "businessLicenceNo": "",
-            "partnerAddress": "",
-            "legalName": "",
-            "legalId": "",
-            "legalPhone": "",
-            "contactor": "",
-            "contactPhone": "",
-            "saler": "",
-            "license": "",
-            "legalFront": "",
-            "legalBack": "",
-            "agreement": ""
-        })
-    }
 });

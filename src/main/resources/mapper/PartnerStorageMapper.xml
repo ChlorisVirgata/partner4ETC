@@ -19,6 +19,11 @@
         <result column="MODIFY_TIME" property="modifyTime" jdbcType="DATE"/>
         <result column="SYS_USER" property="sysUser" jdbcType="VARCHAR"/>
         <result column="FAIL_REASON" property="failReason" jdbcType="VARCHAR"/>
+        <result column="ID_FRONT" property="idFront" jdbcType="VARCHAR"/>
+        <result column="ID_BACK" property="idBack" jdbcType="VARCHAR"/>
+        <result column="LICENSE" property="license" jdbcType="VARCHAR"/>
+        <result column="AGREEMENT" property="agreement" jdbcType="VARCHAR"/>
+        <result column="PARTNER_ADDRESS" property="partnerAddress" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
         PARTNER_ID,PARTNER_NAME,PARTNER_TYPE,BUSINESS_LICENCE_NO,RANK,SALER,LEGAL_NAME,LEGAL_ID,LEGAL_PHONE,CONTACTOR,CONTACT_PHONE,
@@ -57,6 +62,25 @@
         delete from T_ETC_PARTNER_STORAGE where PARTNER_ID = #{partnerId}
     </delete>
     <update id="update" parameterType="com.allinpay.entity.PartnerStorage">
-
+        update T_ETC_PARTNER_STORAGE set
+        PARTNER_NAME = #{storage.partnerName,jdbcType=VARCHAR},
+        PARTNER_TYPE = #{storage.partnerType,jdbcType=VARCHAR},
+        BUSINESS_LICENCE_NO = #{storage.businessLicenceNo,jdbcType=VARCHAR},
+        RANK = #{storage.rank,jdbcType=NUMERIC},
+        SALER = #{storage.saler,jdbcType=VARCHAR},
+        LEGAL_NAME = #{storage.legalName,jdbcType=VARCHAR},
+        LEGAL_ID = #{storage.legalId,jdbcType=VARCHAR},
+        LEGAL_PHONE = #{storage.legalPhone,jdbcType=VARCHAR},
+        CONTACTOR = #{storage.contactor,jdbcType=VARCHAR},
+        CONTACT_PHONE = #{storage.contactPhone,jdbcType=VARCHAR},
+        PARENT_ID = #{storage.parentId,jdbcType=VARCHAR},
+        STATUS = #{storage.status,jdbcType=NUMERIC},
+        SYS_USER = #{storage.sysUser,jdbcType=VARCHAR},
+        ID_FRONT = #{storage.idFront,jdbcType=VARCHAR},
+        ID_BACK = #{storage.idBack,jdbcType=VARCHAR},
+        LICENSE = #{storage.license,jdbcType=VARCHAR},
+        AGREEMENT = #{storage.agreement,jdbcType=VARCHAR},
+        PARTNER_ADDRESS = #{storage.partnerAddress,jdbcType=VARCHAR}
+        WHERE PARTNER_ID = #{storage.partnerId}
     </update>
 </mapper>

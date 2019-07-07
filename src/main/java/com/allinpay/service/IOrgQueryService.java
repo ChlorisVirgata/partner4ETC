@@ -20,7 +20,7 @@ public interface IOrgQueryService {
 
     PageVO<UserhairpinBack> queryUserhairpin(UserhairpinVo usrh);
 
-    void blockOrg(String departid);
+//    void blockOrg(String departid);
 
     /**
      * @Description: 查询正常机构状态的列表

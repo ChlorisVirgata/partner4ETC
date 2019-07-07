@@ -30,6 +30,7 @@ public enum BizEnums {
     FILE_UPLOAD_EXCEPTION("40000", "文件上传失败"),
     FILE_COPY_EXCEPTION("40001", "文件拷贝失败"),
     FILE_DELETE_EXCEPTION("40002", "文件删除失败"),
+    FILE_OPERATE_EXCEPTION("40003", "文件操作失败"),
 
     /**
      * 机构管理模块业务异常
@@ -37,7 +38,8 @@ public enum BizEnums {
     ORG_MODIFY_AUDITED("10001", "机构状态有误，机构已在审核中"),
     ORG_MODIFY_FAIL("10002", "机构信息编辑失败"),
     ORG_SENDAUDIT_FAIL("10003", "机构信息提交审核失败"),
-    ORG_NOT_EXIST("10004", "待审核机构不存在");
+    ORG_NOT_EXIST("10004", "待审核机构不存在"),
+    ORG_AUDIT_FAIL("10005", "机构信息审核失败");
 
 
     private String code;

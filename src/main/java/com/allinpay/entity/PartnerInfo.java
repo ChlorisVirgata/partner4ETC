@@ -100,4 +100,9 @@ public class PartnerInfo {
      * 协议图片
      */
     private String agreement;
+
+    /**
+     * 机构秘钥
+     */
+    private String secretKey;
 }

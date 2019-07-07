@@ -1,27 +1,3 @@
-layui.use('jquery', function () {
-    var $ = layui.jquery;
-    //查询父级机构
-    $.ajax({
-        url: '/query/org/normalOrgList',
-        type: 'get',
-        async: false,
-        dataType: 'json',
-        success: function (data) {
-            if (data.code == "00000") {
-                var myData = data.data;
-                $("#orgSelector").find("select").html("<option value=''>请选择</option>");
-                for (var i = 0; i < myData.length; i++) {
-                    $("#orgSelector").find("select").append("<option value=" + myData[i].partnerId + ">" + myData[i].partnerName + "</option>");
-                }
-            } else {
-                layer.alert(data.msg);
-            }
-        },
-        error: function () {
-            layer.alert("操作失败，请重试！");
-        }
-    });
-});
 //element 展示左边菜单栏; 预加载需要使用的模块
 //由于layer弹层依赖jQuery，所以可以直接得到
 layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function () {
@@ -67,7 +43,7 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
         choose: function (obj) {
             //预读选择的文件，不支持ie8
             obj.preview(function (index, file, result) {
-                $('#legalFrontImg').append('<img src="' + result + '" alt="' + file.name + '" class="layui-upload-img">')
+                $('#legalFrontImg').attr('src', result);
             });
         }
     });
@@ -80,7 +56,7 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
         choose: function (obj) {
             //预读选择的文件，不支持ie8
             obj.preview(function (index, file, result) {
-                $('#legalBackImg').append('<img src="' + result + '" alt="' + file.name + '" class="layui-upload-img">')
+                $('#legalBackImg').attr('src', result);
             });
         }
     });
@@ -165,6 +141,7 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
                 {field: 'failReason', title: '审核意见', width: 90},
                 {field: 'createTime', title: '创建时间', width: 90},
                 {field: 'modifyTime', title: '审核时间', width: 90},
+                {field: 'status', title: '状态',hide: true},
                 {fixed: 'right', title: '操作', toolbar: '#operator', width: 65}
             ]]
         });
@@ -187,7 +164,7 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
     //编辑保存
     $("#editSubmit").on("click", function () {
         checkParamsForEdit();
-        btnId = "addSubmit";
+        btnId = "editSubmit";
     });
 
     //提交审核
@@ -213,7 +190,7 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
                 "partnerId": myData.partnerId,
                 "partnerName": myData.partnerName,
                 "saler": myData.saler,
-                "partnerType": myData.partnerType,
+                "partnerType": convertPartnerType(myData.partnerType),
                 "parentId": myData.parentId,
                 "businessLicenceNo": myData.businessLicenceNo,
                 "partnerAddress": myData.partnerAddress,
@@ -222,12 +199,9 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
                 "legalPhone": myData.legalPhone,
                 "contactor": myData.contactor,
                 "contactPhone": myData.contactPhone,
-                "failReason": myData.failReason,
-                "createTime": myData.createTime,
-                "modifyTime": myData.modifyTime,
-                "rank": myData.rank
+                "status": myData.status
             });
-            //TODO 获取图片信息
+            showImg(myData);
             //打开模态框
             openModal("编辑", "editForm");
         }
@@ -237,9 +211,9 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
     form.on('submit(formFilter)', function (data) {
         var formData = new FormData(document.getElementById("editForm"));
         var url;
-        if (btnId = "editSubmit") {
+        if (btnId == "editSubmit") {
             url = "/org/modify/edit";
-        } else if (btnId = "sendAuditSubmit") {
+        } else if (btnId == "sendAuditSubmit") {
             url = "/org/modify/sendAudit";
         } else {
             layer.alert("系统异常");
@@ -254,7 +228,7 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
             dataType: 'json',
             success: function (data) {
                 if (data.code == "00000") {
-                    var index = layer.alert("编辑成功", function () {
+                    var index = layer.alert("操作成功", function () {
                         layer.closeAll();
                         search();
                     });
@@ -289,54 +263,33 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
 
     //机构类型转换
     function convertPartnerType(partnerType) {
-        if (partnerType == "00") {
-            return "银行";
-        } else if (partnerType == "01") {
-            return "汽车服务";
-        } else if (partnerType == "02") {
-            return "互联网平台";
-        } else if (partnerType == "03") {
-            return "其他";
+        if (partnerType == "银行") {
+            return "00";
+        } else if (partnerType == "汽车服务") {
+            return "01";
+        } else if (partnerType == "互联网平台") {
+            return "02";
+        } else if (partnerType == "其他") {
+            return "03";
         } else {
             return "";
         }
     }
 
-    //寻找父机构option
-    // function selectParentOrg(parentId) {
-    //     var $dlChildren = $("#orgSelector").find(".layui-form-select").find("dl").children();
-    //     debugger;
-    //     console.log($dlChildren.length);
-    //     $.each($($dlChildren), function (i, val) {
-    //         if($($dlChildren[i]).attr("lay-value") == parentId) {
-    //             $($dlChildren[i]).addClass("layui-this");
-    //             $($("#orgSelector").find(".layui-form-select")).addClass("layui-form-selected");
-    //         }else {
-    //             $($dlChildren[i]).removeClass("layui-this");
-    //         }
-    //     })
-    //     $($("#querySelect").next()).hide();
-    // }
-
-    // $("#showSelect").on("click",function () {
-    //     $("#showSelect").next().hide();
-    //     $("#querySelect").next().show();
-    // })
-
     //表单参数验证
     function checkParamsForEdit() {
         //机构名称、机构类型、营业执照编号、机构地址 使用框架做非空校验做非空校验
-        var $parentId = $("input[name='parentId']");
+        var $parentId = $("select[name='parentId']");
         var $legalName = $("input[name='legalName']");
         var $contactor = $("input[name='contactor']");
         var $saler = $("input[name='saler']");
         var $legalId = $("input[name='legalId']");
         var $legalPhone = $("input[name='legalPhone']");
         var $contactPhone = $("input[name='contactPhone']");
-        var $license = $("input[name='license']");
+        var $license = $("input[name='licenseFile']");
         var $legalFront = $("input[name='legalFront']");
         var $legalBack = $("input[name='legalBack']");
-        var $agreement = $("input[name='agreement']");
+        var $agreement = $("input[name='agreementFile']");
         //清除基础校验信息
         $parentId.attr("lay-verify", "");
         $legalName.attr("lay-verify", "");
@@ -359,17 +312,17 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
 
     function checkParamsForSendAudit() {
         //基础字段校验
-        var $parentId = $("input[name='parentId']");
+        var $parentId = $("select[name='parentId']");
         var $legalName = $("input[name='legalName']");
         var $contactor = $("input[name='contactor']");
         var $saler = $("input[name='saler']");
         var $legalId = $("input[name='legalId']");
         var $legalPhone = $("input[name='legalPhone']");
         var $contactPhone = $("input[name='contactPhone']");
-        var $license = $("input[name='license']");
+        var $license = $("input[name='licenseFile']");
         var $legalFront = $("input[name='legalFront']");
         var $legalBack = $("input[name='legalBack']");
-        var $agreement = $("input[name='agreement']");
+        var $agreement = $("input[name='agreementFile']");
         $parentId.attr("lay-verify", "required");
         $legalName.attr("lay-verify", "required");
         $contactor.attr("lay-verify", "required");
@@ -392,5 +345,13 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
         } else {
             dom.attr(attr, "");
         }
+    }
+
+    //展示图片信息 图片路径+图片名称
+    function showImg(myData) {
+        $('#licenseImg').attr('src', myData.license);
+        $('#legalFrontImg').attr('src', myData.idFront);
+        $('#legalBackImg').attr('src', myData.idBack);
+        $('#agreementImg').attr('src', myData.agreement);
     }
 });

@@ -43,6 +43,7 @@ public class OrgEnterServiceImpl implements IOrgEnterService {
     @Override
     public void addOrg(MultipartHttpServletRequest request, PartnerStorage storage) {
         String partnerId = FileUtil.generatePartnerId();
+        String sysUser = "";
         //上传文件，设置路径值
         storage.setLicense(FileUtil.getFileName(request.getFile(CommonConstant.LICENSE_FILE),
                 tempDir + partnerId + CommonConstant.SUB_DIR_LICENSE));
@@ -53,13 +54,13 @@ public class OrgEnterServiceImpl implements IOrgEnterService {
         storage.setAgreement(FileUtil.getFileName(request.getFile(CommonConstant.AGREEMENT_FILE),
                 tempDir + partnerId + CommonConstant.SUB_DIR_AGREEMENT));
         log.info("机构录入图片上传成功");
-        storage.setSysUser("");
+        storage.setSysUser(sysUser);
         storage.setCreateTime(new Date());
         storage.setStatus(CommonConstant.STATUS_TEMP);
         storage.setPartnerId(partnerId);
         //保存机构信息到临时表
         storageMapper.insert(storage);
-        log.info("保存机构基本信息成功{}", partnerId);
+        log.info("保存机构基本信息成功,生成机构号：{}", partnerId);
     }
 
     @Override
@@ -88,7 +89,7 @@ public class OrgEnterServiceImpl implements IOrgEnterService {
         try {
             FileUtils.copyDirectory(new File(auditDir + partnerId), new File(orgDir + partnerId));
         } catch (Exception e) {
-            log.info("文件拷贝失败", e);
+            log.error("文件拷贝失败", e);
             throw new AllinpayException(BizEnums.FILE_COPY_EXCEPTION.getCode(), BizEnums.FILE_COPY_EXCEPTION.getMsg());
         }
         infoMapper.insert(partnerInfo);

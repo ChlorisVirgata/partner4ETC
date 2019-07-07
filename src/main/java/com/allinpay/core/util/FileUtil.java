@@ -15,24 +15,6 @@ public class FileUtil {
     private FileUtil() {
     }
 
-//    public static void fileUpload(MultipartHttpServletRequest request, String baseDir, Object object) {
-//        if (object instanceof PartnerStorage) {
-//            PartnerStorage storage = (PartnerStorage) object;
-//            storage.setLicense(getFileName(request.getFile("licenseFile"), baseDir + "/license/"));
-//            storage.setIdFront(getFileName(request.getFile("legalFront"), baseDir + "/front/"));
-//            storage.setIdBack(getFileName(request.getFile("legalBack"), baseDir + "/back/"));
-//            storage.setAgreement(getFileName(request.getFile("agreementFile"), baseDir + "/agreement/"));
-//        } else if (object instanceof PartnerAudit) {
-//            PartnerAudit audit = (PartnerAudit) object;
-//            audit.setIdFront(getFileName(request.getFile("legalFront"), baseDir + "/front/"));
-//            audit.setIdBack(getFileName(request.getFile("legalBack"), baseDir + "/back/"));
-//            audit.setLicense(getFileName(request.getFile("licenseFile"), baseDir + "/license/"));
-//            audit.setAgreement(getFileName(request.getFile("agreementFile"), baseDir + "/agreement/"));
-//        } else {
-//            throw new AllinpayException("实体类类型有误");
-//        }
-//    }
-
     /**
      * @Description: 文件上传，重新设置文件名，保证每个文件夹中只有一份机构图片
      * @Param: multipartFile, saveDir
@@ -47,7 +29,7 @@ public class FileUtil {
 
             File file = new File(saveDir);
 
-            if (FileUtils.sizeOf(file) > 0) {
+            if (file.exists() && FileUtils.sizeOf(file) > 0) {
                 FileUtils.deleteDirectory(file);
             }
 

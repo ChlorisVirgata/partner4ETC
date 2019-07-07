@@ -166,7 +166,7 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate'], function () {
                 "partnerId": myData.partnerId,
                 "partnerName": myData.partnerName,
                 "saler": myData.saler,
-                "partnerType": convertPartnerType(myData.partnerType),
+                "partnerType": myData.partnerType,
                 "parentId": myData.parentId,
                 "businessLicenceNo": myData.businessLicenceNo,
                 "partnerAddress": myData.partnerAddress,
@@ -180,7 +180,7 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate'], function () {
                 "modifyTime": myData.modifyTime,
                 "rank": myData.rank
             });
-            //TODO 获取图片信息
+            showImg(myData);
             //打开模态框
             openModal("审核", "auditForm");
         }
@@ -207,18 +207,11 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate'], function () {
         });
     }
 
-    //机构类型转换
-    function convertPartnerType(partnerType) {
-        if (partnerType == "00") {
-            return "银行";
-        } else if (partnerType == "01") {
-            return "汽车服务";
-        } else if (partnerType == "02") {
-            return "互联网平台";
-        } else if (partnerType == "03") {
-            return "其他";
-        } else {
-            return "";
-        }
+    //展示图片信息 图片路径+图片名称
+    function showImg(myData) {
+        $('#licenseImg').attr('src', myData.license);
+        $('#legalFrontImg').attr('src', myData.idFront);
+        $('#legalBackImg').attr('src', myData.idBack);
+        $('#agreementImg').attr('src', myData.agreement);
     }
 });

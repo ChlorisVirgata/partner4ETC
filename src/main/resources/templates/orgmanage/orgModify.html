@@ -88,7 +88,7 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <div class="layui-input-block">
+                <div class="layui-input-block" style="margin-left: 145px;">
                     <button class="layui-btn" id="queryBtn">查询</button>
                     <button class="layui-btn layui-btn-primary" id="resetBtn">重置</button>
                 </div>
@@ -102,17 +102,18 @@
     <!-- 编辑表单 -->
     <form class="layui-form" id="editForm" lay-filter="formFilter"
           style="display: none;margin: 10px; text-align: center">
+        <input hidden name="status" />
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">机构编号<span style="color: red">*</span></label>
                 <div class="layui-input-inline" style="width: 200px;">
-                    <input class="layui-input" name="partnerId" readonly type="text">
+                    <input class="layui-input" name="partnerId" readonly type="text" style="border: none;">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">机构名称<span style="color: red">*</span></label>
                 <div class="layui-input-inline" style="width: 200px;">
-                    <input class="layui-input" lay-verify="required" name="partnerName" type="text">
+                    <input class="layui-input" lay-verify="required" name="partnerName" type="text" maxlength="30">
                 </div>
             </div>
         </div>
@@ -132,7 +133,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">营业执照编号<span style="color: red">*</span></label>
                 <div class="layui-input-inline" style="width: 200px;">
-                    <input class="layui-input" lay-verify="required" name="businessLicenceNo" type="text">
+                    <input class="layui-input" lay-verify="required|number" name="businessLicenceNo" type="text" maxlength="15">
                 </div>
             </div>
         </div>
@@ -140,21 +141,13 @@
             <div class="layui-inline">
                 <label class="layui-form-label">机构地址<span style="color: red">*</span></label>
                 <div class="layui-input-inline" style="width: 200px;">
-                    <input class="layui-input" lay-verify="required" name="partnerAddress" type="text">
+                    <input class="layui-input" lay-verify="required" name="partnerAddress" type="text" maxlength="30">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">父级机构</label>
                 <div class="layui-input-inline" id="orgSelector" style="width: 200px;">
                     <input class="layui-input" name="parentId" type="text">
-                    <!--<select name="parentId" lay-verify="" lay-search id="querySelect">-->
-                    <!--</select>-->
-                    <!--<div class="layui-form-select">-->
-                    <!--<div class="layui-select-title" id="showSelect">-->
-                    <!--<input type="text" placeholder="请选择" value="" class="layui-input">-->
-                    <!--<i class="layui-edge"></i>-->
-                    <!--</div>-->
-                    <!--</div>-->
                 </div>
             </div>
         </div>
@@ -162,7 +155,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">法人姓名</label>
                 <div class="layui-input-inline" style="width: 200px;">
-                    <input class="layui-input" name="legalName" type="text">
+                    <input class="layui-input" name="legalName" type="text" maxlength="5">
                 </div>
             </div>
             <div class="layui-inline">
@@ -182,7 +175,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">机构联系人</label>
                 <div class="layui-input-inline" style="width: 200px;">
-                    <input class="layui-input" name="contactor" type="text">
+                    <input class="layui-input" name="contactor" type="text" maxlength="5">
                 </div>
             </div>
         </div>
@@ -196,7 +189,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">推广人</label>
                 <div class="layui-input-inline" style="width: 200px;">
-                    <input class="layui-input" name="saler" type="text">
+                    <input class="layui-input" name="saler" type="text" maxlength="5">
                 </div>
             </div>
         </div>
@@ -217,7 +210,9 @@
                 <label class="layui-form-label">法人身份正面图片</label>
                 <div class="layui-upload">
                     <button class="layui-btn" id="legalFrontBtn" style="float: left;" type="button">上传图片</button>
-                    <div class="layui-upload-list" id="legalFrontImg"></div>
+                    <div class="layui-upload-list">
+                        <img class="layui-upload-img" id="legalFrontImg">
+                    </div>
                 </div>
             </div>
         </div>
@@ -226,7 +221,9 @@
                 <label class="layui-form-label">法人身份反面图片</label>
                 <div class="layui-upload">
                     <button class="layui-btn" id="legalBackBtn" style="float: left;" type="button">上传图片</button>
-                    <div class="layui-upload-list" id="legalBackImg"></div>
+                    <div class="layui-upload-list">
+                        <img class="layui-upload-img" id="legalBackImg">
+                    </div>
                 </div>
             </div>
         </div>
@@ -244,7 +241,7 @@
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" id="sendAuditSubmit" lay-submit>提交审核</button>
-                <button class="layui-btn" id="editSubmit" lay-submit>保存</button>
+                <button class="layui-btn layui-btn-normal" id="editSubmit" lay-submit>保存</button>
                 <button class="layui-btn layui-btn-primary" id="cancel" type="button">取消</button>
             </div>
         </div>

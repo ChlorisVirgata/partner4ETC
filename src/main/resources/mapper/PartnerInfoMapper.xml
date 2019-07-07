@@ -18,17 +18,25 @@
         <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
         <result column="MODIFY_TIME" property="modifyTime" jdbcType="DATE"/>
         <result column="SYS_USER" property="sysUser" jdbcType="VARCHAR"/>
+        <result column="ID_FRONT" property="idFront" jdbcType="VARCHAR"/>
+        <result column="ID_BACK" property="idBack" jdbcType="VARCHAR"/>
+        <result column="LICENSE" property="license" jdbcType="VARCHAR"/>
+        <result column="AGREEMENT" property="agreement" jdbcType="VARCHAR"/>
+        <result column="PARTNER_ADDRESS" property="partnerAddress" jdbcType="VARCHAR"/>
+        <result column="SECRET_KEY" property="secretKey" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
       PARTNER_ID,PARTNER_NAME,PARTNER_TYPE,BUSINESS_LICENCE_NO,RANK,SALER,LEGAL_NAME,LEGAL_ID,LEGAL_PHONE,CONTACTOR,CONTACT_PHONE,
-      PARENT_ID,STATUS,CREATE_TIME,MODIFY_TIME,SYS_USER,ID_FRONT,ID_BACK,LICENSE,AGREEMENT,PARTNER_ADDRESS
+      PARENT_ID,STATUS,CREATE_TIME,MODIFY_TIME,SYS_USER,ID_FRONT,ID_BACK,LICENSE,AGREEMENT,PARTNER_ADDRESS,SECRET_KEY
     </sql>
     <update id="updateRefuseStatus" parameterType="string">
-        update T_ETC_PARTNER_INFO set STATUS = 6, MODIFY_TIME = to_date(to_char(sysdate, 'yyyy-MM-dd')，'yyyy-MM-dd')
+        update T_ETC_PARTNER_INFO set STATUS = 6, MODIFY_TIME = to_date(to_char(sysdate, 'yyyy-MM-dd')，'yyyy-MM-dd'),
+        SYS_USER = #{sysUser}
         WHERE PARTNER_ID = #{partnerId}
     </update>
     <update id="updateApproveStatus" parameterType="string">
-        update T_ETC_PARTNER_INFO set STATUS = 1, MODIFY_TIME = to_date(to_char(sysdate, 'yyyy-MM-dd')，'yyyy-MM-dd')
+        update T_ETC_PARTNER_INFO set STATUS = 1, MODIFY_TIME = to_date(to_char(sysdate, 'yyyy-MM-dd')，'yyyy-MM-dd'),
+        SYS_USER = #{sysUser},SECRET_KEY = #{secretKey}
         WHERE PARTNER_ID = #{partnerId}
     </update>
     <update id="updateApproveData" parameterType="com.allinpay.entity.PartnerInfo">
@@ -71,8 +79,12 @@
         #{partnerInfo.idBack,jdbcType=VARCHAR},
         #{partnerInfo.license,jdbcType=VARCHAR},
         #{partnerInfo.agreement,jdbcType=VARCHAR},
-        #{partnerInfo.partnerAddress,jdbcType=VARCHAR}
+        #{partnerInfo.partnerAddress,jdbcType=VARCHAR},
+        #{partnerInfo.secretKey,jdbcType=VARCHAR}
         )
     </insert>
+    <select id="selectOne" parameterType="string" resultMap="BaseResultMap">
+        select * from T_ETC_PARTNER_INFO where PARTNER_ID = #{partnerId}
+    </select>
 
 </mapper>

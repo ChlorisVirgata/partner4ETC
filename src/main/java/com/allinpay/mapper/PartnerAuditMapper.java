@@ -13,10 +13,12 @@ public interface PartnerAuditMapper {
     PartnerAudit selectOne(@Param("partnerId") String partnerId);
 
     int updateRefuseStatus(@Param("partnerId") String partnerId,
-                           @Param("failReason") String failReason);
+                           @Param("failReason") String failReason,
+                           @Param("sysUser") String sysUser);
 
     int updateApproveStatus(@Param("partnerId") String partnerId,
-                            @Param("failReason") String failReason);
+                            @Param("failReason") String failReason,
+                            @Param("sysUser") String sysUser);
 
     List<PartnerAudit> selectModifyList(@Param("query") OrgModifyQuery query);
 
