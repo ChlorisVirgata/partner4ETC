@@ -117,9 +117,9 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
                 dataName: 'data'
             },
             //每页展示的条数
-            limits: [2, 4, 6],
+            limits: [5, 10, 20],
             //每页默认显示的数量
-            limit: 2,
+            limit: 10,
             loading: true,
             // done: function() {
             //     var str = $("table").find("td[data-fild='partnerType']").find("div").html();

@@ -13,6 +13,6 @@ import lombok.ToString;
 @Getter
 @ToString
 public class BaseEntity {
-    private int pageNum;
-    private int pageSize;
+    private int pageNum = 1;
+    private int pageSize = 10;
 }

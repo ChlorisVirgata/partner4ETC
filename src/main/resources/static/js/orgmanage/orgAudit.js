@@ -59,9 +59,9 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate'], function () {
                 dataName: 'data'
             },
             //每页展示的条数
-            limits: [2, 4, 6],
+            limits: [5, 10, 20],
             //每页默认显示的数量
-            limit: 2,
+            limit: 10,
             //单元格设置
             cols: [[
                 {field: 'partnerId', width: 90, title: '机构编号'},
