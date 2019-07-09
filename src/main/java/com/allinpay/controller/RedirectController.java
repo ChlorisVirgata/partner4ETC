@@ -26,9 +26,9 @@ public class RedirectController {
         return "/orgmanage/orgAudit";
     }
 
-    @RequestMapping("/channel/channelquery")
-    public String channelquery() {
-        return "/channel/channelquery";
+    @RequestMapping("/orgquery")
+    public String orgQuery() {
+        return "/dataquery/orgQuery";
     }
 
     @RequestMapping("/orgLogout")
@@ -49,5 +49,18 @@ public class RedirectController {
     @RequestMapping("/passageMoney")
     public String passageMoney() {
         return "/dataquery/passagemoney";
+    }
+
+    @RequestMapping("/login")
+    public String login() {
+//        Subject subject = SecurityUtils.getSubject();
+//        subject.logout();
+        System.out.println("login");
+        return "login";
+    }
+
+    @RequestMapping("/index")
+    public String index() {
+        return "index";
     }
 }

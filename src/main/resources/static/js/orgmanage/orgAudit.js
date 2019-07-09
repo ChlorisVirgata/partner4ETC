@@ -1,10 +1,24 @@
 //element 展示左边菜单栏; 预加载需要使用的模块
 //由于layer弹层依赖jQuery，所以可以直接得到
-layui.use(['table', 'element', 'layer', 'form'], function () {
+layui.use(['table', 'element', 'layer', 'form', 'laydate'], function () {
     var table = layui.table;
     var $ = layui.$;
     var layer = layui.layer;
     var form = layui.form;
+    var laydate = layui.laydate;
+
+    //日期控件
+    laydate.render({
+        elem: '#createTime',
+        range: "~",
+        trigger: 'click'
+    });
+    laydate.render({
+        elem: '#modifyTime',
+        range: "~",
+        trigger: 'click'
+    });
+
     //抽取查询方法
     var search = function () {
         table.render({
@@ -16,10 +30,12 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
             page: true,
             //请求参数
             where: {
-                partnerName: $("#partnerName").val(),
-                saler: $("#saler").val(),
-                createTime: $("#createTime").val(),
-                modifyTime: $("#modifyTime").val()
+                partnerName: $.trim($("#partnerName").val()),
+                saler: $.trim($("#saler").val()),
+                createStartTime: $("#createTime").val() != "" ? $("#createTime").val().split(" ~ ")[0] : "",
+                createEndTime: $("#createTime").val() != "" ? $("#createTime").val().split(" ~ ")[1] : "",
+                modifyStartTime: $("#modifyTime").val() != "" ? $("#modifyTime").val().split(" ~ ")[0] : "",
+                modifyEndTime: $("#modifyTime").val() != "" ? $("#modifyTime").val().split(" ~ ")[1] : ""
             },
             //分页信息
             request: {
@@ -38,19 +54,19 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
             //设置返回的属性值，依据此值进行解析
             response: {
                 statusName: 'code',
-                statusCode: 00000,
+                statusCode: "00000",
                 msgName: 'msg',
                 dataName: 'data'
             },
             //每页展示的条数
-            limits: [2, 4, 6],
+            limits: [5, 10, 20],
             //每页默认显示的数量
-            limit: 2,
+            limit: 10,
             //单元格设置
             cols: [[
                 {field: 'partnerId', width: 90, title: '机构编号'},
                 {field: 'partnerName', width: 90, title: '机构名称'},
-                {field: 'saler', width: 80, title: '推广员'},
+                {field: 'saler', width: 80, title: '推广人'},
                 {field: 'partnerType', width: 90, title: '机构类型'},
                 {field: 'parentId', width: 100, title: '父机构编号'},
                 {field: 'businessLicenceNo', width: 90, title: '营业执照'},
@@ -62,8 +78,8 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
                 {field: 'contactPhone', title: '机构联系电话', width: 120},
                 {field: 'failReason', title: '审核意见', width: 90},
                 {field: 'createTime', title: '创建时间', width: 90},
-                {field: 'modifyTime', title: '更新时间', width: 90},
-                {field: 'center', title: '操作', toolbar: '#operator', width: 65}
+                {field: 'modifyTime', title: '审核时间', width: 90},
+                {fixed: 'right', title: '操作', toolbar: '#operator', width: 65}
             ]]
         });
     };
@@ -82,71 +98,99 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
         $("#modifyTime").val("");
     });
 
-    //进行编辑操作
-    $("#editSubmit").on("click", function () {
+    //审核失败
+    $("#refuse").on("click", function () {
+        layer.prompt({
+            formType: 2,
+            title: '请填写审核失败原因',
+            area: ['300px', '150px']
+        }, function (value, index, elem) {
+            $.ajax({
+                url: '/org/audit/refuse',
+                type: 'post',
+                data: {
+                    partnerId: $("#partnerId").val(),
+                    failReason: value
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code == "00000") {
+                        layer.closeAll();
+                        search();
+                    } else {
+                        layer.alert(data.msg);
+                        layer.closeAll();
+                    }
+                },
+                error: function () {
+                    layer.alert("操作失败，请重试！");
+                }
+            })
+        });
+    });
+
+    //审核成功
+    $("#approveSubmit").on("click", function () {
         $.ajax({
-            url: '/web/editById',
+            url: '/org/audit/approve',
             type: 'post',
-            data: {
-                id: '001'
-            },
-            // async: false,
+            data: $("#auditForm").serialize(),
             dataType: 'json',
             success: function (data) {
                 if (data.code == "00000") {
-                    var index = layer.alert("编辑成功", function () {
+                    var index = layer.alert("审核成功", function () {
                         //点击确认按钮执行回调函数
                         layer.closeAll();
                         search();
                     });
                 } else {
-                    layer.alert("编辑失败！");
+                    layer.alert(data.msg);
+                    layer.closeAll();
                 }
             },
             error: function () {
-                layer.alert("编辑失败，请重试！");
+                layer.alert("操作失败，请重试！");
             }
         });
     });
 
-    //打开添加页面模态框
-    $("#addBtn").on("click", function () {
-        openModal("添加", "addForm");
-    });
 
     //监听table行工具事件 如详情、编辑、删除操作
     table.on('tool(tableFilter)', function (obj) {
         //获取所在行的数据
-        var data = obj.data;
+        var myData = obj.data;
         //审核
         if (obj.event === 'audit') {
-            //先通过后台查询数据，渲染页面后打开模态框
-            $.ajax({
-                url: '/web/getById',
-                type: 'get',
-                data: {
-                    id: data.id
-                },
-                dataType: 'json',
-                success: function (data) {
-                    if (data.code == "00000") {
-                        var myData = data.data[0];
-
-                    } else {
-                        layer.alert("查询失败！");
-                    }
-                },
-                error: function () {
-                    layer.alert("查询失败，请重试！");
-                }
+            //form表单初始化
+            form.val("formFilter", {
+                "partnerId": myData.partnerId,
+                "partnerName": myData.partnerName,
+                "saler": myData.saler,
+                "partnerType": myData.partnerType,
+                "parentId": myData.parentId,
+                "businessLicenceNo": myData.businessLicenceNo,
+                "partnerAddress": myData.partnerAddress,
+                "legalName": myData.legalName,
+                "legalId": myData.legalId,
+                "legalPhone": myData.legalPhone,
+                "contactor": myData.contactor,
+                "contactPhone": myData.contactPhone,
+                "failReason": myData.failReason,
+                "createTime": myData.createTime,
+                "modifyTime": myData.modifyTime,
+                "rank": myData.rank
             });
+            showImg(myData);
             //打开模态框
-            openModal("编辑", "editForm");
+            openModal("审核", "auditForm");
         }
     });
 
     //监听form表单提交事件 防止页面跳转
-    form.on('submit(editFilter)', function (data) {
+    form.on('submit(formFilter)', function (data) {
+        return false;
+    });
+    form.on('submit(queryFilter)', function (data) {
         return false;
     });
 
@@ -155,11 +199,19 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
         layer.open({
             title: operateName,
             content: $('#' + modalName),
-            area: ['700px', '450px'],
+            area: ['850px', '450px'],
             //点击遮罩关闭窗口
             shadeClose: true,
             //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
             type: 1
         });
+    }
+
+    //展示图片信息 图片路径+图片名称
+    function showImg(myData) {
+        $('#licenseImg').attr('src', myData.license);
+        $('#legalFrontImg').attr('src', myData.idFront);
+        $('#legalBackImg').attr('src', myData.idBack);
+        $('#agreementImg').attr('src', myData.agreement);
     }
 });

@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.allinpay.mapper.QueryMapper">
 
+    <!-- 机构信息查询-->
     <resultMap id="BaseResultMap" type="com.allinpay.entity.OrgQueryBack">
         <id column="PARTNER_ID" property="partnerId" jdbcType="VARCHAR"/>
         <result column="PARTNER_NAME" property="partnerName" jdbcType="VARCHAR"/>
@@ -14,67 +15,135 @@
         <result column="LEGAL_PHONE" property="legalPhone" jdbcType="VARCHAR"/>
         <result column="CONTACTOR" property="contactor" jdbcType="VARCHAR"/>
         <result column="CONTACT_PHONE" property="contactPhone" jdbcType="VARCHAR"/>
-
         <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR"/>
         <result column="STATUS" property="status" jdbcType="VARCHAR"/>
         <result column="SYS_USER" property="sysUser" jdbcType="VARCHAR"/>
-        <result column="PARTNER_ADDRESS" property="partner_address" jdbcType="VARCHAR"/>
+        <result column="PARTNER_ADDRESS" property="partnerAddress" jdbcType="VARCHAR"/>
         <result column="LICENSE" property="license" jdbcType="VARCHAR"/>
-        <result column="ID_FRONT" property="id_front" jdbcType="VARCHAR"/>
-        <result column="ID_BACK" property="id_back" jdbcType="VARCHAR"/>
+        <result column="ID_FRONT" property="idFront" jdbcType="VARCHAR"/>
+        <result column="ID_BACK" property="idBack" jdbcType="VARCHAR"/>
         <result column="AGREEMENT" property="agreement" jdbcType="VARCHAR"/>
-
-
-
-
-        <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
-        <result column="MODIFY_TIME" property="modifyTime" jdbcType="DATE"/>
+        <result column="CREATE_TIME" property="createTimeX" jdbcType="VARCHAR"/>
+        <result column="MODIFY_TIME" property="modifyTimeX" jdbcType="VARCHAR"/>
     </resultMap>
     <select id="queryOrgInfo"  resultMap="BaseResultMap" parameterType="com.allinpay.entity.OrgQueryVo">
-        select PARTNER_ID,PARTNER_NAME,
-        case
-        when PARTNER_TYPE ='00' then '银行'
-        when PARTNER_TYPE ='01' then '汽车服务'
-        when PARTNER_TYPE ='02' then '互联网平台'
-        else '其他'
-        end "PARTNER_TYPE",
-        BUSINESS_LICENCE_NO,RANK,SALER,LEGAL_NAME,LEGAL_ID,
-        LEGAL_PHONE,CONTACTOR,CONTACT_PHONE,PARENT_ID,parstatus.status parstatus,
-        CREATE_TIME,MODIFY_TIME,SYS_USER,PARTNER_ADDRESS,LICENSE,ID_FRONT,ID_BACK,AGREEMENT
+        select parinfo.PARTNER_ID,parinfo.PARTNER_NAME,
+        parinfo.PARTNER_TYPE,
+        parinfo.BUSINESS_LICENCE_NO,parinfo.RANK,parinfo.SALER,parinfo.LEGAL_NAME,parinfo.LEGAL_ID,
+        parinfo.LEGAL_PHONE,parinfo.CONTACTOR,parinfo.CONTACT_PHONE,parinfo.PARENT_ID,parstatus.status parstatus,
+        parinfo.SYS_USER,parinfo.PARTNER_ADDRESS,parinfo.LICENSE,parinfo.ID_FRONT,parinfo.ID_BACK,parinfo.AGREEMENT,
+        to_char(parinfo.CREATE_TIME,'yyyy-mm-dd HH24:mi:ss') CREATE_TIME,
+        to_char(parinfo.MODIFY_TIME,'yyyy-mm-dd HH24:mi:ss') MODIFY_TIME,SECRET_KEY,paraud.FAIL_REASON
         from T_ETC_PARTNER_INFO parinfo
         left join T_ETC_PARTNER_STATUS parstatus on parinfo.status = parstatus.DICT_ID
+        left join T_ETC_PARTNER_AUDIT paraud on parinfo.partner_id = paraud.partner_id
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="orgque.partnerId != null and orgque.partnerId != ''">
-                AND PARTNER_ID =#{orgque.partnerId}
+                AND parinfo.PARTNER_ID =#{orgque.partnerId}
             </if>
             <if test="orgque.partnerName != null and orgque.partnerName != ''">
-                AND PARTNER_NAME like '%' || #{orgque.partnerName} || '%'
+                AND parinfo.PARTNER_NAME like '%' || #{orgque.partnerName} || '%'
             </if>
             <if test="orgque.partnerType != null and orgque.partnerType != ''">
-                AND PARTNER_TYPE =#{orgque.partnerType}
+                AND parinfo.PARTNER_TYPE =#{orgque.partnerType}
+            </if>
+            <if test="orgque.sbstatus != null and orgque.sbstatus != ''">
+                AND parinfo.STATUS in ${orgque.sbstatus}
             </if>
             <if test="orgque.status != null and orgque.status != ''">
-                AND STATUS =#{orgque.status}
+                AND parinfo.STATUS =#{orgque.status}
             </if>
             <if test="orgque.parentId != null and orgque.parentId != ''">
-                AND PARENT_ID =#{orgque.parentId}
+                AND parinfo.PARENT_ID =#{orgque.parentId}
             </if>
 
             <if test="orgque.createTimeStart != null">
-                AND CREATE_TIME between #{orgque.createTimeStart} and #{orgque.createTimeEnd}
+                AND parinfo.CREATE_TIME between #{orgque.createTimeStart} and #{orgque.createTimeEnd}
             </if>
             <if test="orgque.modifyTimeStart != null">
-                AND MODIFY_TIME between #{orgque.modifyTimeStart} and #{orgque.modifyTimeEnd}
+                AND parinfo.MODIFY_TIME between #{orgque.modifyTimeStart} and #{orgque.modifyTimeEnd}
             </if>
-
-<!--            <if test="orgque.modifyTimeStart != null and orgque.modifyTimeStart != ''">-->
-<!--                AND MODIFY_TIME between-->
-<!--                to_date(to_char(#{orgque.modifyTimeStart},'Dy Mon DD HH24:MI:SS "CST" YYYY'),'Dy Mon DD HH24:MI:SS "CST" YYYY','NLS_DATE_LANGUAGE = American')-->
-<!--                and  to_date(to_char(#{orgque.modifyTimeEnd},'Dy Mon DD HH24:MI:SS "CST" YYYY'),'Dy Mon DD HH24:MI:SS "CST" YYYY','NLS_DATE_LANGUAGE = American')-->
-<!--            </if>-->
-<!--            <if test="audit.saler != null and audit.saler != ''">
-                AND SALER like '%' || #{audit.saler} || '%'
-            </if>-->
         </trim>
+        order by parinfo.CREATE_TIME desc
+    </select>
+
+    <!--通行费纪录查询-->
+    <resultMap id="PassageMoneyResultMap" type="com.allinpay.entity.PassageMoneyBack">
+        <id column="PARTNER_ID" property="partnerId" jdbcType="VARCHAR"/>
+        <result column="PARTNER_NAME" property="partnerName" jdbcType="VARCHAR"/>
+        <result column="LICENSE" property="license" jdbcType="VARCHAR"/>
+        <result column="ORDERNO" property="orderNo" jdbcType="VARCHAR"/>
+        <result column="TRADE_DATE" property="tradedate" jdbcType="VARCHAR"/>
+        <result column="AMOUNT" property="amount" jdbcType="VARCHAR"/>
+        <result column="ENTRANCE" property="entrance" jdbcType="VARCHAR"/>
+        <result column="EXITWAY" property="exitway" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="queryPassagemoney" resultMap="PassageMoneyResultMap" parameterType="com.allinpay.entity.PassageMoneyVo">
+        select PARTNER_ID,PARTNER_NAME,LICENSE,ORDERNO, to_char(TRADE_DATE,'yyyy-mm-dd HH24:mi:ss') TRADE_DATE,
+        AMOUNT,ENTRANCE,EXITWAY
+        from T_ETC_PASSAGEMONEY_DATE passmo
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="passm.partnerId != null and passm.partnerId != ''">
+                AND passmo.PARTNER_ID =#{passm.partnerId}
+            </if>
+            <if test="passm.license != null and passm.license != ''">
+                AND passmo.LICENSE like '%' || #{passm.license} || '%'
+            </if>
+            <if test="passm.createTimeStart != null">
+                AND passmo.CREATE_TIME between #{passm.createTimeStart} and #{passm.createTimeEnd}
+            </if>
+        </trim>
+        order by TRADE_DATE desc
+    </select>
+
+    <!--发卡记录查询-->
+    <resultMap id="UserhairMap" type="com.allinpay.entity.UserhairpinBack">
+        <id column="PARTNER_ID" property="partnerId" jdbcType="VARCHAR"/>
+        <result column="VERSION_PORT" property="versionPort" jdbcType="VARCHAR"/>
+        <result column="ORDERNO" property="orderNo" jdbcType="VARCHAR"/>
+        <result column="AUTH_ID" property="authId" jdbcType="VARCHAR"/>
+        <result column="AUTHNAME" property="authName" jdbcType="DATE"/>
+        <result column="SIGNSTATUS" property="signStatus" jdbcType="VARCHAR"/>
+        <result column="RANDOMSTR" property="randomsStr" jdbcType="VARCHAR"/>
+        <result column="SIGN_NAME" property="signName" jdbcType="VARCHAR"/>
+        <result column="SIGNDATE" property="signdate" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="queryUserhairpin" resultMap="UserhairMap" parameterType="com.allinpay.entity.UserhairpinVo">
+        select PARTNER_ID,VERSION_PORT,ORDERNO,AUTH_ID,AUTHNAME,SIGNSTATUS,RANDOMSTR,SIGN_NAME,
+        to_char(signdate,'yyyy-mm-dd HH24:mi:ss') SIGNDATE
+        from T_ETC_USERHAIRPIN_DATE suerhair
+        <trim prefix="WHERE" prefixOverrides="AND">
+
+            <if test="usrh.authId != null and usrh.authId != ''">
+                AND suerhair.AUTH_ID like '%' || #{usrh.authId} || '%'
+            </if>
+            <if test="usrh.partnerId != null and usrh.partnerId != ''">
+                AND suerhair.PARTNER_ID = #{usrh.partnerId}
+            </if>
+            <if test="usrh.authName != null and usrh.authName != ''">
+                AND suerhair.AUTHNAME like '%' || #{usrh.authName} || '%'
+            </if>
+            <if test="usrh.orderNo != null and usrh.orderNo != ''">
+                AND suerhair.ORDERNO like '%' || #{usrh.orderNo} || '%'
+            </if>
+            <if test="usrh.signsStatus != null and usrh.signsStatus != ''">
+                AND suerhair.SIGNSTATUS like '%' || #{usrh.signsStatus} || '%'
+            </if>
+            <if test="usrh.createTimeStart != null">
+                AND suerhair.SIGNDATE between #{usrh.createTimeStart} and #{usrh.createTimeEnd}
+            </if>
+        </trim>
+        order by SIGNDATE desc
+    </select>
+
+    <!--机构信息冻结、解冻、注销-->
+    <update id="blockOrg">
+        update T_ETC_PARTNER_INFO
+        set STATUS=#{orgque.status},MODIFY_TIME=sysdate
+        --,SYS_USER={#orgque.sysUser}
+        WHERE partner_id=#{orgque.partnerId}
+    </update>
+    <select id="selectNormalList" resultMap="BaseResultMap">
+      select * from T_ETC_PARTNER_INFO where STATUS = 1
     </select>
 </mapper>

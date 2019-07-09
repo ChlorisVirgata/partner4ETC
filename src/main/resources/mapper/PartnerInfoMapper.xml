@@ -2,11 +2,97 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.allinpay.mapper.PartnerInfoMapper">
     <resultMap id="BaseResultMap" type="com.allinpay.entity.PartnerInfo">
-
+        <id column="PARTNER_ID" property="partnerId" jdbcType="VARCHAR"/>
+        <result column="PARTNER_NAME" property="partnerName" jdbcType="VARCHAR"/>
+        <result column="PARTNER_TYPE" property="partnerType" jdbcType="VARCHAR"/>
+        <result column="BUSINESS_LICENCE_NO" property="businessLicenceNo" jdbcType="VARCHAR"/>
+        <result column="RANK" property="rank" jdbcType="NUMERIC"/>
+        <result column="SALER" property="saler" jdbcType="VARCHAR"/>
+        <result column="LEGAL_NAME" property="legalName" jdbcType="VARCHAR"/>
+        <result column="LEGAL_ID" property="legalId" jdbcType="VARCHAR"/>
+        <result column="LEGAL_PHONE" property="legalPhone" jdbcType="VARCHAR"/>
+        <result column="CONTACTOR" property="contactor" jdbcType="VARCHAR"/>
+        <result column="CONTACT_PHONE" property="contactPhone" jdbcType="VARCHAR"/>
+        <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="NUMERIC"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
+        <result column="MODIFY_TIME" property="modifyTime" jdbcType="DATE"/>
+        <result column="SYS_USER" property="sysUser" jdbcType="VARCHAR"/>
+        <result column="ID_FRONT" property="idFront" jdbcType="VARCHAR"/>
+        <result column="ID_BACK" property="idBack" jdbcType="VARCHAR"/>
+        <result column="LICENSE" property="license" jdbcType="VARCHAR"/>
+        <result column="AGREEMENT" property="agreement" jdbcType="VARCHAR"/>
+        <result column="PARTNER_ADDRESS" property="partnerAddress" jdbcType="VARCHAR"/>
+        <result column="SECRET_KEY" property="secretKey" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-      KID,EMAIL,PASSWORD,NICKNAME,STATUS,IS_VERIFY
+      PARTNER_ID,PARTNER_NAME,PARTNER_TYPE,BUSINESS_LICENCE_NO,RANK,SALER,LEGAL_NAME,LEGAL_ID,LEGAL_PHONE,CONTACTOR,CONTACT_PHONE,
+      PARENT_ID,STATUS,CREATE_TIME,MODIFY_TIME,SYS_USER,ID_FRONT,ID_BACK,LICENSE,AGREEMENT,PARTNER_ADDRESS,SECRET_KEY
     </sql>
-
+    <update id="updateRefuseStatus" parameterType="string">
+        update T_ETC_PARTNER_INFO set STATUS = 6, MODIFY_TIME = to_date(to_char(sysdate, 'yyyy-MM-dd')，'yyyy-MM-dd'),
+        SYS_USER = #{sysUser}
+        WHERE PARTNER_ID = #{partnerId}
+    </update>
+    <update id="updateApproveStatus" parameterType="string">
+        update T_ETC_PARTNER_INFO set STATUS = 1, MODIFY_TIME = to_date(to_char(sysdate, 'yyyy-MM-dd')，'yyyy-MM-dd'),
+        SYS_USER = #{sysUser},SECRET_KEY = #{secretKey}
+        WHERE PARTNER_ID = #{partnerId}
+    </update>
+    <update id="updateApproveData" parameterType="com.allinpay.entity.PartnerInfo">
+      update T_ETC_PARTNER_INFO set
+        PARTNER_NAME = #{partnerInfo.partnerName,jdbcType=VARCHAR},
+        PARTNER_TYPE = #{partnerInfo.partnerType,jdbcType=VARCHAR},
+        BUSINESS_LICENCE_NO = #{partnerInfo.businessLicenceNo,jdbcType=VARCHAR},
+        RANK = #{partnerInfo.rank,jdbcType=NUMERIC},
+        SALER = #{partnerInfo.saler,jdbcType=VARCHAR},
+        LEGAL_NAME = #{partnerInfo.legalName,jdbcType=VARCHAR},
+        LEGAL_ID = #{partnerInfo.legalId,jdbcType=VARCHAR},
+        LEGAL_PHONE = #{partnerInfo.legalPhone,jdbcType=VARCHAR},
+        CONTACTOR = #{partnerInfo.contactor,jdbcType=VARCHAR},
+        CONTACT_PHONE = #{partnerInfo.contactPhone,jdbcType=VARCHAR},
+        PARENT_ID = #{partnerInfo.parentId,jdbcType=VARCHAR},
+        STATUS = #{partnerInfo.status,jdbcType=NUMERIC},
+        MODIFY_TIME = #{partnerInfo.modifyTime,jdbcType=DATE},
+        SYS_USER = #{partnerInfo.sysUser,jdbcType=VARCHAR},
+        PARTNER_ADDRESS = #{partnerInfo.partnerAddress,jdbcType=VARCHAR},
+        ID_FRONT = #{partnerInfo.idFront,jdbcType=VARCHAR},
+        ID_BACK = #{partnerInfo.idBack,jdbcType=VARCHAR},
+        LICENSE = #{partnerInfo.license,jdbcType=VARCHAR},
+        <if test="partnerInfo.secretKey != null and partnerInfo.secretKey != ''">
+            SECRET_KEY = #{partnerInfo.secretKey,jdbcType=VARCHAR},
+        </if>
+        AGREEMENT = #{partnerInfo.agreement,jdbcType=VARCHAR}
+        WHERE PARTNER_ID = #{partnerInfo.partnerId}
+    </update>
+    <insert id="insert" parameterType="com.allinpay.entity.PartnerInfo">
+        insert into T_ETC_PARTNER_INFO (<include refid="Base_Column_List"/>)
+        values (#{partnerInfo.partnerId,jdbcType=VARCHAR},
+        #{partnerInfo.partnerName,jdbcType=VARCHAR},
+        #{partnerInfo.partnerType,jdbcType=VARCHAR},
+        #{partnerInfo.businessLicenceNo,jdbcType=VARCHAR},
+        #{partnerInfo.rank,jdbcType=NUMERIC},
+        #{partnerInfo.saler,jdbcType=VARCHAR},
+        #{partnerInfo.legalName,jdbcType=VARCHAR},
+        #{partnerInfo.legalId,jdbcType=VARCHAR},
+        #{partnerInfo.legalPhone,jdbcType=VARCHAR},
+        #{partnerInfo.contactor,jdbcType=VARCHAR},
+        #{partnerInfo.contactPhone,jdbcType=VARCHAR},
+        #{partnerInfo.parentId,jdbcType=VARCHAR},
+        #{partnerInfo.status,jdbcType=NUMERIC},
+        #{partnerInfo.createTime,jdbcType=DATE},
+        #{partnerInfo.modifyTime,jdbcType=DATE},
+        #{partnerInfo.sysUser,jdbcType=VARCHAR},
+        #{partnerInfo.idFront,jdbcType=VARCHAR},
+        #{partnerInfo.idBack,jdbcType=VARCHAR},
+        #{partnerInfo.license,jdbcType=VARCHAR},
+        #{partnerInfo.agreement,jdbcType=VARCHAR},
+        #{partnerInfo.partnerAddress,jdbcType=VARCHAR},
+        #{partnerInfo.secretKey,jdbcType=VARCHAR}
+        )
+    </insert>
+    <select id="selectOne" parameterType="string" resultMap="BaseResultMap">
+        select * from T_ETC_PARTNER_INFO where PARTNER_ID = #{partnerId}
+    </select>
 
 </mapper>

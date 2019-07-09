@@ -2,9 +2,93 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.allinpay.mapper.PartnerStorageMapper">
     <resultMap id="BaseResultMap" type="com.allinpay.entity.PartnerStorage">
-
+        <id column="PARTNER_ID" property="partnerId" jdbcType="VARCHAR"/>
+        <result column="PARTNER_NAME" property="partnerName" jdbcType="VARCHAR"/>
+        <result column="PARTNER_TYPE" property="partnerType" jdbcType="VARCHAR"/>
+        <result column="BUSINESS_LICENCE_NO" property="businessLicenceNo" jdbcType="VARCHAR"/>
+        <result column="RANK" property="rank" jdbcType="NUMERIC"/>
+        <result column="SALER" property="saler" jdbcType="VARCHAR"/>
+        <result column="LEGAL_NAME" property="legalName" jdbcType="VARCHAR"/>
+        <result column="LEGAL_ID" property="legalId" jdbcType="VARCHAR"/>
+        <result column="LEGAL_PHONE" property="legalPhone" jdbcType="VARCHAR"/>
+        <result column="CONTACTOR" property="contactor" jdbcType="VARCHAR"/>
+        <result column="CONTACT_PHONE" property="contactPhone" jdbcType="VARCHAR"/>
+        <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="NUMERIC"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
+        <result column="MODIFY_TIME" property="modifyTime" jdbcType="DATE"/>
+        <result column="SYS_USER" property="sysUser" jdbcType="VARCHAR"/>
+        <result column="FAIL_REASON" property="failReason" jdbcType="VARCHAR"/>
+        <result column="ID_FRONT" property="idFront" jdbcType="VARCHAR"/>
+        <result column="ID_BACK" property="idBack" jdbcType="VARCHAR"/>
+        <result column="LICENSE" property="license" jdbcType="VARCHAR"/>
+        <result column="AGREEMENT" property="agreement" jdbcType="VARCHAR"/>
+        <result column="PARTNER_ADDRESS" property="partnerAddress" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-      KID,EMAIL,PASSWORD,NICKNAME,STATUS,IS_VERIFY
+        PARTNER_ID,PARTNER_NAME,PARTNER_TYPE,BUSINESS_LICENCE_NO,RANK,SALER,LEGAL_NAME,LEGAL_ID,LEGAL_PHONE,CONTACTOR,CONTACT_PHONE,
+        PARENT_ID,STATUS,CREATE_TIME,MODIFY_TIME,SYS_USER,FAIL_REASON,ID_FRONT,ID_BACK,LICENSE,AGREEMENT,PARTNER_ADDRESS
     </sql>
+    <insert id="insert" parameterType="com.allinpay.entity.PartnerStorage">
+        insert into T_ETC_PARTNER_STORAGE (<include refid="Base_Column_List"/>)
+        values (#{storage.partnerId,jdbcType=VARCHAR},
+        #{storage.partnerName,jdbcType=VARCHAR},
+        #{storage.partnerType,jdbcType=VARCHAR},
+        #{storage.businessLicenceNo,jdbcType=VARCHAR},
+        #{storage.rank,jdbcType=NUMERIC},
+        #{storage.saler,jdbcType=VARCHAR},
+        #{storage.legalName,jdbcType=VARCHAR},
+        #{storage.legalId,jdbcType=VARCHAR},
+        #{storage.legalPhone,jdbcType=VARCHAR},
+        #{storage.contactor,jdbcType=VARCHAR},
+        #{storage.contactPhone,jdbcType=VARCHAR},
+        #{storage.parentId,jdbcType=VARCHAR},
+        #{storage.status,jdbcType=NUMERIC},
+        #{storage.createTime,jdbcType=DATE},
+        #{storage.modifyTime,jdbcType=DATE},
+        #{storage.sysUser,jdbcType=VARCHAR},
+        #{storage.failReason,jdbcType=VARCHAR},
+        #{storage.idFront,jdbcType=VARCHAR},
+        #{storage.idBack,jdbcType=VARCHAR},
+        #{storage.license,jdbcType=VARCHAR},
+        #{storage.agreement,jdbcType=VARCHAR},
+        #{storage.partnerAddress,jdbcType=VARCHAR}
+        )
+    </insert>
+    <select id="selectOne" parameterType="string" resultMap="BaseResultMap">
+        select * from T_ETC_PARTNER_STORAGE where PARTNER_ID = #{partnerId}
+    </select>
+    <delete id="delete" parameterType="string">
+        delete from T_ETC_PARTNER_STORAGE where PARTNER_ID = #{partnerId}
+    </delete>
+    <update id="update" parameterType="com.allinpay.entity.PartnerStorage">
+        update T_ETC_PARTNER_STORAGE set
+        PARTNER_NAME = #{storage.partnerName,jdbcType=VARCHAR},
+        PARTNER_TYPE = #{storage.partnerType,jdbcType=VARCHAR},
+        BUSINESS_LICENCE_NO = #{storage.businessLicenceNo,jdbcType=VARCHAR},
+        RANK = #{storage.rank,jdbcType=NUMERIC},
+        SALER = #{storage.saler,jdbcType=VARCHAR},
+        LEGAL_NAME = #{storage.legalName,jdbcType=VARCHAR},
+        LEGAL_ID = #{storage.legalId,jdbcType=VARCHAR},
+        LEGAL_PHONE = #{storage.legalPhone,jdbcType=VARCHAR},
+        CONTACTOR = #{storage.contactor,jdbcType=VARCHAR},
+        CONTACT_PHONE = #{storage.contactPhone,jdbcType=VARCHAR},
+        PARENT_ID = #{storage.parentId,jdbcType=VARCHAR},
+        STATUS = #{storage.status,jdbcType=NUMERIC},
+        SYS_USER = #{storage.sysUser,jdbcType=VARCHAR},
+        <if test="storage.idFront != null and storage.idFront != ''">
+            ID_FRONT = #{storage.idFront,jdbcType=VARCHAR},
+        </if>
+        <if test="storage.idBack != null and storage.idBack != ''">
+            ID_BACK = #{storage.idBack,jdbcType=VARCHAR},
+        </if>
+        <if test="storage.license != null and storage.license != ''">
+            LICENSE = #{storage.license,jdbcType=VARCHAR},
+        </if>
+        <if test="storage.agreement != null and storage.agreement != ''">
+            AGREEMENT = #{storage.agreement,jdbcType=VARCHAR},
+        </if>
+        PARTNER_ADDRESS = #{storage.partnerAddress,jdbcType=VARCHAR}
+        WHERE PARTNER_ID = #{storage.partnerId}
+    </update>
 </mapper>

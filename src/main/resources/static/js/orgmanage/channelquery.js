@@ -26,6 +26,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 partnerId: $("#chanelid").val(),//机构编号
                 partnerName: $("#chanelname").val(),//机构名称
                 partnerType: $("#chanetype").val(),//机构类型
+                sbstatus: "('1','2','3','4','5','6')",//默认查询状态
                 status: $("#chanelstatus").val(),//机构状态
                 // createTime:new Date($("#creatdate").val().split(" ")[0].split('-')[0], $("#creatdate").val().split(" ")[0].split('-')[1]-1, $("#creatdate").val().split(" ")[0].split('-')[2]),
                 // modifyTime:new Date($("#modifydate").val().split(" ")[0].split('-')[0], $("#modifydate").val().split(" ")[0].split('-')[1]-1, $("#modifydate").val().split(" ")[0].split('-')[2])
@@ -33,8 +34,8 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 // createTimeStart:"2019-07-03",
                 createTimeStart: $("#creatdate").val()==""?"":$("#creatdate").val().substr(0,10),//查询创建时间起
                 createTimeEnd:$("#creatdate").val()==""?"":$("#creatdate").val().substr(12,11),//查询创建时间止
-                modifyTimeStart:$("#modifydate").val()==""?"":$("#modifydate").val().substr(0,10),//修改时间起
-                modifyTimeEnd:$("#modifydate").val()==""?"":$("#modifydate").val().substr(12,11)
+                modifyTimeStart: $("#modifydate").val() == "" ? "" : $("#modifydate").val().substr(0, 10),//更新时间起
+                modifyTimeEnd: $("#modifydate").val() == "" ? "" : $("#modifydate").val().substr(12, 11)//更新时间止
             },
             //分页信息
             request: {
@@ -73,42 +74,82 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             // },
 
             //每页展示的条数
-            limits: [2, 4, 6],
+            limits: [5, 10],
             //每页默认显示的数量
-            limit: 2,
+            limit: 5,
             //单元格设置
             cols: [[
-                {field: 'partnerId', width: 100, title: '机构编号', sort: true},
-                {field: 'PARTNER_NAME', width: 100, title: '机构名称'},
-                {field: 'PARTNER_TYPE', width: 100, title: '机构类型', sort: true},
-                {field: 'SALER', width: 100, title: '推广人', sort: true,hide:true},
-                {field: 'LEGAL_NAME', width: 100, title: '法人姓名', sort: true,hide:true},
-                {field: 'LEGAL_ID', width: 100, title: '法人身份证', sort: true,hide:true},
-                {field: 'LEGAL_PHONE', width: 100, title: '法人联系方式', sort: true,hide:true},
-                {field: 'CONTACTOR', width: 100, title: '机构联系人', sort: true,hide:true},
-                {field: 'CONTACT_PHONE', width: 100, title: '联系人电话', sort: true,hide:true},
-                {field: 'PARENT_ID', width: 100, title: '父机构编号'},
-                {field: 'BUSINESS_LICENCE_NO',width: 120, title: '营业执照编号'},
-                // {field: 'experience', title: '机构地址', sort: true},
-                {field: 'STATUS', width: 120,title: '机构状态', sort: true},
-                {field: 'createTime', width: 100,title: '创建时间'},
-                {field: 'modifyTime', width: 100, title: '更新时间', sort: true},
-                {field: 'SYS_USER', width: 100, title: '最后操作人', sort: true}
-            ]]
+                {
+                    field: 'partnerId',
+                    width: 120,
+                    title: '机构编号',
+                    event: 'setSign',
+                    style: 'color: #024CA1;font-style:italic;text-decoration:underline'
+                },
+                {field: 'partnerName', width: 100, title: '机构名称'},
+                {field: 'partnerType', width: 80, title: '机构类型'},
+                {field: 'secretKey', width: 80, title: '机构秘钥'},
+                {field: 'partnerAddress', width: 100, title: '机构地址', hide: true},
+                {field: 'saler', width: 100, title: '推广人', hide: true},
+                {field: 'legalName', width: 100, title: '法人姓名', hide: true},
+                {field: 'legalId', width: 100, title: '法人身份证', hide: true},
+                {field: 'legalPhone', width: 100, title: '法人联系方式', hide: true},
+                {field: 'contactor', width: 100, title: '机构联系人', hide: true},
+                {field: 'contactPhone', width: 100, title: '联系人电话', hide: true},
+
+                {field: 'idFront', width: 100, title: '身份证证明', hide: true},
+                {field: 'idBack', width: 100, title: '身份证反面', hide: true},
+                {field: 'agreement', width: 100, title: '协议图片', hide: true},
+
+                {field: 'parentId', width: 100, title: '父机构编号'},
+                {field: 'businessLicenceNo', width: 120, title: '营业执照编号'},
+                {field: 'parstatus', width: 120, title: '机构状态'},
+                {field: 'failReason', width: 120, title: '审核意见'},
+                {field: 'createTimeX', width: 100, title: '创建时间'},
+                {field: 'modifyTimeX', width: 100, title: '更新时间'},
+                {field: 'sysUser', width: 100, title: '最后操作人'}
+            ]],
+            done: function (res, curr, count) {
+
+                $("[data-field='partnerType']").children().each(function () {
+                    if ($(this).text() == '00') {
+                        $(this).text("银行")
+                    } else if ($(this).text() == '01') {
+                        $(this).text("汽车服务")
+                    } else if ($(this).text() == '02') {
+                        $(this).text("互联网平台")
+                    } else if ($(this).text() == '04') {
+                        $(this).text("其他")
+                    }
+                });
+            }
         });
 
         //监听行单击事件（单击事件为：rowDouble）
-        table.on('row(test)', function(obj){
-            var data = obj.data;
+        // table.on('row(test)', function(obj){
+        //     var data = obj.data;
+        //
+        //     // layer.alert(JSON.stringify(), {
+        //     //     title: '当前行数据：'
+        //     // });
+        //     showinfo(data);
+        //     //标注选中样式
+        //     obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+        // });
 
-            // layer.alert(JSON.stringify(), {
-            //     title: '当前行数据：'
-            // });
-            showinfo(data);
-            //标注选中样式
-            obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
-        });
     };
+
+    layui.use('table', function () {
+        var table = layui.table;
+        //监听单元格事件
+        table.on('tool(demoEvent)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'setSign') {
+                showinfo(data);
+            }
+        });
+    });
+
 
     //页面加载就查询列表
     search();
@@ -124,23 +165,45 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
 
     function showinfo(data){
 
-        $("#chanelidshow").val(data.PARTNER_ID);
-        $("#chanelnameshow").val(data.PARTNER_NAME);
-        $("#chaneltypeshow").val(data.PARTNER_TYPE);
-        $("#partneridshow").val(data.PARENT_ID);
+        $("#chanelidshow").val(data.partnerId);//机构编号
+        $("#chanelnameshow").val(data.partnerName);//机构名称
+        $("#chaneltypeshow").val(data.partnerType);//机构类型
+        $("#partneridshow").val(data.parentId);//父机构编号
+        $("#registidshow").val(data.businessLicenceNo);//营业执照编号
+        $("#chaneladdressshow").val(data.partnerAddress);//机构地址
+        $("#leglnameshow").val(data.legalName);//法人姓名
+        $("#legldcardshow").val(data.legalId);//法人证件号
+        $("#leglphoneshow").val(data.legalPhone);//法人身份证号
+        $("#chanelpersonshow").val(data.contactor);//机构联系人
+        $("#chanelpersonphoneshow").val(data.contactPhone);//联系人电话
+        $("#chanelstatusshow").val(data.parstatus);//机构状态
+        $("#creattimeshow").val(data.createTimeX);//创建时间
+        $("#modifytimeshow").val(data.modifyTimeX);//更新时间
+        $("#approvalopinionshow").val(data.failReason);//审批意见
+        $("#secretkeyshow").val(data.secretKey);//秘钥
 
-        $("#registidshow").val(data.BUSINESS_LICENCE_NO);
-        // $("#chaneladdressshow").val(data.PARTNER_ID);
-        $("#leglnameshow").val(data.LEGAL_NAME);
-        $("#legldcardshow").val(data.LEGAL_ID);
-        $("#leglphoneshow").val(data.LEGAL_PHONE);
-        $("#chanelpersonshow").val(data.CONTACTOR);
-        $("#chanelpersonphoneshow").val(data.CONTACT_PHONE);
-        $("#chanelstatusshow").val(data.STATUS);
-        $("#creattimeshow").val(data.CREATE_TIME);
-        $("#modifytimeshow").val(data.MODIFY_TIME);
-        // $("#approvalopinionshow").val(data.PARTNER_ID);//审批意见
-        // $("#secretkeyshow").val(data.PARTNER_ID);//秘钥
+
+        $.ajax({
+            url: '/query/getImg',
+            type: 'post',
+            data: {
+                partnerId: data.partnerId,
+                idFront: data.idFront,
+                idBack: data.idBack,
+                agreement: data.agreement
+            },
+            dataType: 'json',
+            success: function (data) {
+                layer.alert("获取图片成功！");
+            },
+            error: function () {
+                layer.alert("获取图片出错！");
+            }
+        });
+
+        // $("#front").attr("src","http://localhost:8080/query/get?id=1");
+        // $("#back").attr("src","xxxx.jpg");
+        // $("#aggre").attr("src","xxxx.jpg");
 
         //打开模态框
         openModal("详细信息", "editForm");
@@ -170,6 +233,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
     });
 });
 
+
 function query(){
     var index = layer.alert("立即提交", function () {
         layer.close(index);
@@ -180,17 +244,4 @@ function query(){
 function back(){
     //点击确认按钮执行回调函数
     layer.closeAll();
-}
-
-//获取当前时间，格式YYYY-MM-DD
-function getNowFormatDate() {//获取当前时间
-    var date = new Date();
-    var seperator1 = "-";
-    var seperator2 = ":";
-    var month = date.getMonth() + 1<10? "0"+(date.getMonth() + 1):date.getMonth() + 1;
-    var strDate = date.getDate()<10? "0" + date.getDate():date.getDate();
-    var currentdate = date.getFullYear() + seperator1  + month  + seperator1  + strDate
-        + " "  + date.getHours()  + seperator2  + date.getMinutes()
-        + seperator2 + date.getSeconds();
-    return currentdate;
 }

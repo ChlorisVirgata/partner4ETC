@@ -15,25 +15,159 @@
         <result column="CONTACT_PHONE" property="contactPhone" jdbcType="VARCHAR"/>
         <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR"/>
         <result column="STATUS" property="status" jdbcType="NUMERIC"/>
-        <!--<result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>-->
-        <!--<result column="MODIFY_TIME" property="modifyTime" jdbcType="DATE"/>-->
+        <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
+        <result column="MODIFY_TIME" property="modifyTime" jdbcType="DATE"/>
         <result column="SYS_USER" property="sysUser" jdbcType="VARCHAR"/>
         <result column="FAIL_REASON" property="failReason" jdbcType="VARCHAR"/>
+        <result column="ID_FRONT" property="idFront" jdbcType="VARCHAR"/>
+        <result column="ID_BACK" property="idBack" jdbcType="VARCHAR"/>
+        <result column="LICENSE" property="license" jdbcType="VARCHAR"/>
+        <result column="AGREEMENT" property="agreement" jdbcType="VARCHAR"/>
+        <result column="PARTNER_ADDRESS" property="partnerAddress" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-      KID,EMAIL,PASSWORD,NICKNAME,STATUS,IS_VERIFY
+        PARTNER_ID,PARTNER_NAME,PARTNER_TYPE,BUSINESS_LICENCE_NO,RANK,SALER,LEGAL_NAME,LEGAL_ID,LEGAL_PHONE,CONTACTOR,CONTACT_PHONE,
+        PARENT_ID,STATUS,CREATE_TIME,MODIFY_TIME,SYS_USER,FAIL_REASON,ID_FRONT,ID_BACK,LICENSE,AGREEMENT,PARTNER_ADDRESS
     </sql>
 
-    <select id="selectList" resultMap="BaseResultMap" parameterType="com.allinpay.entity.PartnerAudit">
-        select * from T_ETC_PARTNER_AUDIT partner_audit
+    <select id="selectList" resultMap="BaseResultMap" parameterType="com.allinpay.controller.query.OrgAuditQuery">
+        select
+        decode(PARTNER_TYPE,'00','银行','01','汽车服务','02','互联网平台','03','其他','类型有误') PARTNER_TYPE,
+        PARTNER_ID,PARTNER_NAME,BUSINESS_LICENCE_NO,RANK,SALER,
+        LEGAL_NAME,LEGAL_ID,LEGAL_PHONE,CONTACTOR,CONTACT_PHONE,
+        PARENT_ID,STATUS,CREATE_TIME,MODIFY_TIME,SYS_USER,FAIL_REASON,
+        ID_FRONT,ID_BACK,LICENSE,AGREEMENT,PARTNER_ADDRESS
+
+        from T_ETC_PARTNER_AUDIT partner_audit
         <trim prefix="WHERE" prefixOverrides="AND">
-            <if test="audit.partnerName != null and audit.partnerName != ''">
-                AND PARTNER_NAME like '%' || #{audit.partnerName} || '%'
+            <if test="query.partnerName != null and query.partnerName != ''">
+                AND PARTNER_NAME like '%' || #{query.partnerName} || '%'
             </if>
-            <if test="audit.saler != null and audit.saler != ''">
-                AND SALER like '%' || #{audit.saler} || '%'
+            <if test="query.saler != null and query.saler != ''">
+                AND SALER like '%' || #{query.saler} || '%'
             </if>
-            AND STATUS = 0
+            <if test="query.createStartTime != null">
+                AND CREATE_TIME &gt;= #{query.createStartTime} AND CREATE_TIME &lt;= #{query.createEndTime}
+            </if>
+            <if test="query.modifyStartTime != null">
+                AND MODIFY_TIME &gt;= #{query.modifyStartTime} AND CREATE_TIME &lt;= #{query.modifyEndTime}
+            </if>
+            AND STATUS = 4
         </trim>
     </select>
+
+    <select id="selectModifyList" resultMap="BaseResultMap"
+            parameterType="com.allinpay.controller.query.OrgModifyQuery">
+        select
+        decode(PARTNER_TYPE,'00','银行','01','汽车服务','02','互联网平台','03','其他','类型有误') PARTNER_TYPE,
+        PARTNER_ID,PARTNER_NAME,BUSINESS_LICENCE_NO,RANK,SALER,
+        LEGAL_NAME,LEGAL_ID,LEGAL_PHONE,CONTACTOR,CONTACT_PHONE,
+        PARENT_ID,STATUS,CREATE_TIME,MODIFY_TIME,SYS_USER,FAIL_REASON,
+        ID_FRONT,ID_BACK,LICENSE,AGREEMENT,PARTNER_ADDRESS
+
+        from (select * from T_ETC_PARTNER_AUDIT partner_audit
+        WHERE STATUS != 4
+        AND PARTNER_ID
+        not in (select PARTNER_ID from T_ETC_PARTNER_INFO where STATUS in (2,3))
+        union
+        select * from T_ETC_PARTNER_STORAGE)
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="query.partnerId != null and query.partnerId != ''">
+                AND PARTNER_ID like '%' || #{query.partnerId} || '%'
+            </if>
+            <if test="query.partnerName != null and query.partnerName != ''">
+                AND PARTNER_NAME like '%' || #{query.partnerName} || '%'
+            </if>
+            <if test="query.partnerType != null and query.partnerType != ''">
+                AND PARTNER_TYPE like '%' || #{query.partnerType} || '%'
+            </if>
+            <if test="query.parentId!= null and query.parentId != ''">
+                AND PARENT_ID like '%' || #{query.parentId} || '%'
+            </if>
+            <if test="query.createStartTime != null">
+                AND CREATE_TIME &gt;= #{query.createStartTime} AND CREATE_TIME &lt;= #{query.createEndTime}
+            </if>
+            <if test="query.modifyStartTime != null">
+                AND MODIFY_TIME &gt;= #{query.modifyStartTime} AND CREATE_TIME &lt;= #{query.modifyEndTime}
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectOne" resultMap="BaseResultMap">
+        select * from T_ETC_PARTNER_AUDIT where PARTNER_ID = #{partnerId}
+        <if test="status != null">
+            AND STATUS = #{status}
+        </if>
+    </select>
+    <update id="updateRefuseStatus">
+        update T_ETC_PARTNER_AUDIT set STATUS = 6, FAIL_REASON = #{failReason}, MODIFY_TIME = to_date(to_char(sysdate, 'yyyy-MM-dd')，'yyyy-MM-dd'),
+        SYS_USER = #{sysUser}
+        WHERE PARTNER_ID = #{partnerId}
+    </update>
+    <update id="updateApproveStatus">
+        update T_ETC_PARTNER_AUDIT set STATUS = 5, FAIL_REASON = #{failReason}, MODIFY_TIME = to_date(to_char(sysdate, 'yyyy-MM-dd')，'yyyy-MM-dd'),
+        SYS_USER = #{ sysUser}
+        WHERE PARTNER_ID = #{partnerId}
+    </update>
+    <insert id="insert" parameterType="com.allinpay.entity.PartnerAudit">
+        insert into T_ETC_PARTNER_AUDIT (<include refid="Base_Column_List"/>)
+        values (#{audit.partnerId,jdbcType=VARCHAR},
+        #{audit.partnerName,jdbcType=VARCHAR},
+        #{audit.partnerType,jdbcType=VARCHAR},
+        #{audit.businessLicenceNo,jdbcType=VARCHAR},
+        #{audit.rank,jdbcType=NUMERIC},
+        #{audit.saler,jdbcType=VARCHAR},
+        #{audit.legalName,jdbcType=VARCHAR},
+        #{audit.legalId,jdbcType=VARCHAR},
+        #{audit.legalPhone,jdbcType=VARCHAR},
+        #{audit.contactor,jdbcType=VARCHAR},
+        #{audit.contactPhone,jdbcType=VARCHAR},
+        #{audit.parentId,jdbcType=VARCHAR},
+        #{audit.status,jdbcType=NUMERIC},
+        #{audit.createTime,jdbcType=DATE},
+        #{audit.modifyTime,jdbcType=DATE},
+        #{audit.sysUser,jdbcType=VARCHAR},
+        #{audit.failReason,jdbcType=VARCHAR},
+        #{audit.idFront,jdbcType=VARCHAR},
+        #{audit.idBack,jdbcType=VARCHAR},
+        #{audit.license,jdbcType=VARCHAR},
+        #{audit.agreement,jdbcType=VARCHAR},
+        #{audit.partnerAddress,jdbcType=VARCHAR}
+        )
+    </insert>
+    <delete id="delete" parameterType="string">
+        delete from T_ETC_PARTNER_AUDIT where PARTNER_ID = #{partnerId}
+    </delete>
+    <update id="update" parameterType="com.allinpay.entity.PartnerAudit">
+        update T_ETC_PARTNER_AUDIT set
+        PARTNER_NAME = #{audit.partnerName,jdbcType=VARCHAR},
+        PARTNER_TYPE = #{audit.partnerType,jdbcType=VARCHAR},
+        BUSINESS_LICENCE_NO = #{audit.businessLicenceNo,jdbcType=VARCHAR},
+        RANK = #{audit.rank,jdbcType=NUMERIC},
+        SALER = #{audit.saler,jdbcType=VARCHAR},
+        LEGAL_NAME = #{audit.legalName,jdbcType=VARCHAR},
+        LEGAL_ID = #{audit.legalId,jdbcType=VARCHAR},
+        LEGAL_PHONE = #{audit.legalPhone,jdbcType=VARCHAR},
+        CONTACTOR = #{audit.contactor,jdbcType=VARCHAR},
+        CONTACT_PHONE = #{audit.contactPhone,jdbcType=VARCHAR},
+        PARENT_ID = #{audit.parentId,jdbcType=VARCHAR},
+        STATUS = #{audit.status,jdbcType=NUMERIC},
+        MODIFY_TIME = #{audit.modifyTime,jdbcType=DATE},
+        SYS_USER = #{audit.sysUser,jdbcType=VARCHAR},
+        FAIL_REASON = #{audit.failReason,jdbcType=VARCHAR},
+        <if test="audit.idFront != null and audit.idFront != ''">
+            ID_FRONT = #{audit.idFront,jdbcType=VARCHAR},
+        </if>
+        <if test="audit.idBack != null and audit.idBack != ''">
+            ID_BACK = #{audit.idBack,jdbcType=VARCHAR},
+        </if>
+        <if test="audit.license != null and audit.license != ''">
+            LICENSE = #{audit.license,jdbcType=VARCHAR},
+        </if>
+        <if test="audit.agreement != null and audit.agreement != ''">
+            AGREEMENT = #{audit.agreement,jdbcType=VARCHAR},
+        </if>
+        PARTNER_ADDRESS = #{audit.partnerAddress,jdbcType=VARCHAR}
+        WHERE PARTNER_ID = #{audit.partnerId}
+    </update>
 </mapper>

@@ -1,7 +1,6 @@
 package com.allinpay.entity;
 
 import com.allinpay.core.common.BaseEntity;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,11 +8,17 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
-
 @Setter
 @Getter
 @ToString
+/**
+ * 信息查询封装参数基本实体类
+ *
+ * @author xuming
+ * @date 2019-07-02
+ */
 public class OrgQueryVo extends BaseEntity {
+
     /**
      * 机构编号
      */
@@ -66,6 +71,11 @@ public class OrgQueryVo extends BaseEntity {
      * 审核状态 审核中、审核通过、审核未通过
      */
     private Integer status;
+
+    /**
+     * 封装多状态的sb
+     */
+    private String sbstatus;
     /**
      * 查询创建时间起始
      */
@@ -94,8 +104,4 @@ public class OrgQueryVo extends BaseEntity {
      * 操作人
      */
     private String sysUser;
-    /**
-     * 审核失败原因
-     */
-    private String failReason;
 }

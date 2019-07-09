@@ -1,5 +1,6 @@
 package com.allinpay.service;
 
+import com.allinpay.controller.query.OrgAuditQuery;
 import com.allinpay.core.common.PageVO;
 import com.allinpay.entity.PartnerAudit;
 
@@ -12,8 +13,23 @@ import com.allinpay.entity.PartnerAudit;
 public interface IOrgAuditService {
     /**
      * @Description: 查询待审核列表
-     * @Param: audit
+     * @Param: query
      * @Return: PageVO<PartnerAudit>
      */
-    PageVO<PartnerAudit> selectByCondition(PartnerAudit audit);
+    PageVO<PartnerAudit> selectByCondition(OrgAuditQuery query);
+
+
+    /**
+     * @Description: 审核未通过
+     * @Param: partnerId, failReason
+     * @Return: void
+     */
+    void auditRefuse(String partnerId, String failReason);
+
+    /**
+     * @Description: 审核通过
+     * @Param: audit
+     * @Return: void
+     */
+    void auditApprove(PartnerAudit audit);
 }

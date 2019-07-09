@@ -1,13 +1,12 @@
 package com.allinpay.controller;
 
+import com.allinpay.controller.query.OrgAuditQuery;
 import com.allinpay.core.common.PageVO;
 import com.allinpay.core.common.ResponseData;
 import com.allinpay.entity.PartnerAudit;
 import com.allinpay.service.IOrgAuditService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @description: 机构信息审核
@@ -26,23 +25,32 @@ public class OrgAuditController {
      * @Return: com.allinpay.core.common.ResponseData
      */
     @GetMapping("/getList")
-    public ResponseData getList(PartnerAudit audit) {
-        PageVO<PartnerAudit> pageVO = auditService.selectByCondition(audit);
+    public ResponseData getList(OrgAuditQuery query) {
+        PageVO<PartnerAudit> pageVO = auditService.selectByCondition(query);
         return ResponseData.success().setData(pageVO);
     }
 
-    @GetMapping("/getOne")
-    public ResponseData getOne() {
-        return null;
+
+    /**
+     * @Description: 审核通过
+     * @Param: [audit]
+     * @Return: com.allinpay.core.common.ResponseData
+     */
+    @PostMapping("/approve")
+    public ResponseData approve(PartnerAudit audit) {
+        auditService.auditApprove(audit);
+        return ResponseData.success().setData(null);
     }
 
-    @GetMapping("/approve")
-    public ResponseData approve() {
-        return null;
-    }
-
-    @GetMapping("/refuse")
-    public ResponseData refuse() {
-        return null;
+    /**
+     * @Description: 审核失败
+     * @Param: [partnerId，failReason]
+     * @Return: com.allinpay.core.common.ResponseData
+     */
+    @PostMapping("/refuse")
+    public ResponseData refuse(@RequestParam String partnerId,
+                               @RequestParam String failReason) {
+        auditService.auditRefuse(partnerId, failReason);
+        return ResponseData.success().setData(null);
     }
 }

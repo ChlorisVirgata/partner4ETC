@@ -60,7 +60,7 @@ public class PartnerInfo {
      */
     private String parentId;
     /**
-     * 审核状态 审核中、审核通过、审核未通过
+     * 机构状态 1 正常 2 注销 3 冻结 4 审核中 6 审核失败
      */
     private Integer status;
     /**
@@ -75,4 +75,34 @@ public class PartnerInfo {
      * 操作人
      */
     private String sysUser;
+
+    /**
+     * 机构地址
+     */
+    private String partnerAddress;
+
+    /**
+     * 营业执照地址
+     */
+    private String license;
+
+    /**
+     * 身份证正面地址
+     */
+    private String idFront;
+
+    /**
+     * 身份证反面地址
+     */
+    private String idBack;
+
+    /**
+     * 协议图片
+     */
+    private String agreement;
+
+    /**
+     * 机构秘钥
+     */
+    private String secretKey;
 }
