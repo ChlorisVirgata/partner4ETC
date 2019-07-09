@@ -21,7 +21,7 @@ public class ShiroConfig {
         // 配置不会被拦截的链接 顺序判断
         filterChainDefinitionMap.put("/web/login", "anon");
         filterChainDefinitionMap.put("/etc/login", "anon");
-        filterChainDefinitionMap.put("/etc/randomCode", "anon");
+        filterChainDefinitionMap.put("/etc/captcha", "anon");
         filterChainDefinitionMap.put("/etc/logout", "anon");
         filterChainDefinitionMap.put("/*.ico", "anon");
         filterChainDefinitionMap.put("/login.html", "anon");

@@ -61,6 +61,6 @@ public class RedirectController {
 
     @RequestMapping("/index")
     public String index() {
-        return "index";
+        return "/common/index";
     }
 }

@@ -32,6 +32,10 @@ public enum BizEnums {
     FILE_DELETE_EXCEPTION("40002", "文件删除失败"),
     FILE_OPERATE_EXCEPTION("40003", "文件操作失败"),
 
+    CAPTCHA_GET_EXCEPTION("60000", "获取验证码失败"),
+    CAPTCHA_INVALIDATE("60001", "验证码有误"),
+
+    USER_AUTHENTICATION_FAIL("70001", "用户名或密码不正确"),
     /**
      * 机构管理模块业务异常
      */

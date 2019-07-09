@@ -4,54 +4,64 @@ layui.use(['layer', 'form'], function () {
     var $ = layui.$;
     var layer = layui.layer;
     var form = layui.form;
-    var btnId;
 
+    //登录
     $("#loginSubmit").on("click", function () {
-        btnId = "loginSubmit";
-    });
-    $("#logoutSubmit").on("click", function () {
-        // btnId = "logoutSubmit";
-        window.location.href = "/logout";
-    });
-    //监听form表单提交事件 防止页面跳转
-    form.on('submit(formFilter)', function (data) {
-        var url;
-        if (btnId == "loginSubmit") {
-            url = "/etc/login";
-        } else {
-            url = "/etc/logout";
+        if (!checkParams()) {
+            return;
         }
         $.ajax({
-            url: url,
+            url: "/etc/login",
             type: 'post',
             data: $("#loginForm").serialize(),
             dataType: 'json',
             success: function (data) {
                 if (data.code == "00000") {
-                    if (btnId == "loginSubmit") {
-                        sessionStorage.setItem("allinpayAuthority", data.data.roleIdList);
-                        console.log(data.data.roleIdList);
-                        window.location.href = "/web/index";
-                    } else {
-                        window.location.href = "/web/login";
-                    }
-
+                    sessionStorage.setItem("allinpayAuthority", data.data.roleIdList);
+                    console.log(data.data.roleIdList);
+                    window.location.href = "/web/index";
                 } else {
-                    layer.alert(data.msg);
+                    $("#captcha").show();
+                    $("#notice").find("div").html(data.msg);
+                    $("#notice").show().delay(3000).hide(0);
                 }
             },
             error: function () {
                 layer.alert("登录失败，请重试！");
             }
         });
+    });
+
+    //监听form表单提交事件 防止页面跳转
+    form.on('submit(formFilter)', function (data) {
         return false;
     });
 
-    //展示图片信息 图片路径+图片名称
-    function showImg(myData) {
-        $('#licenseImg').attr('src', myData.license);
-        $('#legalFrontImg').attr('src', myData.idFront);
-        $('#legalBackImg').attr('src', myData.idBack);
-        $('#agreementImg').attr('src', myData.agreement);
+    //更换验证码
+    $("#captchaImg").on("click", function () {
+        $("#captchaImg").attr("src", "/etc/captcha?t=" + new Date());
+    });
+
+    //参数校验
+    function checkParams() {
+        var username = $("input[name='username']");
+        var password = $("input[name='password']");
+        var captcha = $("input[name='captcha']");
+        if (!$.trim(username.val())) {
+            $("#notice").find("div").html("请输入用户名");
+            $("#notice").show().delay(3000).hide(0);
+            return false;
+        }
+        if (!$.trim(password.val())) {
+            $("#notice").find("div").html("请输入密码");
+            $("#notice").show().delay(3000).hide(0);
+            return false;
+        }
+        if ($("#captcha").css("display") != "none" && !$.trim(captcha.val())) {
+            $("#notice").find("div").html("请输入验证码");
+            $("#notice").show().delay(3000).hide(0);
+            return false;
+        }
+        return true;
     }
 });

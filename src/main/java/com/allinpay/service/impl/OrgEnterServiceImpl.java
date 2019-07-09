@@ -4,6 +4,7 @@ import com.allinpay.core.constant.CommonConstant;
 import com.allinpay.core.constant.enums.BizEnums;
 import com.allinpay.core.exception.AllinpayException;
 import com.allinpay.core.util.FileUtil;
+import com.allinpay.core.util.ShiroUtils;
 import com.allinpay.entity.PartnerAudit;
 import com.allinpay.entity.PartnerInfo;
 import com.allinpay.entity.PartnerStorage;
@@ -41,7 +42,7 @@ public class OrgEnterServiceImpl implements IOrgEnterService {
     @Override
     public void addOrg(MultipartHttpServletRequest request, PartnerStorage storage) {
         String partnerId = FileUtil.generatePartnerId();
-        String sysUser = "";
+        String sysUser = ShiroUtils.getUserEntity().getUsername();
         //上传文件，设置路径值
         storage.setLicense(FileUtil.getFileName(request.getFile(CommonConstant.LICENSE_FILE),
                 tempDir + partnerId + CommonConstant.SUB_DIR_LICENSE));
@@ -74,7 +75,7 @@ public class OrgEnterServiceImpl implements IOrgEnterService {
         audit.setAgreement(FileUtil.getFileName(request.getFile(CommonConstant.AGREEMENT_FILE),
                 tempDir + partnerId + CommonConstant.SUB_DIR_AGREEMENT));
         log.info("机构录入图片上传成功");
-        audit.setSysUser("");
+        audit.setSysUser(ShiroUtils.getUserEntity().getUsername());
         audit.setCreateTime(new Date());
         audit.setStatus(CommonConstant.STATUS_AUDIT);
         audit.setPartnerId(partnerId);

@@ -5,7 +5,9 @@ import com.allinpay.core.common.PageVO;
 import com.allinpay.core.constant.CommonConstant;
 import com.allinpay.core.constant.enums.BizEnums;
 import com.allinpay.core.exception.AllinpayException;
+import com.allinpay.core.util.MD5Util;
 import com.allinpay.core.util.PageVOUtil;
+import com.allinpay.core.util.ShiroUtils;
 import com.allinpay.entity.PartnerAudit;
 import com.allinpay.entity.PartnerInfo;
 import com.allinpay.mapper.PartnerAuditMapper;
@@ -49,7 +51,7 @@ public class OrgAuditServiceImpl implements IOrgAuditService {
 
     @Override
     public void auditRefuse(String partnerId, String failReason) {
-        String sysUser = "";
+        String sysUser = ShiroUtils.getUserEntity().getUsername();
         //先判断该机构是否存在
         PartnerAudit partnerAudit = auditMapper.selectOne(partnerId, CommonConstant.STATUS_AUDIT);
         if (Objects.isNull(partnerAudit)) {
@@ -68,7 +70,7 @@ public class OrgAuditServiceImpl implements IOrgAuditService {
     public void auditApprove(PartnerAudit audit) {
         try {
             String partnerId = audit.getPartnerId();
-            String sysUser = "";
+            String sysUser = ShiroUtils.getUserEntity().getUsername();
             String secretKey = generateSecretKey();
             //先判断该机构是否存在
             PartnerAudit partnerAudit = auditMapper.selectOne(partnerId, CommonConstant.STATUS_AUDIT);
@@ -116,6 +118,6 @@ public class OrgAuditServiceImpl implements IOrgAuditService {
     }
 
     private String generateSecretKey() {
-        return UUID.randomUUID().toString().replace("-", "").toUpperCase();
+        return MD5Util.md5(UUID.randomUUID().toString().replace("-", "").toUpperCase());
     }
 }

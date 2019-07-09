@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AuthorityInterceptor implements HandlerInterceptor {
     private static String LOGIN = "/etc/login";
-    private static String RANDOM_CODE = "/etc/randomCode";
+    private static String RANDOM_CODE = "/etc/captcha";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
@@ -38,6 +38,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
             }
         }
 
+        //做权限拦截
 
         return true;
     }

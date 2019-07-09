@@ -7,6 +7,7 @@ import com.allinpay.core.constant.enums.BizEnums;
 import com.allinpay.core.exception.AllinpayException;
 import com.allinpay.core.util.FileUtil;
 import com.allinpay.core.util.PageVOUtil;
+import com.allinpay.core.util.ShiroUtils;
 import com.allinpay.entity.PartnerAudit;
 import com.allinpay.entity.PartnerInfo;
 import com.allinpay.entity.PartnerStorage;
@@ -59,7 +60,7 @@ public class OrgModifyServiceImpl implements IOrgModifyService {
     public void editOrg(MultipartHttpServletRequest request, PartnerStorage storage) {
         try {
             String partnerId = storage.getPartnerId();
-            String sysUser = "";
+            String sysUser = ShiroUtils.getUserEntity().getUsername();
             //非 未提交、审核成功、审核失败三种状态返回失败
             if (!(CommonConstant.STATUS_TEMP.equals(storage.getStatus())
                     || CommonConstant.STATUS_SUCCESS.equals(storage.getStatus())
@@ -117,7 +118,7 @@ public class OrgModifyServiceImpl implements IOrgModifyService {
     public void sendOrgAudit(MultipartHttpServletRequest request, PartnerAudit audit) {
         try {
             String partnerId = audit.getPartnerId();
-            String sysUser = "";
+            String sysUser = ShiroUtils.getUserEntity().getUsername();
             //非 未提交、审核成功、审核失败三种状态返回失败
             if (!(CommonConstant.STATUS_TEMP.equals(audit.getStatus())
                     || CommonConstant.STATUS_SUCCESS.equals(audit.getStatus())
