@@ -25,6 +25,7 @@
         <result column="AGREEMENT" property="agreement" jdbcType="VARCHAR"/>
         <result column="CREATE_TIME" property="createTimeX" jdbcType="VARCHAR"/>
         <result column="MODIFY_TIME" property="modifyTimeX" jdbcType="VARCHAR"/>
+        <result column="URL" property="url" jdbcType="VARCHAR"/>
     </resultMap>
     <select id="queryOrgInfo"  resultMap="BaseResultMap" parameterType="com.allinpay.entity.OrgQueryVo">
         select parinfo.PARTNER_ID,parinfo.PARTNER_NAME,
@@ -33,7 +34,7 @@
         parinfo.LEGAL_PHONE,parinfo.CONTACTOR,parinfo.CONTACT_PHONE,parinfo.PARENT_ID,parstatus.status parstatus,
         parinfo.SYS_USER,parinfo.PARTNER_ADDRESS,parinfo.LICENSE,parinfo.ID_FRONT,parinfo.ID_BACK,parinfo.AGREEMENT,
         to_char(parinfo.CREATE_TIME,'yyyy-mm-dd HH24:mi:ss') CREATE_TIME,
-        to_char(parinfo.MODIFY_TIME,'yyyy-mm-dd HH24:mi:ss') MODIFY_TIME,SECRET_KEY,paraud.FAIL_REASON
+        to_char(parinfo.MODIFY_TIME,'yyyy-mm-dd HH24:mi:ss') MODIFY_TIME,SECRET_KEY,paraud.FAIL_REASON,#{orgque.url} URL
         from T_ETC_PARTNER_INFO parinfo
         left join T_ETC_PARTNER_STATUS parstatus on parinfo.status = parstatus.DICT_ID
         left join T_ETC_PARTNER_AUDIT paraud on parinfo.partner_id = paraud.partner_id

@@ -96,6 +96,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 {field: 'legalPhone', width: 100, title: '法人联系方式', hide: true},
                 {field: 'contactor', width: 100, title: '机构联系人', hide: true},
                 {field: 'contactPhone', width: 100, title: '联系人电话', hide: true},
+                {field: 'url', width: 100, title: '请求服务地址', hide: true},
 
                 {field: 'idFront', width: 100, title: '身份证证明', hide: true},
                 {field: 'idBack', width: 100, title: '身份证反面', hide: true},
@@ -163,6 +164,10 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
 
     });
 
+    $("#bck").on("click", function () {
+        layer.closeAll();
+    });
+
     function showinfo(data){
 
         $("#chanelidshow").val(data.partnerId);//机构编号
@@ -182,28 +187,9 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
         $("#approvalopinionshow").val(data.failReason);//审批意见
         $("#secretkeyshow").val(data.secretKey);//秘钥
 
-
-        $.ajax({
-            url: '/query/getImg',
-            type: 'post',
-            data: {
-                partnerId: data.partnerId,
-                idFront: data.idFront,
-                idBack: data.idBack,
-                agreement: data.agreement
-            },
-            dataType: 'json',
-            success: function (data) {
-                layer.alert("获取图片成功！");
-            },
-            error: function () {
-                layer.alert("获取图片出错！");
-            }
-        });
-
-        // $("#front").attr("src","http://localhost:8080/query/get?id=1");
-        // $("#back").attr("src","xxxx.jpg");
-        // $("#aggre").attr("src","xxxx.jpg");
+        $("#front").attr("src","http://10.48.1.8:8080/query/getImg?partnerId="+data.partnerId+"&imgid="+data.idFront);
+        $("#back").attr("src","http://10.48.1.8:8080/query/getImg?partnerId="+data.partnerId+"&imgid="+data.idBack);
+        $("#aggre").attr("src","http://10.48.1.8:8080/query/getImg?partnerId="+data.partnerId+"&imgid="+data.agreement);
 
         //打开模态框
         openModal("详细信息", "editForm");

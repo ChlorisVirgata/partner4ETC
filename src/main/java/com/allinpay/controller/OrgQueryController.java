@@ -2,8 +2,10 @@ package com.allinpay.controller;
 
 import com.allinpay.core.common.PageVO;
 import com.allinpay.core.common.ResponseData;
+import com.allinpay.core.constant.CommonConstant;
 import com.allinpay.entity.*;
 import com.allinpay.service.IOrgQueryService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,11 +22,13 @@ import java.util.List;
 /**
  * 机构信息、通行记录、用户发卡数据查询，机构冻结、解冻、注销处理
  * Controller
+ *
  * @author xuming
  * @date: 2019-07-02 16:58
  */
 @RestController
 @RequestMapping("/query")
+@Slf4j
 public class OrgQueryController {
 
     @Autowired
@@ -40,7 +44,6 @@ public class OrgQueryController {
     @GetMapping("/org/getList")
     public ResponseData queryOrgInfo(OrgQueryVo orgque) {
         PageVO<OrgQueryBack> querylist = orgquery.queryorginfo(orgque);
-//        String url=new ServerConfig().getUrl();
         return ResponseData.success().setData(querylist);
     }
 
@@ -88,35 +91,46 @@ public class OrgQueryController {
         return ResponseData.success().setData(partnerInfoList);
     }
 
-    @PostMapping("/getImg")
-    public void getImage(OrgQueryVo orgque, HttpServletResponse response) {
-        /* 从数据库中获取图片保存的完整路径realPath */
+    /**
+     *  获取照片
+     * @param partnerId 机构编号
+     * @param imgid 图片名称
+     * @param response
+     */
+    @GetMapping("/getImg")
+    public void getImage(String partnerId, String imgid, HttpServletResponse response) {
 //        Image image = null;
 //        String path = image.getPath();
-        String path = "D:\\d\\4\\121212.jpg";
-        //设置ContentType的类型
-//        String type = "image/" + image.getExName() + ";charset=utf-8";
-        FileInputStream inputStream = null;
-        OutputStream stream = null;
+        String path = CommonConstant.imagPath;
+        if(path == null|| path == ""){
+            log.info("照片原始路径为空");
+        }
+        if (path != null && path != "") {
 
-        try {
-            File file = new File(path);
-            inputStream = new FileInputStream(file);
-            byte[] data = new byte[(int) file.length()];
-            inputStream.read(data);
-            //setContentType("text/plain; charset=utf-8"); 文本
-            response.setContentType("image/*");
-            stream = response.getOutputStream();
-            stream.write(data);
-            stream.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
+            path = path + partnerId + "\\" + imgid;
+            //设置ContentType的类型
+//        String type = "image/" + image.getExName() + ";charset=utf-8";
+            FileInputStream inputStream = null;
+            OutputStream stream = null;
             try {
-                inputStream.close();
-                stream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+                File file = new File(path);
+                inputStream = new FileInputStream(file);
+                byte[] data = new byte[(int) file.length()];
+                inputStream.read(data);
+                //setContentType("text/plain; charset=utf-8"); 文本
+                response.setContentType("image/*");
+                stream = response.getOutputStream();
+                stream.write(data);
+                stream.flush();
+            } catch (Exception e) {
+                log.error("读取照片出错:",e);
+            } finally {
+                try {
+                    inputStream.close();
+                    stream.close();
+                } catch (IOException e) {
+                  log.error("关闭读取照片出错:",e);
+                }
             }
         }
     }

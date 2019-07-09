@@ -2,6 +2,7 @@ package com.allinpay.service.impl;
 
 import com.allinpay.core.common.PageVO;
 import com.allinpay.core.util.PageVOUtil;
+import com.allinpay.core.util.ServerConfig;
 import com.allinpay.entity.*;
 import com.allinpay.mapper.QueryMapper;
 import com.allinpay.service.IOrgQueryService;
@@ -24,9 +25,14 @@ public class OrgQueryServiceImpl implements IOrgQueryService {
     @Autowired
     private QueryMapper queryMapper;
 
+    @Autowired
+    private ServerConfig serverConfig;
+
     @Override
     public PageVO<OrgQueryBack> queryorginfo(OrgQueryVo orgque) {
         PageHelper.startPage(orgque.getPageNum(), orgque.getPageSize());
+        String url= serverConfig.getUrl();
+        orgque.setUrl(url);
         List<OrgQueryBack> partnerAuditList = queryMapper.queryOrgInfo(orgque);
         PageVO<OrgQueryBack> pageVO = PageVOUtil.convert(new PageInfo(partnerAuditList));
         return pageVO;

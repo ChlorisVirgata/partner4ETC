@@ -104,4 +104,9 @@ public class OrgQueryVo extends BaseEntity {
      * 操作人
      */
     private String sysUser;
+
+    /**
+     * 服务请求路径
+     */
+    private String url;
 }

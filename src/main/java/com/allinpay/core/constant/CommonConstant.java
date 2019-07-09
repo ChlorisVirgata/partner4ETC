@@ -39,4 +39,9 @@ public class CommonConstant {
     public static Integer STATUS_SUCCESS = 5;
     public static Integer STATUS_FAIL = 6;
     public static Integer STATUS_TEMP = 7;
+
+    /**
+     * 保存图片路径,如：D:\d\4\
+     */
+    public static String imagPath;
 }
