@@ -24,10 +24,9 @@ import java.util.List;
  * @since 2019-04-16
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @TableName("t_etc_sys_role")
-public class SysRole extends BaseEntity {
+public class TEtcSysRole {
 
     private static final long serialVersionUID = 1L;
 
@@ -37,38 +36,37 @@ public class SysRole extends BaseEntity {
     /**
      * 角色名称
      */
-    @NotBlank(message = "角色名称不能为空")
+    @TableField("ROLE_NAME")
     private String roleName;
-
     /**
      * 备注
      */
     private String remark;
 
-    /**
-     * 部门ID
-     */
-    @NotNull(message = "部门不能为空")
-    private Long deptId;
-
-    /**
-     * 部门名称
-     */
-    @TableField(exist = false)
-    private String deptName;
 
     @TableField(exist = false)
     private List<Long> menuIdList;
 
+
+    /**
+     * 角色ID列表
+     */
     @TableField(exist = false)
-    private List<Integer> deptIdList;
+    private List<Integer> roleIdList;
 
     /**
      * 创建时间
      */
-    @TableField("CREATE_TIME")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
-
-    @TableField("UPDATE_TIME")
+    /**
+     * 创建时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
+
+    @TableField("STATUS")
+    private Integer status;
+
+
 }

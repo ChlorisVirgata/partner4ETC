@@ -1,4 +1,4 @@
-package com.allinpay.core.util;
+package com.allinpay.core.exception;
 
 /**
  * 自定义异常

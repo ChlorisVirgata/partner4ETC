@@ -1,6 +1,6 @@
 package com.allinpay.core.validator;
 
-import com.allinpay.core.util.RRException;
+import com.allinpay.core.exception.RRException;
 import org.apache.commons.lang3.StringUtils;
 
 /**

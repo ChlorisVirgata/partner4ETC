@@ -1,7 +1,7 @@
 package com.allinpay.service.impl;
 
-import com.allinpay.entity.SysRoleMenu;
-import com.allinpay.mapper.SysRoleMenuMapper;
+import com.allinpay.entity.TEtcSysRoleMenu;
+import com.allinpay.mapper.TEtcRoleMenuMapper;
 import com.allinpay.service.ISysRoleMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.util.List;
  * @since 2019-04-16
  */
 @Service
-public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRoleMenu> implements ISysRoleMenuService {
+public class SysRoleMenuServiceImpl extends ServiceImpl<TEtcRoleMenuMapper, TEtcSysRoleMenu> implements ISysRoleMenuService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void saveOrUpdate(Integer roleId, List<Long> menuIdList) {
@@ -31,11 +31,11 @@ public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRo
 
         //保存角色与菜单关系
         for (Long menuId : menuIdList) {
-            SysRoleMenu SysRoleMenu = new SysRoleMenu();
-            SysRoleMenu.setMenuId(menuId);
-            SysRoleMenu.setRoleId(roleId);
+            TEtcSysRoleMenu sysRoleMenu = new TEtcSysRoleMenu();
+            sysRoleMenu.setMenuId(menuId);
+            sysRoleMenu.setRoleId(roleId);
 
-            this.save(SysRoleMenu);
+            this.save(sysRoleMenu);
         }
     }
 

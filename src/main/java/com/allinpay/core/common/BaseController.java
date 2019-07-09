@@ -1,6 +1,6 @@
 package com.allinpay.core.common;
 
-import com.allinpay.entity.SysUserEntity;
+import com.allinpay.entity.TEtcSysUser;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +14,8 @@ public abstract class BaseController {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
-    protected SysUserEntity getUser() {
-        return (SysUserEntity) SecurityUtils.getSubject().getPrincipal();
+    protected TEtcSysUser getUser() {
+        return (TEtcSysUser) SecurityUtils.getSubject().getPrincipal();
     }
 
     protected Integer getUserId() {
@@ -23,12 +23,10 @@ public abstract class BaseController {
     }
 
     protected String getUserName() {
-        SysUserEntity userEntity = getUser();
+        TEtcSysUser userEntity = getUser();
         String operatorName = userEntity.getUsername();
         return operatorName;
     }
 
-    protected Integer getDeptId() {
-        return getUser().getDeptId();
-    }
+
 }

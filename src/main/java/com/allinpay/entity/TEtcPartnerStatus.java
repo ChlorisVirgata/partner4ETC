@@ -16,10 +16,9 @@ import lombok.experimental.Accessors;
  * @since 2019-06-28
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @TableName("T_ETC_PARTNER_STATUS")
-public class TEtcPartnerStatus extends BaseEntity {
+public class TEtcPartnerStatus   {
 
     private static final long serialVersionUID = 1L;
 

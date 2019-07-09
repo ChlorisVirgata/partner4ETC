@@ -1,7 +1,8 @@
 package com.allinpay.mapper;
 
-import com.allinpay.entity.SysRoleMenu;
+import com.allinpay.entity.TEtcSysRoleMenu;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
@@ -13,7 +14,8 @@ import java.util.List;
  * @author wuchao
  * @since 2019-04-16
  */
-public interface SysRoleMenuMapper extends BaseMapper<SysRoleMenu> {
+@Mapper
+public interface TEtcRoleMenuMapper extends BaseMapper<TEtcSysRoleMenu> {
     /**
      * 根据角色ID，获取菜单ID列表
      */

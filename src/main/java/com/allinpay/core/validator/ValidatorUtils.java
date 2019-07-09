@@ -1,7 +1,7 @@
 package com.allinpay.core.validator;
 
 
-import com.allinpay.core.util.RRException;
+import com.allinpay.core.exception.RRException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;

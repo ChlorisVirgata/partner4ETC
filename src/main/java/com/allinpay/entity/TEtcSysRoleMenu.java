@@ -10,17 +10,16 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 角色与部门对应关系
+ * 角色与菜单对应关系
  * </p>
  *
  * @author wuchao
  * @since 2019-04-16
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-@TableName("t_etc_sys_role")
-public class SysRoleDept extends BaseEntity {
+@TableName("t_etc_sys_role_menu")
+public class TEtcSysRoleMenu   {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,9 +32,9 @@ public class SysRoleDept extends BaseEntity {
     private Integer roleId;
 
     /**
-     * 部门ID
+     * 菜单ID
      */
-    private Integer deptId;
+    private Long menuId;
 
 
 }

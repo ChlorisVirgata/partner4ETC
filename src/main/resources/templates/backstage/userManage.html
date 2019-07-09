@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户管理</title>
+    <meta content="webkit" name="renderer">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <link href="/static/layui/css/layui.css" rel="stylesheet">
+    <script src="/static/layui/layui.js"></script>
+</head>
+
+
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div th:include="/common/header :: header"></div>
+    <div th:include="/common/menu :: menu"></div>
+    <div class="layui-body">
+        <div style="margin: 10px">
+            <span class="layui-breadcrumb">
+                <a href="">后台管理</a>
+                <a><cite>用户管理</cite></a>
+            </span>
+        </div>
+
+
+        <div class="layui-inline" id="layerDemo">
+            <form class="layui-form" id="formDemo" lay-filter="queryFilter">
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户名称</label>
+                    <div class="layui-input-inline" style="width: 200px;">
+                        <input autocomplete="off" class="layui-input" id="username" name="username" type="text">
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-normal" lay-event="queryBtn" type="reset">查询</button>
+                <button class="layui-btn layui-btn-normal" lay-event="resetBtn" type="reset">重置</button>
+                <button class="layui-btn layui-btn-normal" lay-event="addBtn">新增</button>
+            </div>
+        </script>
+        <table class="layui-hide" id="userTable" lay-filter="userTable"></table>
+        <script type="text/html" id="barDemo">
+            <a class="layui-btn layui-btn-xs" lay-event="edit_selectrole">编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        </script>
+    </div>
+
+    <div th:include="/common/footer :: footer"></div>
+</div>
+</body>
+
+<script src="/static/js.backstage/userManage.js" th:inline="none"></script>
+
+
+
+</html>

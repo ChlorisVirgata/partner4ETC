@@ -1,6 +1,6 @@
 package com.allinpay.service;
 
-import com.allinpay.entity.SysRoleMenu;
+import com.allinpay.entity.TEtcSysRoleMenu;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
  * @author wuchao
  * @since 2019-04-16
  */
-public interface ISysRoleMenuService extends IService<SysRoleMenu> {
+public interface ISysRoleMenuService extends IService<TEtcSysRoleMenu> {
     void saveOrUpdate(Integer roleId, List<Long> menuIdList);
 
     /**
