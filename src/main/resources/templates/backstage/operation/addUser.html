@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="../../../static/layui/css/layui.css" media="all"/>
+    <style>
+        body {
+            margin: 10px;
+        }
+
+        .layui-input {
+            width: 260px;
+        }
+    </style>
+</head>
+
+<body class="childrenBody">
+<form class="layui-form" action="/sys/user/add">
+    <input type="hidden" name="userId" id="userId" th:value="${userId}">
+    <input type="hidden" name="opreate" id="opreate" th:value="${opreate}">
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户名</label>
+        <div class="layui-input-inline">
+            <input type="text" name="username" id="username" value="" autocomplete="off" class="layui-input"
+                   lay-verify="required|name">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">密码</label>
+        <div class="layui-input-inline">
+            <input type="text" name="password" id="password" value="" autocomplete="off" class="layui-input"
+                   lay-verify="required">
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">角色</label>
+        <div class="layui-input-block">
+            <input type="radio" name="roleId" value="0" title="超级管理员">
+            <input type="radio" name="roleId" value="1" title="普通管理员" checked="">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">状态</label>
+        <div class="layui-input-block">
+            <input type="checkbox" name="status" lay-skin="switch" lay-text="开启|关闭" checked>
+        </div>
+    </div>
+
+    <!--<div class="layui-form-item">-->
+    <!--<div class="layui-input-block">-->
+    <!--<button class="layui-btn" lay-submit="" lay-filter="*">保存</button>-->
+    <!--<button type="button" class="layui-btn layui-btn-primary" onclick="layerclose();">关闭</button>-->
+    <!--</div>-->
+    <!--</div>-->
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" id="dataCommit" lay-submit="" lay-filter="dataCommit">提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            <button type="button" class="layui-btn layui-btn-primary" onclick="layerclose();">关闭</button>
+        </div>
+    </div>
+</form>
+<script type="text/javascript" src="../../../static/layui/layui.js"></script>
+<script type="text/javascript" src="../../../static/js.backstage/jquery-3.4.1.min.js"></script>
+<script>
+    $(function () {
+        var id = $("#userId").val();
+        if (id != "") {
+            $.ajax({
+                url: "/sys/user/queryUserById",
+                data: {"userId": id},
+                dataType: "json",
+                success: function (data) {
+                    // layer.msg(JSON.stringify(data.data));
+                    $("#username").val(data.data.username);
+                    $("#password").val(data.data.password);
+                    $("input[name='roleId']").eq(data.data.roleId).attr("checked", 'checked');
+                    $("input[name='status']").eq(data.data.status).attr("checked", 'checked');
+                }, error: function () {
+                }
+            });
+        }
+    });
+
+    function layerclose() {
+        layui.use(['layer'], function () {
+            var layer = layui.layer;
+            var index = parent.layer.getFrameIndex(window.name);//获取当前弹出层的层级
+            parent.layer.close(index);//关闭弹出层
+            location.reload();//刷新父页面
+        })
+    }
+
+
+    layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
+        var form = layui.form;
+        var layer = layui.layer;
+    });
+</script>
+
+</body>
+</html>
