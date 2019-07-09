@@ -31,13 +31,4 @@ public class OrgQueryBack extends PartnerAudit{
      */
     private String parstatus;
 
-    /**
-     * 机构地址
-     */
-    private String partner_address;
-    private String license;
-    private String id_front;
-    private String id_back;
-    private String agreement;
-
 }

@@ -18,29 +18,25 @@
         <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR"/>
         <result column="STATUS" property="status" jdbcType="VARCHAR"/>
         <result column="SYS_USER" property="sysUser" jdbcType="VARCHAR"/>
-        <result column="PARTNER_ADDRESS" property="partner_address" jdbcType="VARCHAR"/>
+        <result column="PARTNER_ADDRESS" property="partnerAddress" jdbcType="VARCHAR"/>
         <result column="LICENSE" property="license" jdbcType="VARCHAR"/>
-        <result column="ID_FRONT" property="id_front" jdbcType="VARCHAR"/>
-        <result column="ID_BACK" property="id_back" jdbcType="VARCHAR"/>
+        <result column="ID_FRONT" property="idFront" jdbcType="VARCHAR"/>
+        <result column="ID_BACK" property="idBack" jdbcType="VARCHAR"/>
         <result column="AGREEMENT" property="agreement" jdbcType="VARCHAR"/>
         <result column="CREATE_TIME" property="createTimeX" jdbcType="VARCHAR"/>
         <result column="MODIFY_TIME" property="modifyTimeX" jdbcType="VARCHAR"/>
     </resultMap>
     <select id="queryOrgInfo"  resultMap="BaseResultMap" parameterType="com.allinpay.entity.OrgQueryVo">
-        select PARTNER_ID,PARTNER_NAME,
-        case
-        when PARTNER_TYPE ='00' then '银行'
-        when PARTNER_TYPE ='01' then '汽车服务'
-        when PARTNER_TYPE ='02' then '互联网平台'
-        else '其他'
-        end "PARTNER_TYPE",
-        BUSINESS_LICENCE_NO,RANK,SALER,LEGAL_NAME,LEGAL_ID,
-        LEGAL_PHONE,CONTACTOR,CONTACT_PHONE,PARENT_ID,parstatus.status parstatus,
-        SYS_USER,PARTNER_ADDRESS,LICENSE,ID_FRONT,ID_BACK,AGREEMENT,
-        to_char(CREATE_TIME,'yyyy-mm-dd HH24:mi:ss') CREATE_TIME,
-        to_char(MODIFY_TIME,'yyyy-mm-dd HH24:mi:ss') MODIFY_TIME
+        select parinfo.PARTNER_ID,parinfo.PARTNER_NAME,
+        parinfo.PARTNER_TYPE,
+        parinfo.BUSINESS_LICENCE_NO,parinfo.RANK,parinfo.SALER,parinfo.LEGAL_NAME,parinfo.LEGAL_ID,
+        parinfo.LEGAL_PHONE,parinfo.CONTACTOR,parinfo.CONTACT_PHONE,parinfo.PARENT_ID,parstatus.status parstatus,
+        parinfo.SYS_USER,parinfo.PARTNER_ADDRESS,parinfo.LICENSE,parinfo.ID_FRONT,parinfo.ID_BACK,parinfo.AGREEMENT,
+        to_char(parinfo.CREATE_TIME,'yyyy-mm-dd HH24:mi:ss') CREATE_TIME,
+        to_char(parinfo.MODIFY_TIME,'yyyy-mm-dd HH24:mi:ss') MODIFY_TIME,SECRET_KEY,paraud.FAIL_REASON
         from T_ETC_PARTNER_INFO parinfo
         left join T_ETC_PARTNER_STATUS parstatus on parinfo.status = parstatus.DICT_ID
+        left join T_ETC_PARTNER_AUDIT paraud on parinfo.partner_id = paraud.partner_id
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="orgque.partnerId != null and orgque.partnerId != ''">
                 AND parinfo.PARTNER_ID =#{orgque.partnerId}
@@ -62,10 +58,10 @@
             </if>
 
             <if test="orgque.createTimeStart != null">
-                AND CREATE_TIME between #{orgque.createTimeStart} and #{orgque.createTimeEnd}
+                AND parinfo.CREATE_TIME between #{orgque.createTimeStart} and #{orgque.createTimeEnd}
             </if>
             <if test="orgque.modifyTimeStart != null">
-                AND MODIFY_TIME between #{orgque.modifyTimeStart} and #{orgque.modifyTimeEnd}
+                AND parinfo.MODIFY_TIME between #{orgque.modifyTimeStart} and #{orgque.modifyTimeEnd}
             </if>
         </trim>
         order by parinfo.CREATE_TIME desc

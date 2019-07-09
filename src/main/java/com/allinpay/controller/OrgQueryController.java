@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -25,6 +30,7 @@ public class OrgQueryController {
     @Autowired
     private IOrgQueryService orgquery;
 
+
     /**
      * 机构信息查询
      *
@@ -34,6 +40,7 @@ public class OrgQueryController {
     @GetMapping("/org/getList")
     public ResponseData queryOrgInfo(OrgQueryVo orgque) {
         PageVO<OrgQueryBack> querylist = orgquery.queryorginfo(orgque);
+//        String url=new ServerConfig().getUrl();
         return ResponseData.success().setData(querylist);
     }
 
@@ -79,6 +86,39 @@ public class OrgQueryController {
     public ResponseData normalOrgList() {
         List<PartnerInfo> partnerInfoList = orgquery.selectByNormalStatus();
         return ResponseData.success().setData(partnerInfoList);
+    }
+
+    @PostMapping("/getImg")
+    public void getImage(OrgQueryVo orgque, HttpServletResponse response) {
+        /* 从数据库中获取图片保存的完整路径realPath */
+//        Image image = null;
+//        String path = image.getPath();
+        String path = "D:\\d\\4\\121212.jpg";
+        //设置ContentType的类型
+//        String type = "image/" + image.getExName() + ";charset=utf-8";
+        FileInputStream inputStream = null;
+        OutputStream stream = null;
+
+        try {
+            File file = new File(path);
+            inputStream = new FileInputStream(file);
+            byte[] data = new byte[(int) file.length()];
+            inputStream.read(data);
+            //setContentType("text/plain; charset=utf-8"); 文本
+            response.setContentType("image/*");
+            stream = response.getOutputStream();
+            stream.write(data);
+            stream.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                inputStream.close();
+                stream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

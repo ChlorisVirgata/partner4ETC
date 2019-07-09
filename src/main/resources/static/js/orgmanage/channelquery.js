@@ -79,39 +79,77 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             limit: 5,
             //单元格设置
             cols: [[
-                {field: 'partnerId', width: 100, title: '机构编号'},
+                {
+                    field: 'partnerId',
+                    width: 120,
+                    title: '机构编号',
+                    event: 'setSign',
+                    style: 'color: #024CA1;font-style:italic;text-decoration:underline'
+                },
                 {field: 'partnerName', width: 100, title: '机构名称'},
                 {field: 'partnerType', width: 80, title: '机构类型'},
-                {field: 'partner_address', width: 100, title: '机构地址', hide: true},
+                {field: 'secretKey', width: 80, title: '机构秘钥'},
+                {field: 'partnerAddress', width: 100, title: '机构地址', hide: true},
                 {field: 'saler', width: 100, title: '推广人', hide: true},
                 {field: 'legalName', width: 100, title: '法人姓名', hide: true},
                 {field: 'legalId', width: 100, title: '法人身份证', hide: true},
                 {field: 'legalPhone', width: 100, title: '法人联系方式', hide: true},
                 {field: 'contactor', width: 100, title: '机构联系人', hide: true},
                 {field: 'contactPhone', width: 100, title: '联系人电话', hide: true},
+
+                {field: 'idFront', width: 100, title: '身份证证明', hide: true},
+                {field: 'idBack', width: 100, title: '身份证反面', hide: true},
+                {field: 'agreement', width: 100, title: '协议图片', hide: true},
+
                 {field: 'parentId', width: 100, title: '父机构编号'},
                 {field: 'businessLicenceNo', width: 120, title: '营业执照编号'},
-                {field: 'partner_address', width: 100, title: '机构地址'},
                 {field: 'parstatus', width: 120, title: '机构状态'},
                 {field: 'failReason', width: 120, title: '审核意见'},
                 {field: 'createTimeX', width: 100, title: '创建时间'},
                 {field: 'modifyTimeX', width: 100, title: '更新时间'},
                 {field: 'sysUser', width: 100, title: '最后操作人'}
-            ]]
+            ]],
+            done: function (res, curr, count) {
+
+                $("[data-field='partnerType']").children().each(function () {
+                    if ($(this).text() == '00') {
+                        $(this).text("银行")
+                    } else if ($(this).text() == '01') {
+                        $(this).text("汽车服务")
+                    } else if ($(this).text() == '02') {
+                        $(this).text("互联网平台")
+                    } else if ($(this).text() == '04') {
+                        $(this).text("其他")
+                    }
+                });
+            }
         });
 
         //监听行单击事件（单击事件为：rowDouble）
-        table.on('row(test)', function(obj){
-            var data = obj.data;
+        // table.on('row(test)', function(obj){
+        //     var data = obj.data;
+        //
+        //     // layer.alert(JSON.stringify(), {
+        //     //     title: '当前行数据：'
+        //     // });
+        //     showinfo(data);
+        //     //标注选中样式
+        //     obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+        // });
 
-            // layer.alert(JSON.stringify(), {
-            //     title: '当前行数据：'
-            // });
-            showinfo(data);
-            //标注选中样式
-            obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
-        });
     };
+
+    layui.use('table', function () {
+        var table = layui.table;
+        //监听单元格事件
+        table.on('tool(demoEvent)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'setSign') {
+                showinfo(data);
+            }
+        });
+    });
+
 
     //页面加载就查询列表
     search();
@@ -132,7 +170,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
         $("#chaneltypeshow").val(data.partnerType);//机构类型
         $("#partneridshow").val(data.parentId);//父机构编号
         $("#registidshow").val(data.businessLicenceNo);//营业执照编号
-        $("#chaneladdressshow").val(data.partner_address);//机构地址
+        $("#chaneladdressshow").val(data.partnerAddress);//机构地址
         $("#leglnameshow").val(data.legalName);//法人姓名
         $("#legldcardshow").val(data.legalId);//法人证件号
         $("#leglphoneshow").val(data.legalPhone);//法人身份证号
@@ -142,7 +180,30 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
         $("#creattimeshow").val(data.createTimeX);//创建时间
         $("#modifytimeshow").val(data.modifyTimeX);//更新时间
         $("#approvalopinionshow").val(data.failReason);//审批意见
-        // $("#secretkeyshow").val(data.PARTNER_ID);//秘钥
+        $("#secretkeyshow").val(data.secretKey);//秘钥
+
+
+        $.ajax({
+            url: '/query/getImg',
+            type: 'post',
+            data: {
+                partnerId: data.partnerId,
+                idFront: data.idFront,
+                idBack: data.idBack,
+                agreement: data.agreement
+            },
+            dataType: 'json',
+            success: function (data) {
+                layer.alert("获取图片成功！");
+            },
+            error: function () {
+                layer.alert("获取图片出错！");
+            }
+        });
+
+        // $("#front").attr("src","http://localhost:8080/query/get?id=1");
+        // $("#back").attr("src","xxxx.jpg");
+        // $("#aggre").attr("src","xxxx.jpg");
 
         //打开模态框
         openModal("详细信息", "editForm");
@@ -171,6 +232,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
         return false;
     });
 });
+
 
 function query(){
     var index = layer.alert("立即提交", function () {
