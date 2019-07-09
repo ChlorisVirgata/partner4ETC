@@ -50,4 +50,17 @@ public class RedirectController {
     public String passageMoney() {
         return "/dataquery/passagemoney";
     }
+
+    @RequestMapping("/login")
+    public String login() {
+//        Subject subject = SecurityUtils.getSubject();
+//        subject.logout();
+        System.out.println("login");
+        return "login";
+    }
+
+    @RequestMapping("/index")
+    public String index() {
+        return "index";
+    }
 }
