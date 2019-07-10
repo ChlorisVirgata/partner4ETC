@@ -46,34 +46,39 @@ public class ShiroConfig {
     }
 
 
-    //@Bean("shiroFilter")
+    @Bean("shiroFilter")
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(securityManager);
-      //  shiroFilter.setLoginUrl("/login.html");
-      //  shiroFilter.setUnauthorizedUrl("/");
+        shiroFilter.setLoginUrl("/web/login");
+        //  shiroFilter.setUnauthorizedUrl("/");
 
         Map<String, String> filterMap = new LinkedHashMap<>();
-        filterMap.put("/swagger/**", "anon");
-        filterMap.put("/v2/api-docs", "anon");
-        filterMap.put("/swagger-ui.html", "anon");
-        filterMap.put("/webjars/**", "anon");
-        filterMap.put("/swagger-resources/**", "anon");
         filterMap.put("/templates/**", "anon");
-        filterMap.put("/static/**", "anon");
-        filterMap.put("/static/web/**", "anon");
-        filterMap.put("/static/css/**", "anon");
-        filterMap.put("/static/fonts/**", "anon");
-        filterMap.put("/static/js/**", "anon");
-        filterMap.put("/static/libs/**", "anon");
-        filterMap.put("/static/plugins/**", "anon");
-
         filterMap.put("/public/**", "anon");
-        filterMap.put("/login.html", "anon");
         filterMap.put("/sys/login", "anon");
         filterMap.put("/favicon.ico", "anon");
         filterMap.put("/captcha.jpg", "anon");
+
+        // 配置不会被拦截的链接 顺序判断
+        filterMap.put("/web/login", "anon");
+        filterMap.put("/etc/login", "anon");
+        filterMap.put("/etc/captcha", "anon");
+        filterMap.put("/etc/logout", "anon");
+        filterMap.put("/*.ico", "anon");
+        filterMap.put("/login.html", "anon");
+        filterMap.put("/static/**", "anon");
+        filterMap.put("/static/lib/**", "anon");
+        //authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问
         filterMap.put("/**", "authc");
+        // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
+        shiroFilter.setLoginUrl("/web/login");
+        //shiroFilter.setLoginUrl("/login");
+        // 登录成功后要跳转的链接
+        shiroFilter.setSuccessUrl("/web/index");
+        //未授权界面;
+        shiroFilter.setUnauthorizedUrl("/403");
+
         shiroFilter.setFilterChainDefinitionMap(filterMap);
 
         return shiroFilter;

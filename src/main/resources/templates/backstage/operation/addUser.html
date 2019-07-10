@@ -18,6 +18,7 @@
         .layui-input {
             width: 260px;
         }
+
     </style>
 </head>
 
@@ -72,7 +73,7 @@
     </div>
 </form>
 <script type="text/javascript" src="../../../static/layui/layui.js"></script>
-<script type="text/javascript" src="../../../static/js.backstage/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="../../../static/lib/jquery/jquery-3.4.1.min.js"></script>
 <script>
     $(function () {
         var id = $("#userId").val();
@@ -106,6 +107,35 @@
     layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
         var form = layui.form;
         var layer = layui.layer;
+
+
+        form.on('submit(*)', function(data) {
+            var index = layer.msg('提交中，请稍候',{icon: 16,time:false,shade:0.8});
+            var d = data.field;
+            var url = "/user/add";
+            if(d.id != ""){
+                url = "/user/edit";
+            }
+            $.ajax({
+                url: url,
+                data:d,
+                dataType:"text",
+                success: function(data){
+                    layer.close(index);
+                    if(data == 0){
+                        layer.msg("保存成功！");
+                        parent.queryTea();
+                        parent.close();
+                    }else{
+                        layer.msg("保存失败！");
+                    }
+                },error:function(){
+                    layer.close(index);
+                    layer.msg("保存失败！");
+                }
+            });
+            return false;
+        });
     });
 </script>
 

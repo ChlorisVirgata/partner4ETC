@@ -23,6 +23,11 @@
             left: 574px;
         }
 
+        .layui-form-item {
+            margin-bottom: 15px;
+            clear: both;
+            margin: 26px;
+        }
         /*.layui-form-item .layui-inline {*/
         /*margin-left: 30px;*/
         /*top: 5px;*/
@@ -58,6 +63,11 @@
         </div>
     </div>
 
+    <!--<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">-->
+        <!--<legend>角色权限</legend>-->
+        <!--<div id="privileges" class="demo-tree-more"></div>-->
+    <!--</fieldset>-->
+
 
     <div class="layui-form-item">
         <div class="layui-input-block">
@@ -70,8 +80,8 @@
 <script src="../../../static/layui/layui.js" charset="utf-8"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <!--<script src="../../static/js/jstest.js" charset="utf-8"></script>-->
-<script type="text/javascript" src="../../../static/js.backstage/jquery-3.4.1.min.js"></script>
-<script type="text/javascript">
+<script type="text/javascript" src="../../../static/lib/jquery/jquery-3.4.1.min.js"></script>
+<!--<script type="text/javascript">
     $(function () {
         var data = data;  //获取选中行数据
         alert(JSON.stringify(data));
@@ -94,7 +104,7 @@
         //     });
         // }
     });
-</script>
+</script>-->
 <script>
     layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
         var form = layui.form;

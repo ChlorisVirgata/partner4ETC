@@ -1,6 +1,5 @@
 package com.allinpay.controller;
 
-import com.allinpay.entity.TEtcSysRole;
 import com.allinpay.service.ITEtcSysRoleService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 /**
  * 系统页面视图
@@ -59,7 +56,7 @@ public class TEtcPageController {
     }
 
     @GetMapping("/web/use/add")
-    //@RequiresPermissions("system:user:add")
+    @RequiresPermissions("system:user:add")
     public ModelAndView toAdd(String userId,String opreate) {
 //        List<TEtcSysRole> tEtcSysRoles = sysRoleService.list();
         ModelAndView modelAndView = new ModelAndView("/backstage/operation/addUser");
@@ -101,5 +98,11 @@ public class TEtcPageController {
     //@RequiresPermissions("system:user:add")
     public String test() {
         return "/backstage/test";
+    }
+
+
+    @GetMapping("/web/role/edit")
+    public String editRole(){
+          return "backstage/operation/addRoleInfo";
     }
 }

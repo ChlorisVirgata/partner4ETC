@@ -10,6 +10,26 @@ layui.use(['layer', 'form'], function () {
         if (!checkParams()) {
             return;
         }
+        // var username = $("input[name='username']");
+        // var password = $("input[name='password']");
+        // var data = "username=" + username + "&password=" + password;
+        // layer.msg(data);
+        // $.ajax({
+        //     type: "POST",
+        //     url: "sys/login",
+        //     data: data,
+        //     dataType: "json",
+        //     success: function (result) {
+        //         if (result.code == 0) {//登录成功
+        //             parent.location.href = '/web/index';
+        //         } else {
+        //             // vm.error = true;
+        //             // vm.errorMsg = result.msg;
+        //             //
+        //             // vm.refreshCode();
+        //         }
+        //     }
+        // });
         $.ajax({
             url: "/etc/login",
             type: 'post',
@@ -38,15 +58,15 @@ layui.use(['layer', 'form'], function () {
     });
 
     //更换验证码
-    $("#captchaImg").on("click", function () {
-        $("#captchaImg").attr("src", "/etc/captcha?t=" + new Date());
-    });
+    // $("#captchaImg").on("click", function () {
+    //     $("#captchaImg").attr("src", "/etc/captcha?t=" + new Date());
+    // });
 
     //参数校验
     function checkParams() {
         var username = $("input[name='username']");
         var password = $("input[name='password']");
-        var captcha = $("input[name='captcha']");
+        // var captcha = $("input[name='captcha']");
         if (!$.trim(username.val())) {
             $("#notice").find("div").html("请输入用户名");
             $("#notice").show().delay(3000).hide(0);
@@ -57,11 +77,11 @@ layui.use(['layer', 'form'], function () {
             $("#notice").show().delay(3000).hide(0);
             return false;
         }
-        if ($("#captcha").css("display") != "none" && !$.trim(captcha.val())) {
-            $("#notice").find("div").html("请输入验证码");
-            $("#notice").show().delay(3000).hide(0);
-            return false;
-        }
+        // if ($("#captcha").css("display") != "none" && !$.trim(captcha.val())) {
+        //     $("#notice").find("div").html("请输入验证码");
+        //     $("#notice").show().delay(3000).hide(0);
+        //     return false;
+        // }
         return true;
     }
 });

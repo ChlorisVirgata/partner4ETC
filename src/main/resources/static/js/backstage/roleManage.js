@@ -94,7 +94,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             title: '添加菜单',
             shadeClose: true,
             shade: 0.8,
-            area: ['500px', '80%'],
+            area: ['450px', '50%'],
             content: 'role/add', //iframe的url
             btn: ['关闭'],
             yes: function () {
@@ -109,9 +109,9 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
     //监听行工具事件
     table.on('tool(roleTable)', function (obj) {
         var data = obj.data;
-        var checkStatus = table.checkStatus(data.roleId);
-        var data = checkStatus.data;  //获取选中行数据
-        layer.alert(JSON.stringify(data));
+        // var checkStatus = table.checkStatus(data.roleId);
+        // var data = checkStatus.data;  //获取选中行数据
+        // layer.alert(JSON.stringify(data));
         // var str = JSON.stringify(data.field);
         // alert(str);
         if (obj.event === 'del') {
@@ -135,8 +135,8 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 title: '编辑用户',
                 shadeClose: true,
                 shade: 0.8,
-                area: ['500px', '80%'],
-                content: 'role/add?roleId='+data.roleId+'&data='+JSON.stringify(data.field), //iframe的url
+                area: ['450px', '50%'],
+                content: 'role/edit?roleId=' + data.roleId, //iframe的url
                 btn: ['关闭'],
                 yes: function () {
                     search();
@@ -168,7 +168,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                     title: '添加菜单',
                     shadeClose: true,
                     shade: 0.8,
-                    area: ['500px', '80%'],
+                    area: ['450px', '50%'],
                     content: 'role/add', //iframe的url
                     btn: ['关闭'],
                     yes: function () {
@@ -192,7 +192,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 title: '添加用户',
                 shadeClose: true,
                 shade: 0.8,
-                area: ['500px', '80%'],
+                area: ['450px', '50%'],
                 content: 'role/add', //iframe的url
                 btn: ['关闭'],
                 yes: function () {
