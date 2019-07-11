@@ -43,7 +43,17 @@ public enum BizEnums {
     ORG_MODIFY_FAIL("10002", "机构信息编辑失败"),
     ORG_SENDAUDIT_FAIL("10003", "机构信息提交审核失败"),
     ORG_NOT_EXIST("10004", "待审核机构不存在"),
-    ORG_AUDIT_FAIL("10005", "机构信息审核失败");
+    ORG_AUDIT_FAIL("10005", "机构信息审核失败"),
+    ORG_FORMAL_NOT_EXIST("10006", "机构不存在"),
+    ORG_STATUS_EXCEPTION("10007", "机构状态有误,非正常状态"),
+
+    /**
+     * 银行卡基础信息模块
+     */
+    BANK_EXIST("20000", "银行基础信息已存在"),
+    BANK_NOT_EXIST("20001", "银行基础信息不存在"),
+
+    PARTNER_BANK_EXIST("20002", "银行机构映射信息已存在");
 
 
     private String code;

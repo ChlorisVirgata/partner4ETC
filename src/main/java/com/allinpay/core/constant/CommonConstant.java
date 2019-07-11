@@ -44,4 +44,16 @@ public class CommonConstant {
      * 保存图片路径,如：D:\d\4\
      */
     public static String imagPath;
+
+    /**
+     * 银行基础信息数据状态、机构银行映射关系状态 0 禁用 1 有效
+     */
+    public static String BANK_STATUS_NORMAL = "1";
+    public static String BANK_STATUS_ABNORMAL = "0";
+
+    /**
+     * 银行卡类型 1 借记卡 2 贷记卡
+     */
+    public static String CARD_TYPE_DEBT = "1";
+    public static String CARD_TYPE_CREDIT = "2";
 }

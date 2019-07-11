@@ -51,7 +51,6 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(securityManager);
         shiroFilter.setLoginUrl("/web/login");
-        //  shiroFilter.setUnauthorizedUrl("/");
 
         Map<String, String> filterMap = new LinkedHashMap<>();
         filterMap.put("/templates/**", "anon");
@@ -68,7 +67,6 @@ public class ShiroConfig {
         filterMap.put("/*.ico", "anon");
         filterMap.put("/login.html", "anon");
         filterMap.put("/static/**", "anon");
-        filterMap.put("/static/lib/**", "anon");
         //authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问
         filterMap.put("/**", "authc");
         // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面

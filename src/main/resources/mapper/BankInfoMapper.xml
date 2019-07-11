@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.allinpay.mapper.BankInfoMapper">
+    <resultMap id="BaseResultMap" type="com.allinpay.entity.BankInfo">
+        <id column="BANK_ID" property="bankId" jdbcType="VARCHAR"/>
+        <result column="BANK_NAME" property="bankName" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"/>
+        <result column="INSERT_TIME" property="insertTime" jdbcType="VARCHAR"/>
+        <result column="MODIFY_TIME" property="modifyTime" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+       BANK_ID,BANK_NAME,STATUS,INSERT_TIME,MODIFY_TIME
+    </sql>
+
+    <select id="selectList" parameterType="com.allinpay.controller.query.BankQuery" resultMap="BaseResultMap">
+        select BANK_ID,BANK_NAME,INSERT_TIME,MODIFY_TIME,
+        decode(STATUS,'0','禁用','1','有效','类型有误') STATUS
+        from T_ETC_BANK_INFO
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="bankQuery.bankId != '' and bankQuery.bankId != null">
+                BANK_ID LIKE '%' || #{bankQuery.bankId} || '%'
+            </if>
+            <if test="bankQuery.bankName != '' and bankQuery.bankName != null">
+                AND BANK_NAME LIKE '%' || #{bankQuery.bankName} || '%'
+            </if>
+            <if test="bankQuery.status != null">
+                AND STATUS = #{bankQuery.status}
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectOne" parameterType="string" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from T_ETC_BANK_INFO
+        where BANK_ID = #{bankId}
+    </select>
+
+    <insert id="insert" parameterType="com.allinpay.entity.BankInfo">
+        insert into T_ETC_BANK_INFO (<include refid="Base_Column_List"/>)
+        values (#{bankInfo.bankId, jdbcType=VARCHAR},
+        #{bankInfo.bankName, jdbcType=VARCHAR},
+        #{bankInfo.status, jdbcType=VARCHAR},
+        #{bankInfo.insertTime, jdbcType=VARCHAR},
+        #{bankInfo.modifyTime, jdbcType=VARCHAR})
+    </insert>
+
+    <update id="update" parameterType="com.allinpay.entity.BankInfo">
+        update T_ETC_BANK_INFO set
+        BANK_NAME = #{bankInfo.bankName, jdbcType=VARCHAR},
+        MODIFY_TIME = #{bankInfo.modifyTime, jdbcType=VARCHAR}
+        where
+        BANK_ID = #{bankInfo.bankId}
+    </update>
+
+    <update id="updateStatus">
+        update T_ETC_BANK_INFO
+        set
+        STATUS = #{status}
+        where BANK_ID = #{bankId}
+    </update>
+
+
+</mapper>

@@ -53,8 +53,6 @@ public class RedirectController {
 
     @RequestMapping("/login")
     public String login() {
-//        Subject subject = SecurityUtils.getSubject();
-//        subject.logout();
         System.out.println("login");
         return "login";
     }
@@ -62,5 +60,15 @@ public class RedirectController {
     @RequestMapping("/index")
     public String index() {
         return "/common/index";
+    }
+
+    @RequestMapping("/bank")
+    public String bank() {
+        return "/bank/bankinfo";
+    }
+
+    @RequestMapping("/orgbank")
+    public String orgbank() {
+        return "/bank/orgbankmap";
     }
 }
