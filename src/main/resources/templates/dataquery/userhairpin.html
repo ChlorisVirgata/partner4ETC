@@ -42,11 +42,12 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
     <title>机构信息查询</title>
     <link href="/static/layui/css/layui.css" rel="stylesheet">
+    <link href="/static/css/common.css" rel="stylesheet">
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
-    <div th:include="/common/header :: header"></div>
-    <div th:include="/common/menu :: menu"></div>
+    <div th:include="common/header :: header"></div>
+    <div th:include="common/menu :: menu"></div>
     <!--查询页面 -->
     <div class="layui-body">
         <!--面包屑-->
@@ -123,7 +124,7 @@
         <!-- 数据展示 table框 -->
         <table class="layui-hide" id="orginfotable" lay-filter="orginfotable"></table>
     </div>
-    <div th:include="/common/footer :: footer"></div>
+    <div th:include="common/footer :: footer"></div>
 
 </div>
 </body>

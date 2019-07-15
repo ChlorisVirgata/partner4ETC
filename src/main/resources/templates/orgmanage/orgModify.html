@@ -7,7 +7,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
     <title>机构信息变更</title>
     <link href="/static/layui/css/layui.css" rel="stylesheet">
-    <!--<link href="/static/css/common.css" rel="stylesheet">-->
+    <link href="/static/css/common.css" rel="stylesheet">
     <style type="text/css">
         .layui-form-label {
             width: 115px;
@@ -25,8 +25,8 @@
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
-    <div th:include="/common/header :: header"></div>
-    <div th:include="/common/menu :: menu"></div>
+    <div th:include="common/header :: header"></div>
+    <div th:include="common/menu :: menu"></div>
     <!--查询页面 -->
     <div class="layui-body">
         <!--面包屑-->
@@ -99,7 +99,7 @@
         <!-- 数据展示 table框 -->
         <table class="layui-hide" id="modifyTable" lay-filter="tableFilter"></table>
     </div>
-    <div th:include="/common/footer :: footer"></div>
+    <div th:include="common/footer :: footer"></div>
     <!-- 编辑表单 -->
     <form class="layui-form" id="editForm" lay-filter="formFilter"
           style="display: none;margin: 10px; text-align: center">

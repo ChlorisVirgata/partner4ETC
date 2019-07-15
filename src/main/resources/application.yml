@@ -1,6 +1,6 @@
 #tomcat端口号 根路径配置
 server:
-  port: 8020
+  port: 8080
 
 spring:
   thymeleaf:
