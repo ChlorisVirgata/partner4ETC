@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.allinpay.mapper.PartnerBankMapper">
+    <resultMap id="BaseResultMap" type="com.allinpay.entity.PartnerBank">
+        <id column="PARTNER_ID" property="partnerId" jdbcType="VARCHAR"/>
+        <result column="BANK_ID" property="bankId" jdbcType="VARCHAR"/>
+        <result column="DEPOSIT" property="deposit" jdbcType="NUMERIC"/>
+        <result column="CARD_TYPE" property="cardType" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"/>
+        <result column="INSERT_TIME" property="insertTime" jdbcType="VARCHAR"/>
+        <result column="MODIFY_TIME" property="modifyTime" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        PARTNER_ID,BANK_ID,DEPOSIT,CARD_TYPE,STATUS,INSERT_TIME,MODIFY_TIME
+    </sql>
+
+    <select id="selectList" parameterType="com.allinpay.controller.query.BankQuery" resultMap="BaseResultMap">
+        select PARTNER_ID,BANK_ID,DEPOSIT,INSERT_TIME,MODIFY_TIME,
+        decode(CARD_TYPE,'1','借记卡','2','贷记卡','类型有误') CARD_TYPE,
+        decode(STATUS,'0','禁用','1','有效','类型有误') STATUS
+        from T_ETC_PARTNER_BANK
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="bankQuery.bankId != '' and bankQuery.bankId != null">
+                BANK_ID LIKE '%' || #{bankQuery.bankId} || '%'
+            </if>
+            <if test="bankQuery.partnerId != '' and bankQuery.partnerId != null">
+                AND PARTNER_ID LIKE '%' || #{bankQuery.partnerId} || '%'
+            </if>
+            <if test="bankQuery.status != null">
+                AND STATUS = #{bankQuery.status}
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectOne" parameterType="com.allinpay.entity.PartnerBank" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from T_ETC_PARTNER_BANK where PARTNER_ID = #{partnerBank.partnerId}
+        AND BANK_ID = #{partnerBank.bankId} AND CARD_TYPE = #{partnerBank.cardType}
+    </select>
+
+    <insert id="insert" parameterType="com.allinpay.entity.PartnerBank">
+        insert into T_ETC_PARTNER_BANK (<include refid="Base_Column_List"/>)
+        values (
+        #{partnerBank.partnerId, jdbcType=VARCHAR},
+        #{partnerBank.bankId, jdbcType=VARCHAR},
+        #{partnerBank.deposit, jdbcType=NUMERIC},
+        #{partnerBank.cardType, jdbcType=VARCHAR},
+        #{partnerBank.status, jdbcType=VARCHAR},
+        #{partnerBank.insertTime, jdbcType=VARCHAR},
+        #{partnerBank.modifyTime, jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="updateDeposit" parameterType="com.allinpay.entity.PartnerBank">
+        update T_ETC_PARTNER_BANK set
+        DEPOSIT =  #{partnerBank.deposit, jdbcType=NUMERIC},
+        MODIFY_TIME = #{partnerBank.modifyTime, jdbcType=VARCHAR}
+        WHERE
+        BANK_ID = #{partnerBank.bankId, jdbcType=VARCHAR} AND
+        PARTNER_ID = #{partnerBank.partnerId, jdbcType=VARCHAR} AND
+        CARD_TYPE = #{partnerBank.cardType, jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateStatus" parameterType="com.allinpay.entity.PartnerBank">
+        update T_ETC_PARTNER_BANK set
+        STATUS = #{partnerBank.status, jdbcType=VARCHAR}
+        WHERE
+        BANK_ID = #{partnerBank.bankId, jdbcType=VARCHAR} AND
+        PARTNER_ID = #{partnerBank.partnerId, jdbcType=VARCHAR} AND
+        CARD_TYPE = #{partnerBank.cardType, jdbcType=VARCHAR}
+    </update>
+
+</mapper>
