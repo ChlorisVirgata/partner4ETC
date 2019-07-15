@@ -10,42 +10,23 @@ layui.use(['layer', 'form'], function () {
         if (!checkParams()) {
             return;
         }
-        // var username = $("username");
-        // var password = $("input[name='password']".valueOf());
-        // var data = $("#loginForm").serialize();
-        // layer.msg(data);
         $.ajax({
             type: 'post',
-            url: '/web/login',
+            url: '/etc/login',
             data: $("#loginForm").serialize(),
             dataType: 'json',
             success: function (data) {
-                if (data.code === 0) {
+                if (data.code === "00000") {
                     parent.location.href = '/index';
                 } else {
+                    $("#notice").find("div").html(data.msg);
+                    $("#notice").show().delay(3000).hide(0);
                 }
+            },
+            error: function () {
+                layer.alert("登录失败，请重试！");
             }
         });
-        // $.ajax({
-        //     url: "web/login",
-        //     type: 'post',
-        //     data: $("#loginForm").serialize(),
-        //     dataType: 'json',
-        //     success: function (data) {
-        //         if (data.code == 0) {
-        //             // sessionStorage.setItem("allinpayAuthority", data.data.roleIdList);
-        //             console.log(data.data.roleIdList);
-        //             window.location.href = "/web/index";
-        //         } else {
-        //             $("#captcha").show();
-        //             $("#notice").find("div").html(data.msg);
-        //             $("#notice").show().delay(3000).hide(0);
-        //         }
-        //     },
-        //     error: function () {
-        //         layer.alert("登录失败，请重试！");
-        //     }
-        // });
     });
 
     //监听form表单提交事件 防止页面跳转
