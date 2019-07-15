@@ -52,19 +52,19 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 };
             },
             //每页展示的条数
-            limits: [5, 10],
+            limits: [5, 10,20],
             //每页默认显示的数量
-            limit: 5,
+            limit: 10,
             //单元格设置
             cols: [[
-                {field: 'partnerId', width: 100, title: '机构编号'},
-                {field: 'partnerName', width: 100, title: '机构名称'},
-                {field: 'license', width: 100, title: '车牌号'},
-                {field: 'orderNo', width: 100, title: '流水号'},
-                {field: 'tradedate', width: 180, title: '请求时间'},
-                {field: 'amount', width: 100, title: '金额'},
-                {field: 'entrance', width: 100, title: '入口'},
-                {field: 'exitway', width: 100, title: '出口'}
+                {field: 'partnerId',  title: '机构编号'},
+                {field: 'partnerName',  title: '机构名称'},
+                {field: 'license',  title: '车牌号'},
+                {field: 'orderNo',  title: '流水号'},
+                {field: 'tradedate',  title: '请求时间'},
+                {field: 'amount',  title: '金额'},
+                {field: 'entrance',  title: '入口'},
+                {field: 'exitway',  title: '出口'}
             ]]
         });
     };

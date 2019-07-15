@@ -140,8 +140,7 @@
     <!--机构信息冻结、解冻、注销-->
     <update id="blockOrg">
         update T_ETC_PARTNER_INFO
-        set STATUS=#{orgque.status},MODIFY_TIME=sysdate
-        --,SYS_USER={#orgque.sysUser}
+        set STATUS=#{orgque.status},MODIFY_TIME=sysdate,SYS_USER=#{orgque.sysUser}
         WHERE partner_id=#{orgque.partnerId}
     </update>
     <select id="selectNormalList" resultMap="BaseResultMap">
