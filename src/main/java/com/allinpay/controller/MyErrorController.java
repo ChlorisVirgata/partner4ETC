@@ -11,7 +11,7 @@ public class MyErrorController implements ErrorController {
     @RequestMapping("/error")
     public String dealAbNormal(HttpServletResponse response) {
         System.out.println(response.getStatus());
-        return "/common/404";
+        return "common/404";
     }
 
     @Override

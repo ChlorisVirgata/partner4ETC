@@ -13,62 +13,61 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RedirectController {
     @RequestMapping("/orgEnter")
     public String orgEnter() {
-        return "/orgmanage/orgEnter";
+        return "orgmanage/orgEnter";
     }
 
     @RequestMapping("/orgModify")
     public String orgModify() {
-        return "/orgmanage/orgModify";
+        return "orgmanage/orgModify";
     }
 
     @RequestMapping("/orgAudit")
     public String orgAudit() {
-        return "/orgmanage/orgAudit";
+        return "orgmanage/orgAudit";
     }
 
     @RequestMapping("/orgquery")
     public String orgQuery() {
-        return "/dataquery/orgQuery";
+        return "dataquery/orgQuery";
     }
 
     @RequestMapping("/orgLogout")
     public String orgLogout() {
-        return "/orgmanage/orgLogout";
+        return "orgmanage/orgLogout";
     }
 
     @RequestMapping("/orgBlocking")
     public String orgBlocking() {
-        return "/orgmanage/orgBlocking";
+        return "orgmanage/orgBlocking";
     }
 
     @RequestMapping("/userHairpin")
     public String userHairpin() {
-        return "/dataquery/userhairpin";
+        return "dataquery/userhairpin";
     }
 
     @RequestMapping("/passageMoney")
     public String passageMoney() {
-        return "/dataquery/passagemoney";
+        return "dataquery/passagemoney";
     }
 
     @RequestMapping("/login")
     public String login() {
-        System.out.println("login");
         return "login";
     }
 
     @RequestMapping("/index")
     public String index() {
-        return "/common/index";
+        return "common/index";
     }
 
     @RequestMapping("/bank")
     public String bank() {
-        return "/bank/bankinfo";
+        return "bank/bankinfo";
     }
 
     @RequestMapping("/orgbank")
     public String orgbank() {
-        return "/bank/orgbankmap";
+        return "bank/orgbankmap";
     }
 }

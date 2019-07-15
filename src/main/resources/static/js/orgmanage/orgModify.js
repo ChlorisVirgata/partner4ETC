@@ -355,9 +355,13 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
 
     //展示图片信息 图片路径+图片名称
     function showImg(myData) {
-        $('#licenseImg').attr('src', myData.license);
-        $('#legalFrontImg').attr('src', myData.idFront);
-        $('#legalBackImg').attr('src', myData.idBack);
-        $('#agreementImg').attr('src', myData.agreement);
+        $.trim(myData.license) == "" ? $('#licenseImg').attr('src', "") :
+            $('#licenseImg').attr('src', "/etcimg/temp/" + myData.partnerId + "/license/" + myData.license);
+        $.trim(myData.idFront) == "" ? $('#legalFrontImg').attr('src', "") :
+            $('#legalFrontImg').attr('src', "/etcimg/temp/" + myData.partnerId + "/front/" + myData.idFront);
+        $.trim(myData.idBack) == "" ? $('#legalBackImg').attr('src', "") :
+            $('#legalBackImg').attr('src', "/etcimg/temp/" + myData.partnerId + "/back/" + myData.idBack);
+        $.trim(myData.agreement) == "" ? $('#agreementImg').attr('src', "") :
+            $('#agreementImg').attr('src', "/etcimg/temp/" + myData.partnerId + "/agreement/" + myData.agreement);
     }
 });

@@ -1,8 +1,5 @@
 package com.allinpay.core.base;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.apache.shiro.mgt.RememberMeManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
@@ -14,6 +11,9 @@ import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Configuration
 public class ShiroConfig {
@@ -52,6 +52,7 @@ public class ShiroConfig {
         filterMap.put("/etc/captcha", "anon");
         filterMap.put("/login.html", "anon");
         filterMap.put("/static/js/**", "anon");
+        filterMap.put("/etcimg/**", "anon");
         filterMap.put("/**", "authc");
         shiroFilter.setSuccessUrl("/index");
         shiroFilter.setUnauthorizedUrl("/403");
