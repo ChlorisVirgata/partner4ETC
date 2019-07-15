@@ -6,21 +6,42 @@
 <body>
 <div th:fragment="header">
     <div class="layui-header">
-        <div class="layui-logo" style="color: #b2b2b2">ETC后台管理系统</div>
+        <div class="layui-logo">
+            <cite style="color: #9999FF;size: A5">&nbsp;ETC DATA&emsp;</cite>
+        </div>
+
+
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item" lay-unselect>
+                <a lay-event="flexible" title="侧边伸缩">
+                    <i class="layui-icon layui-icon-shrink-right"></i>
+                </a>
+            </li>
+            <!-- 面包屑 -->
+            <span class="layui-breadcrumb layui-anim layui-anim-up">
+                    <a><cite>首页</cite></a>
+            </span>
+        </ul>
+
+
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
-                <a href="javascript:;">
-                    <img class="layui-nav-img" src="http://t.cn/RCzsdCq">
-                    贤心
+                <a>
+                    <img th:src="@{/static/img/tlzf.png}" class="layui-nav-img" alt="头像">
+                    <span class="layui-nav-more"></span>
                 </a>
-                <dl class="layui-nav-child">
-                    <dd><a href="">基本资料</a></dd>
-                    <dd><a href="">安全设置</a></dd>
+                <dl class="layui-nav-child layui-anim layui-anim-upbit">
+                    <dl lay-unselect>
+                        <dd><a href="">个人中心</a></dd>
+                        <dd><a href="">安全设置</a></dd>
+                        <dd><a href="/logout">退出</a></dd>
+                        <!--<li class="layui-nav-item"><a href="/etc/logout">退出</a></li>-->
+                    </dl>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="/etc/logout">退出</a></li>
         </ul>
     </div>
 </div>
 </body>
+
 </html>
