@@ -21,7 +21,6 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             url: '/role/list',
             cellMinWidth: 80,  //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             toolbar: '#toolbarDemo',
-            even: true,
             //是否分页
             page: true,
             //请求参数
@@ -109,11 +108,6 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
     //监听行工具事件
     table.on('tool(roleTable)', function (obj) {
         var data = obj.data;
-        // var checkStatus = table.checkStatus(data.roleId);
-        // var data = checkStatus.data;  //获取选中行数据
-        // layer.alert(JSON.stringify(data));
-        // var str = JSON.stringify(data.field);
-        // alert(str);
         if (obj.event === 'del') {
             layer.confirm('真的删除行么', function (index) {
                 obj.del();
@@ -179,7 +173,6 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 });
                 break;
         }
-        ;
     });
 
 
@@ -201,36 +194,6 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 }
 
             });
-
-            /*//多窗口模式，层叠置顶
-            layer.open({
-                type: 2 //此处以iframe举例
-                , title: '添加用户'
-                , area: ['500px', '260px']
-                , shade: 0
-                , maxmin: true
-                , offset: [ //为了演示，随机坐标
-                    ($(window).height() / 2),
-                    ($(window).width() / 2)
-                    // Math.random() * ($(window).height() - 300)
-                    // , Math.random() * ($(window).width() - 390)
-                ]
-                , content: 'role/add'
-                , btn: ['关闭'] //只是为了演示
-                , yes: function () {
-                    search();
-                    layer.closeAll();
-                }
-                // , btn2: function () {
-                //     layer.closeAll();
-                // }
-
-                , zIndex: layer.zIndex //重点1
-                , success: function () {
-                    // layer.setTop(layero); //重点2
-                    //layer.closeAll();
-                }
-            });*/
         }
     };
 
@@ -238,23 +201,6 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
         var othis = $(this), method = othis.data('method');
         active[method] ? active[method].call(this, othis) : '';
     });
-
-
-    //打开添加页面模态框
-    // $("#addBtn").on("click", function () {
-    //     layer.open({
-    //         type: 2,
-    //         title: '添加角色',
-    //         shadeClose: true,
-    //         shade: 0.8,
-    //         area: ['500px', '80%'],
-    //         content: 'addUser11.html', //iframe的url
-    //         btn: ['确认', '取消'],
-    //     });
-    //     alert("add")
-    //     // break;
-    //     //openModal("添加", "addForm");
-    // });
 
 
     //进行编辑操作
@@ -310,84 +256,6 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
         })
     });
 
-    /*//监听table行工具事件 如详情、编辑、删除操作
-    table.on('tool(test)', function (obj) {
-        //获取所在行的数据
-        var data = obj.data;
-        //删除
-        if (obj.event === 'del') {
-            var index = layer.confirm('确定删除？', function () {
-                $.ajax({
-                    url: '/web/delById',
-                    type: 'post',
-                    data: {
-                        id: data.id
-                    },
-                    dataType: 'json',
-                    success: function (data) {
-                        if (data.code == "00000") {
-                            layer.close(index);
-                            search();
-                        } else {
-                            layer.alert("删除失败！");
-                        }
-                    },
-                    error: function () {
-                        layer.alert("删除失败，请重试！");
-                    }
-                });
-            });
-            //编辑
-        } else if (obj.event === 'edit') {
-            //先通过后台查询数据，渲染页面后打开模态框
-            $.ajax({
-                url: '/web/getById',
-                type: 'get',
-                data: {
-                    id: data.id
-                },
-                dataType: 'json',
-                success: function (data) {
-                    if (data.code == "00000") {
-                        var myData = data.data[0];
-                        $("#editUsername").val(myData.username);
-                        $("#editExperience").val(myData.experience);
-                        $("#editScore").val(myData.score);
-                        $("#editWealth").val(myData.wealth);
-                    } else {
-                        layer.alert("查询失败！");
-                    }
-                },
-                error: function () {
-                    layer.alert("查询失败，请重试！");
-                }
-            });
-            //打开模态框
-            openModal("编辑", "editForm");
-        }
-    });
-*/
-    //监听form表单提交事件 防止页面跳转
-    form.on('submit(editFilter)', function (data) {
-        return false;
-    });
-
-    form.on('submit(addFilter)', function (data) {
-        return false;
-    });
-
-    //打开模态框
-    function openModal(operateName, modalName) {
-        layer.open({
-            title: operateName,
-            content: $('#' + modalName),
-            area: ['700px', '450px'],
-            //点击遮罩关闭窗口
-            shadeClose: true,
-            //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
-            type: 1
-        });
-    }
 
 
 });

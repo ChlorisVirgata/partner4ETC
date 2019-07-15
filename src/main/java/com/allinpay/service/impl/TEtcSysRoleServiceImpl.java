@@ -1,7 +1,7 @@
 package com.allinpay.service.impl;
 
 import com.allinpay.mapper.TEtcRoleMapper;
-import com.allinpay.core.common.ResponseData;
+import com.allinpay.core.common.ResponseBean;
 import com.allinpay.entity.TEtcSysRole;
 import com.allinpay.service.ITEtcSysRoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -29,10 +29,10 @@ public class TEtcSysRoleServiceImpl extends ServiceImpl<TEtcRoleMapper, TEtcSysR
     private TEtcRoleMapper tEtcRoleMapper;
 
     @Override
-    public ResponseData queryPage(Integer pageNo, Integer pageSize, HashMap map) {
+    public ResponseBean queryPage(Integer pageNo, Integer pageSize, HashMap map) {
         Page page = PageHelper.startPage(pageNo, pageSize);
         List<TEtcSysRole> roleList = (List) tEtcRoleMapper.selectByMap(map);
         PageInfo<TEtcSysRole> pageInfo = new PageInfo<TEtcSysRole>(roleList);
-        return  ResponseData.ok(roleList,pageInfo.getTotal());
+        return  ResponseBean.ok(roleList,pageInfo.getTotal());
     }
 }

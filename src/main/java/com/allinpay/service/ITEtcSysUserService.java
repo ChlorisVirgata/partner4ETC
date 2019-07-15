@@ -1,9 +1,8 @@
 package com.allinpay.service;
 
-import com.allinpay.core.common.ResponseData;
+import com.allinpay.core.common.ResponseBean;
 import com.allinpay.entity.TEtcSysUser;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.github.pagehelper.PageInfo;
 
 import java.util.HashMap;
 
@@ -18,5 +17,5 @@ import java.util.HashMap;
 public interface ITEtcSysUserService extends IService<TEtcSysUser> {
 
 
-    ResponseData queryPage(Integer pageNo, Integer pageSize, HashMap map);
+    ResponseBean queryPage(Integer pageNo, Integer pageSize, HashMap map);
 }

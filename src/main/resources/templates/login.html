@@ -34,31 +34,36 @@
             height: 45px;
             font-family: cursive;
         }
+
     </style>
 </head>
 <body style="background: url('/static/img/login_bg.jpg')">
 <div class="center">
     <form class="layui-form" id="loginForm" lay-filter="formFilter">
         <div class="layui-form-item">
-            <!--<h2>ETC后台管理系统</h2>-->
+            <div class="layui-input-inline" style="width: 300px; margin-left:80px; text-align: center">
+                <h1>ETC后台管理系统</h1>
+            </div>
         </div>
+        <br/>
+        <br/>
         <div class="layui-form-item">
-            <label class="layui-form-label">用户名：</label>
-            <div class="layui-input-inline" style="width: 210px">
+            <!--<label class="layui-form-label">用户名：</label>-->
+            <div class="layui-input-inline" style="width: 300px; margin-left:80px;">
                 <input class="layui-input" id="username" name="username" placeholder="请输入用户名" type="text">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">密码：</label>
-            <div class="layui-input-inline" style="width: 210px">
+            <!--<label class="layui-form-label">密码：</label>-->
+            <div class="layui-input-inline" style="width: 300px; margin-left:80px;">
                 <input class="layui-input" name="password" placeholder="请输入密码" type="password">
             </div>
         </div>
 
         <div class="layui-form-item" id="captcha" style="display: none">
             <div class="layui-inline">
-                <label class="layui-form-label">验证码：</label>
-                <div class="layui-input-inline" style="width: 210px">
+                <!--<label class="layui-form-label">验证码：</label>-->
+                <div class="layui-input-inline" style="width: 300px; margin-left:80px;">
                     <input autocomplete="off" class="layui-input" name="captcha" placeholder="请输入验证码" type="text">
                 </div>
             </div>
@@ -74,7 +79,8 @@
         </div>
         <div class="layui-form-item" style="width: 466px">
             <div style="text-align: center;">
-                <input class="layui-btn" id="loginSubmit" style="font-size: 18px;font-family: cursive;" type="submit"
+                <input class="layui-btn" id="loginSubmit" style="font-size: 18px;font-family: cursive;width: 300px"
+                       type="submit"
                        value="登录"/>
             </div>
         </div>

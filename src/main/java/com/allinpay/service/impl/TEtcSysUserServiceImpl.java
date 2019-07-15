@@ -1,6 +1,6 @@
 package com.allinpay.service.impl;
 
-import com.allinpay.core.common.ResponseData;
+import com.allinpay.core.common.ResponseBean;
 import com.allinpay.entity.TEtcSysUser;
 import com.allinpay.mapper.TEtcUserMapper;
 import com.allinpay.service.ITEtcSysUserService;
@@ -29,10 +29,10 @@ public class TEtcSysUserServiceImpl extends ServiceImpl<TEtcUserMapper, TEtcSysU
     private TEtcUserMapper TEtcUserMapper;
 
     @Override
-    public ResponseData queryPage(Integer pageNo, Integer pageSize,HashMap map) {
+    public ResponseBean queryPage(Integer pageNo, Integer pageSize,HashMap map) {
         Page page = PageHelper.startPage(pageNo, pageSize);
         List<TEtcSysUser> sysRoleList = (List) TEtcUserMapper.selectByMap(map);
         PageInfo<TEtcSysUser> pageInfo = new PageInfo<TEtcSysUser>(sysRoleList);
-        return  ResponseData.ok(sysRoleList,pageInfo.getTotal());
+        return  ResponseBean.ok(sysRoleList,pageInfo.getTotal());
     }
 }

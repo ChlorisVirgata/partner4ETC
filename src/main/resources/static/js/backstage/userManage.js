@@ -25,7 +25,6 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             url: '/sys/user/list',
             //是否分页
             page: true,
-            even: true,
             toolbar: '#toolbarDemo',
             cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             //是否分页

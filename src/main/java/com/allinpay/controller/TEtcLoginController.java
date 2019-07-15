@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Author : wuchao
@@ -17,9 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TEtcLoginController {
 
-    @RequestMapping(value = "/sys/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/web/login", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseBean login(String username, String password) {
+    public ResponseBean login(String username, String password, String captcha) {
 
         try {
             Subject subject = ShiroUtils.getSubject();
@@ -38,16 +39,19 @@ public class TEtcLoginController {
                 AuthenticationException e) {
             return ResponseBean.error("账户验证失败");
         }
-        return ResponseBean.ok();
+        return ResponseBean.okData();
     }
+
+
 
     /**
      * 退出
      */
-    @RequestMapping(value = "logout", method = RequestMethod.GET)
-    public String logout() {
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public ModelAndView logout() {
         ShiroUtils.logout();
-        return "redirect:login.html";
+        ModelAndView view = new ModelAndView("login");
+        return view;
     }
 
 

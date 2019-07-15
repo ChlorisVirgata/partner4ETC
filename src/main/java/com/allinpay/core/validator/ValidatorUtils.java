@@ -9,9 +9,6 @@ import javax.validation.Validator;
 import java.util.Set;
 
 /**
- * hibernate-validator校验工具类
- * <p>
- *
  * @author 吴超
  */
 public class ValidatorUtils {

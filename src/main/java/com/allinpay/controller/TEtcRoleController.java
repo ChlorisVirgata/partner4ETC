@@ -3,7 +3,7 @@ package com.allinpay.controller;
 
 import com.allinpay.core.common.BaseController;
 import com.allinpay.core.common.ResponseBean;
-import com.allinpay.core.common.ResponseData;
+import com.allinpay.core.common.ResponseBean;
 import com.allinpay.core.util.DateUtils;
 import com.allinpay.entity.TEtcSysRole;
 import com.allinpay.entity.TEtcSysUser;
@@ -34,19 +34,19 @@ public class TEtcRoleController extends BaseController {
     private ITEtcSysRoleService itEtcSysRoleService;
 
     @RequestMapping("/list")
-    public ResponseData roleList(Integer pageNo, Integer pageSize, String rolename) {
+    public ResponseBean roleList(Integer pageNo, Integer pageSize, String rolename) {
         HashMap map = new HashMap<>();
         if (!StringUtils.isBlank(rolename)) {
             map.put("role_name", rolename);
         }
-        ResponseData data = itEtcSysRoleService.queryPage(pageNo, pageSize, map);
+        ResponseBean data = itEtcSysRoleService.queryPage(pageNo, pageSize, map);
         return data;
     }
 
     @RequestMapping("/allList")
-    public ResponseData allList() {
+    public ResponseBean allList() {
         List<TEtcSysRole> tEtcSysRoleList = itEtcSysRoleService.list();
-        return ResponseData.ok(tEtcSysRoleList);
+        return ResponseBean.ok(tEtcSysRoleList);
     }
 
 
@@ -54,12 +54,12 @@ public class TEtcRoleController extends BaseController {
     @ResponseBody
     public String add(TEtcSysRole tEtcSysRole) {
         tEtcSysRole.setCreateTime(new Date());
-        return ResponseData.resultStr(itEtcSysRoleService.save(tEtcSysRole));
+        return ResponseBean.resultStr(itEtcSysRoleService.save(tEtcSysRole));
     }
 
     @RequestMapping("/del")
-    public ResponseData del(Integer id){
-        return ResponseData.result(itEtcSysRoleService.removeById(id));
+    public ResponseBean del(Integer id){
+        return ResponseBean.result(itEtcSysRoleService.removeById(id));
     }
 
 }

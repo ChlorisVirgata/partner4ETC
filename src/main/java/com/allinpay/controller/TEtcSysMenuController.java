@@ -2,7 +2,7 @@ package com.allinpay.controller;
 
 
 import com.allinpay.core.common.BaseController;
-import com.allinpay.core.common.ResponseData;
+import com.allinpay.core.common.ResponseBean;
 import com.allinpay.core.util.DateUtils;
 import com.allinpay.entity.TEtcSysMenu;
 import com.allinpay.entity.TEtcSysRole;
@@ -32,12 +32,12 @@ public class TEtcSysMenuController extends BaseController {
     private ITEtcSysMenuService etcSysMenuService;
 
     @RequestMapping("/list")
-    public ResponseData roleList(Integer pageNo, Integer pageSize, String name) {
+    public ResponseBean roleList(Integer pageNo, Integer pageSize, String name) {
         HashMap map = new HashMap<>();
         if (!StringUtils.isBlank(name)) {
             map.put("name", name);
         }
-        ResponseData data = etcSysMenuService.queryPage(pageNo, pageSize, map);
+        ResponseBean data = etcSysMenuService.queryPage(pageNo, pageSize, map);
         return data;
     }
 
@@ -46,12 +46,12 @@ public class TEtcSysMenuController extends BaseController {
     public String add(TEtcSysMenu sysMenu) {
         String dateStr = DateUtils.getNowTime();
         sysMenu.setCreateTime(dateStr);
-        return ResponseData.resultStr(etcSysMenuService.save(sysMenu));
+        return ResponseBean.resultStr(etcSysMenuService.save(sysMenu));
     }
 
     @RequestMapping("/del")
-    public ResponseData del(Integer id){
-        return ResponseData.result(etcSysMenuService.removeById(id));
+    public ResponseBean del(Integer id){
+        return ResponseBean.result(etcSysMenuService.removeById(id));
     }
 
 }

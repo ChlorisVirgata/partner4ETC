@@ -4,6 +4,7 @@ import com.allinpay.service.ITEtcSysRoleService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,42 +21,23 @@ public class TEtcPageController {
     @Autowired
     private ITEtcSysRoleService sysRoleService;
 
-    @RequestMapping("modules/{module}/{url}.html")
-    public String module(@PathVariable("module") String module, @PathVariable("url") String url) {
-        return "modules/" + module + "/" + url;
-    }
 
-    @RequestMapping(value = {"/", "index.html"})
-    public String index() {
-        return "index";
-    }
-
-    @RequestMapping("index1.html")
-    public String index1() {
-        return "index1";
-    }
-
-    @RequestMapping("login.html")
+    @RequestMapping(value = {"/", "login.html"})
     public String login() {
         return "login";
     }
 
-    @RequestMapping("main.html")
-    public String main() {
-        return "main";
+    @RequestMapping(value = {"/index"})
+    public String index() {
+        return "/common/index";
     }
 
-    @RequestMapping("404.html")
-    public String notFound() {
-        return "404";
-    }
-
-    @RequestMapping("/web/userManage")
+    @RequestMapping("/userManage")
     public String userManage() {
         return "/backstage/userManage";
     }
 
-    @GetMapping("/web/use/add")
+    @GetMapping("/use/add")
     @RequiresPermissions("system:user:add")
     public ModelAndView toAdd(String userId,String opreate) {
 //        List<TEtcSysRole> tEtcSysRoles = sysRoleService.list();
@@ -64,12 +46,12 @@ public class TEtcPageController {
         modelAndView.addObject("opreate",opreate);
         return modelAndView;
     }
-    @RequestMapping("/web/roleManage")
+    @RequestMapping("/roleManage")
     public String roleManage() {
         return "/backstage/roleManage";
     }
 
-    @GetMapping("/web/role/add")
+    @GetMapping("/role/add")
     public ModelAndView roleAdd(Integer roleId,String data) {
         ModelAndView modelAndView = new ModelAndView("/backstage/operation/addRole");
         modelAndView.addObject("roleId",roleId);
@@ -77,32 +59,30 @@ public class TEtcPageController {
         return modelAndView;
     }
 
-    @GetMapping("/web/use/selectrole")
+    @GetMapping("/use/selectrole")
     public String selectrole() {
         return "/backstage/selectrole";
     }
 
 
-    @RequestMapping("/web/menuManage")
+    @RequestMapping("/menuManage")
     public String menuManage() {
         return "/backstage/menuManage";
     }
-    @GetMapping("/web/menu/add")
+    @GetMapping("/menu/add")
     //@RequiresPermissions("system:user:add")
     public String menuAdd() {
         return "/backstage/operation/addMenu";
     }
 
 
-    @GetMapping("/test")
-    //@RequiresPermissions("system:user:add")
-    public String test() {
-        return "/backstage/test";
-    }
 
-
-    @GetMapping("/web/role/edit")
+    @GetMapping("/role/edit")
     public String editRole(){
-          return "backstage/operation/addRoleInfo";
+          return "/backstage/operation/addRole";
     }
+
+
+
+
 }
