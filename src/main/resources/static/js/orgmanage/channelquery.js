@@ -119,7 +119,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                         $(this).text("汽车服务")
                     } else if ($(this).text() == '02') {
                         $(this).text("互联网平台")
-                    } else if ($(this).text() == '04') {
+                    } else if ($(this).text() == '03') {
                         $(this).text("其他")
                     }
                 });
@@ -172,7 +172,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
 
         $("#chanelidshow").val(data.partnerId);//机构编号
         $("#chanelnameshow").val(data.partnerName);//机构名称
-        $("#chaneltypeshow").val(data.partnerType);//机构类型
+        $("#chaneltypeshow").val(partnerTypere(data.partnerType));//机构类型
         $("#partneridshow").val(data.parentId);//父机构编号
         $("#registidshow").val(data.businessLicenceNo);//营业执照编号
         $("#chaneladdressshow").val(data.partnerAddress);//机构地址
@@ -200,6 +200,20 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
     }
 
 
+    function partnerTypere(type){
+        if(type =='00'){
+            return  "银行";
+        }
+        if(type =='01'){
+            return  "汽车服务";
+        }
+        if(type =='02'){
+            return  "互联网平台";
+        }
+        if(type =='03'){
+            return  "其他";
+        }
+    }
     //打开模态框
     function openModal(operateName, modalName) {
         layer.open({
