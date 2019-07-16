@@ -23,7 +23,9 @@ public class FileUtil {
     public static String getFileName(MultipartFile multipartFile, String saveDir) {
         try {
             String fileName = multipartFile.getOriginalFilename();
-            if (StringUtils.isBlank(fileName)) {
+            //未上传文件、上传文件大小为0
+            if (StringUtils.isBlank(fileName) ||
+                    multipartFile.getSize() == 0) {
                 return "";
             }
 
