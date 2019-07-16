@@ -8,9 +8,11 @@ import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSource
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -42,7 +44,7 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(securityManager);
-        shiroFilter.setLoginUrl("login.html");
+        shiroFilter.setLoginUrl("/web/login");
         Map<String, String> filterMap = new LinkedHashMap();
         filterMap.put("/templates/**", "anon");
         filterMap.put("/static/**", "anon");
@@ -56,7 +58,7 @@ public class ShiroConfig {
         filterMap.put("/etcimg/**", "anon");
         filterMap.put("/**", "authc");
         shiroFilter.setSuccessUrl("/index");
-        shiroFilter.setUnauthorizedUrl("/403");
+        shiroFilter.setUnauthorizedUrl("/web/403");
         shiroFilter.setFilterChainDefinitionMap(filterMap);
         return shiroFilter;
     }
@@ -64,6 +66,15 @@ public class ShiroConfig {
     @Bean("lifecycleBeanPostProcessor")
     public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
+    }
+
+    //开启Shiro的注解(如@RequiresRoles,@RequiresPermissions)
+    @Bean
+    @DependsOn("lifecycleBeanPostProcessor")
+    public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
+        DefaultAdvisorAutoProxyCreator creator = new DefaultAdvisorAutoProxyCreator();
+        creator.setProxyTargetClass(true);
+        return creator;
     }
 
     @Bean
