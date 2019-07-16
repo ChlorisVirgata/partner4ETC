@@ -6,6 +6,7 @@ import com.allinpay.core.constant.CommonConstant;
 import com.allinpay.entity.*;
 import com.allinpay.service.IOrgQueryService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -79,8 +80,8 @@ public class OrgQueryController {
      */
     @PostMapping("/org/blockOrg")
     public ResponseData blockOrg(OrgQueryVo orgque) {
-//        String user = SecurityUtils.getSubject().getPrincipal().toString();
-//        orgque.setSysUser(user);
+        TEtcSysUser user=(TEtcSysUser)SecurityUtils.getSubject().getPrincipal();
+        orgque.setSysUser(user.getUsername());
         orgquery.blockOrg(orgque);
         return ResponseData.success().setData(null);
     }

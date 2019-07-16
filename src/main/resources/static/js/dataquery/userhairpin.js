@@ -55,20 +55,20 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             },
 
             //每页展示的条数
-            limits: [5, 10],
+            limits: [5, 10,20],
             //每页默认显示的数量
-            limit: 5,
+            limit: 10,
             //单元格设置
             cols: [[
-                {field: 'partnerId', width: 100, title: '机构编号'},
-                {field: 'versionPort', width: 100, title: '接口版本号'},
-                {field: 'orderNo', width: 100, title: '请求流水号'},
-                {field: 'authId', width: 100, title: '用户标识'},
-                {field: 'authName', width: 100, title: '用户名称'},
-                {field: 'signStatus', width: 100, title: '签约结果'},
+                {field: 'partnerId', title: '机构编号'},
+                {field: 'versionPort', title: '接口版本号'},
+                {field: 'orderNo',  title: '请求流水号'},
+                {field: 'authId',  title: '用户标识'},
+                {field: 'authName',  title: '用户名称'},
+                {field: 'signStatus',  title: '签约结果'},
                 // {field: 'LEGAL_PHONE', width: 100, title: '流水号'},
-                {field: 'signName', width: 100, title: '签名'},
-                {field: 'signdate', width: 180, title: '请求时间'}
+                {field: 'signName',  title: '签名'},
+                {field: 'signdate',  title: '请求时间'}
             ]],
 
             done: function (res, curr, count) {

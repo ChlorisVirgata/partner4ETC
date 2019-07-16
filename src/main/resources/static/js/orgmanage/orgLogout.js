@@ -71,18 +71,32 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             limit: 5,
             //单元格设置
             cols: [[
-                {field: 'partnerId', width: 100, title: '机构编号'},
-                {field: 'partnerName', width: 100, title: '机构名称'},
-                {field: 'partnerType', width: 100, title: '机构类型'},
-                {field: 'parentId', width: 100, title: '父机构编号'},
-                {field: 'partner_address', width: 100, title: '机构地址'},
-                {field: 'saler', width: 100, title: '推广人'},
-                {field: 'parstatus', width: 120, title: '机构状态'},
-                {field: 'createTimeX', width: 100, title: '创建时间'},
-                {field: 'modifyTimeX', width: 100, title: '更新时间'},
-                {field: 'sysUser', width: 100, title: '最后操作人'},
-                {fixed: 'right', width: 120, title: '操作', toolbar: '#operators'}
-            ]]
+                {field: 'partnerId', title: '机构编号'},
+                {field: 'partnerName', title: '机构名称'},
+                {field: 'partnerType',  title: '机构类型'},
+                {field: 'parentId',  title: '父机构编号'},
+                {field: 'partner_address',  title: '机构地址'},
+                {field: 'saler',  title: '推广人'},
+                {field: 'parstatus',  title: '机构状态'},
+                {field: 'createTimeX',  title: '创建时间'},
+                {field: 'modifyTimeX', title: '更新时间'},
+                {field: 'sysUser', title: '最后操作人'},
+                {fixed: 'right',  title: '操作', toolbar: '#operators'}
+            ]],
+            done: function (res, curr, count) {
+
+                $("[data-field='partnerType']").children().each(function () {
+                    if ($(this).text() == '00') {
+                        $(this).text("银行")
+                    } else if ($(this).text() == '01') {
+                        $(this).text("汽车服务")
+                    } else if ($(this).text() == '02') {
+                        $(this).text("互联网平台")
+                    } else if ($(this).text() == '04') {
+                        $(this).text("其他")
+                    }
+                });
+            }
         });
     };
 

@@ -74,9 +74,9 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             // },
 
             //每页展示的条数
-            limits: [5, 10],
+            limits: [5,10,20],
             //每页默认显示的数量
-            limit: 5,
+            limit: 10,
             //单元格设置
             cols: [[
                 {
@@ -86,29 +86,29 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                     event: 'setSign',
                     style: 'color: #024CA1;font-style:italic;text-decoration:underline'
                 },
-                {field: 'partnerName', width: 100, title: '机构名称'},
-                {field: 'partnerType', width: 80, title: '机构类型'},
-                {field: 'secretKey', width: 80, title: '机构秘钥'},
-                {field: 'partnerAddress', width: 100, title: '机构地址', hide: true},
-                {field: 'saler', width: 100, title: '推广人', hide: true},
-                {field: 'legalName', width: 100, title: '法人姓名', hide: true},
-                {field: 'legalId', width: 100, title: '法人身份证', hide: true},
-                {field: 'legalPhone', width: 100, title: '法人联系方式', hide: true},
-                {field: 'contactor', width: 100, title: '机构联系人', hide: true},
-                {field: 'contactPhone', width: 100, title: '联系人电话', hide: true},
-                {field: 'url', width: 100, title: '请求服务地址', hide: true},
+                {field: 'partnerName', title: '机构名称'},
+                {field: 'partnerType', title: '机构类型'},
+                {field: 'secretKey',  title: '机构秘钥'},
+                {field: 'partnerAddress',  title: '机构地址', hide: true},
+                {field: 'saler',  title: '推广人', hide: true},
+                {field: 'legalName',  title: '法人姓名', hide: true},
+                {field: 'legalId',  title: '法人身份证', hide: true},
+                {field: 'legalPhone',  title: '法人联系方式', hide: true},
+                {field: 'contactor', title: '机构联系人', hide: true},
+                {field: 'contactPhone',  title: '联系人电话', hide: true},
+                {field: 'url',  title: '请求服务地址', hide: true},
 
-                {field: 'idFront', width: 100, title: '身份证证明', hide: true},
-                {field: 'idBack', width: 100, title: '身份证反面', hide: true},
-                {field: 'agreement', width: 100, title: '协议图片', hide: true},
+                {field: 'idFront',  title: '身份证证明', hide: true},
+                {field: 'idBack',  title: '身份证反面', hide: true},
+                {field: 'agreement',  title: '协议图片', hide: true},
 
-                {field: 'parentId', width: 100, title: '父机构编号'},
-                {field: 'businessLicenceNo', width: 120, title: '营业执照编号'},
-                {field: 'parstatus', width: 120, title: '机构状态'},
-                {field: 'failReason', width: 120, title: '审核意见'},
-                {field: 'createTimeX', width: 100, title: '创建时间'},
-                {field: 'modifyTimeX', width: 100, title: '更新时间'},
-                {field: 'sysUser', width: 100, title: '最后操作人'}
+                {field: 'parentId',  title: '父机构编号'},
+                {field: 'businessLicenceNo',  title: '营业执照编号'},
+                {field: 'parstatus',  title: '机构状态'},
+                {field: 'failReason', title: '审核意见'},
+                {field: 'createTimeX',  title: '创建时间'},
+                {field: 'modifyTimeX', title: '更新时间'},
+                {field: 'sysUser', title: '最后操作人'}
             ]],
             done: function (res, curr, count) {
 
@@ -187,9 +187,13 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
         $("#approvalopinionshow").val(data.failReason);//审批意见
         $("#secretkeyshow").val(data.secretKey);//秘钥
 
-        $("#front").attr("src","http://10.48.1.8:8080/query/getImg?partnerId="+data.partnerId+"&imgid="+data.idFront);
-        $("#back").attr("src","http://10.48.1.8:8080/query/getImg?partnerId="+data.partnerId+"&imgid="+data.idBack);
-        $("#aggre").attr("src","http://10.48.1.8:8080/query/getImg?partnerId="+data.partnerId+"&imgid="+data.agreement);
+        // $("#front").attr("src","http://10.48.1.8:8080/query/getImg?partnerId="+data.partnerId+"&imgid="+data.idFront);
+        // $("#back").attr("src","http://10.48.1.8:8080/query/getImg?partnerId="+data.partnerId+"&imgid="+data.idBack);
+        // $("#aggre").attr("src","http://10.48.1.8:8080/query/getImg?partnerId="+data.partnerId+"&imgid="+data.agreement);
+        $('#license').attr('src', "/etcimg/org/" + data.partnerId + "/license/" + data.license);
+        $('#front').attr('src', "/etcimg/org/" + data.partnerId + "/license/" + data.idFront);
+        $("#back").attr("src","/etcimg/org/" + data.partnerId + "/license/" + data.idBack);
+        $("#aggre").attr("src","/etcimg/org/" + data.partnerId + "/license/" + data.agreement);
 
         //打开模态框
         openModal("详细信息", "editForm");
@@ -201,7 +205,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
         layer.open({
             title: operateName,
             content: $('#' + modalName),
-            area: ['700px', '450px'],
+            area: ['700px', '560px'],
             //点击遮罩关闭窗口
             shadeClose: true,
             //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
