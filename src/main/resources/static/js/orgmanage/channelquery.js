@@ -191,9 +191,9 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
         // $("#back").attr("src","http://10.48.1.8:8080/query/getImg?partnerId="+data.partnerId+"&imgid="+data.idBack);
         // $("#aggre").attr("src","http://10.48.1.8:8080/query/getImg?partnerId="+data.partnerId+"&imgid="+data.agreement);
         $('#license').attr('src', "/etcimg/org/" + data.partnerId + "/license/" + data.license);
-        $('#front').attr('src', "/etcimg/org/" + data.partnerId + "/license/" + data.idFront);
-        $("#back").attr("src","/etcimg/org/" + data.partnerId + "/license/" + data.idBack);
-        $("#aggre").attr("src","/etcimg/org/" + data.partnerId + "/license/" + data.agreement);
+        $('#front').attr('src', "/etcimg/org/" + data.partnerId + "/front/" + data.idFront);
+        $("#back").attr("src","/etcimg/org/" + data.partnerId + "/back/" + data.idBack);
+        $("#aggre").attr("src","/etcimg/org/" + data.partnerId + "/agreement/" + data.agreement);
 
         //打开模态框
         openModal("详细信息", "editForm");

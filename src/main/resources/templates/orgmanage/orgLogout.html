@@ -97,9 +97,6 @@
                             <option value="1">正常</option>
                             <option value="2">注销</option>
                             <option value="3">冻结</option>
-                            <option value="4">审核中</option>
-                            <option value="5">审核成功</option>
-                            <option value="6">审核失败</option>
                         </select>
                     </div>
                 </div>
@@ -132,7 +129,7 @@
 
     <!--操作菜单页面-->
     <script id="operators" type="text/html">
-        {{#  if(d.parstatus == "正常"){ }}
+        {{#  if(d.parstatus == "正常" || d.parstatus == "冻结"){ }}
         <a class="layui-btn layui-btn-xs" lay-event="logout">注销</a>
         {{#  } }}
     </script>

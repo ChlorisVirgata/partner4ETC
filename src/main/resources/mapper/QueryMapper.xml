@@ -91,7 +91,7 @@
                 AND passmo.LICENSE like '%' || #{passm.license} || '%'
             </if>
             <if test="passm.createTimeStart != null">
-                AND passmo.CREATE_TIME between #{passm.createTimeStart} and #{passm.createTimeEnd}
+                AND passmo.TRADE_DATE between #{passm.createTimeStart} and #{passm.createTimeEnd}
             </if>
         </trim>
         order by TRADE_DATE desc
