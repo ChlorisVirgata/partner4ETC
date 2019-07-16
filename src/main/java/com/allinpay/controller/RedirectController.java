@@ -56,6 +56,11 @@ public class RedirectController {
         return "login";
     }
 
+    @RequestMapping("/403")
+    public String forbidden() {
+        return "common/403";
+    }
+
     @RequestMapping("/index")
     public String index() {
         return "common/index";

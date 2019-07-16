@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 public class MyErrorController implements ErrorController {
     @RequestMapping("/error")
     public String dealAbNormal(HttpServletResponse response) {
-        System.out.println(response.getStatus());
         return "common/404";
     }
 

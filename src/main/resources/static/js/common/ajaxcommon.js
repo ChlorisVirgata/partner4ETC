@@ -13,10 +13,9 @@ layui.use('layer', function () {
         },
         complete: function (XMLHttpRequest, textStatus) {
             var sessionStatus = XMLHttpRequest.getResponseHeader("sessionstatus");
-            console.log("sessionStatus= " + sessionStatus);
+            // console.log("sessionStatus= " + sessionStatus);
             if (sessionStatus == 'timeout') {
                 var top = getTopWindow();
-                // top.location.href = '<c:url value="/" />';
                 top.location.href = "/web/login";
             }
         }
