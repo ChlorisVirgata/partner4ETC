@@ -42,6 +42,22 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
                 msgName: 'msg',
                 dataName: 'data'
             },
+            done: function () {
+                $("tbody td[data-field='status']").children().each(function (index, val) {
+                    if ($(this).text() == "0") {
+                        $(this).text("禁用");
+                    } else if ($(this).text() == "1") {
+                        $(this).text("有效");
+                    }
+                });
+                $("tbody td[data-field='cardType']").children().each(function (index, val) {
+                    if ($(this).text() == "1") {
+                        $(this).text("借记卡");
+                    } else if ($(this).text() == "2") {
+                        $(this).text("贷记卡");
+                    }
+                })
+            },
             //每页展示的条数
             limits: [5, 10, 20],
             //每页默认显示的数量
@@ -106,7 +122,7 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
                     data: {
                         bankId: myData.bankId,
                         partnerId: myData.partnerId,
-                        cardType: formatCardType(myData.cardType),
+                        cardType: myData.cardType,
                         status: status
                     },
                     dataType: 'json',
@@ -165,15 +181,5 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
             //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
             type: 1
         });
-    }
-
-    function formatCardType(cardType) {
-        if (cardType == "借记卡") {
-            return "1";
-        } else if (cardType == "贷记卡") {
-            return "2";
-        } else {
-            layer.alert("卡类型有误");
-        }
     }
 });

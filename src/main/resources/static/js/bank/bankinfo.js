@@ -42,6 +42,15 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
                 msgName: 'msg',
                 dataName: 'data'
             },
+            done: function () {
+                $("tbody td[data-field='status']").children().each(function (index, val) {
+                    if ($(this).text() == "0") {
+                        $(this).text("禁用");
+                    } else if ($(this).text() == "1") {
+                        $(this).text("有效");
+                    }
+                })
+            },
             //每页展示的条数
             limits: [5, 10, 20],
             //每页默认显示的数量
@@ -91,7 +100,6 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
             } else {
                 status = "1";
             }
-            console.log(btnName);
             var index = layer.confirm("确定置为" + btnName + "吗？", function () {
                 $.ajax({
                     url: '/bank/status',

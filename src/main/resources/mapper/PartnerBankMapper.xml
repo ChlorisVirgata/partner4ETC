@@ -16,8 +16,8 @@
 
     <select id="selectList" parameterType="com.allinpay.controller.query.BankQuery" resultMap="BaseResultMap">
         select PARTNER_ID,BANK_ID,DEPOSIT,INSERT_TIME,MODIFY_TIME,
-        decode(CARD_TYPE,'1','借记卡','2','贷记卡','类型有误') CARD_TYPE,
-        decode(STATUS,'0','禁用','1','有效','类型有误') STATUS
+        CARD_TYPE,
+        STATUS
         from T_ETC_PARTNER_BANK
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="bankQuery.bankId != '' and bankQuery.bankId != null">

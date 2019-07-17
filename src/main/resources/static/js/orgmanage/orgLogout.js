@@ -92,7 +92,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                         $(this).text("汽车服务")
                     } else if ($(this).text() == '02') {
                         $(this).text("互联网平台")
-                    } else if ($(this).text() == '04') {
+                    } else if ($(this).text() == '03') {
                         $(this).text("其他")
                     }
                 });
