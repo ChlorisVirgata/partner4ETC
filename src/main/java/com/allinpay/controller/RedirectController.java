@@ -75,4 +75,9 @@ public class RedirectController {
     public String orgbank() {
         return "bank/orgbankmap";
     }
+
+    @RequestMapping("/orgdeposit")
+    public String orgdeposit() {
+        return "bank/orgdeposit";
+    }
 }
