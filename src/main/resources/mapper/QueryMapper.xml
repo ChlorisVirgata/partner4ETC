@@ -100,19 +100,23 @@
     <!--发卡记录查询-->
     <resultMap id="UserhairMap" type="com.allinpay.entity.UserhairpinBack">
         <id column="PARTNER_ID" property="partnerId" jdbcType="VARCHAR"/>
-        <result column="VERSION_PORT" property="versionPort" jdbcType="VARCHAR"/>
-        <result column="ORDERNO" property="orderNo" jdbcType="VARCHAR"/>
         <result column="AUTH_ID" property="authId" jdbcType="VARCHAR"/>
-        <result column="AUTHNAME" property="authName" jdbcType="DATE"/>
-        <result column="SIGNSTATUS" property="signStatus" jdbcType="VARCHAR"/>
-        <result column="RANDOMSTR" property="randomsStr" jdbcType="VARCHAR"/>
-        <result column="SIGN_NAME" property="signName" jdbcType="VARCHAR"/>
-        <result column="SIGNDATE" property="signdate" jdbcType="VARCHAR"/>
+        <result column="AUTH_NAME" property="authName" jdbcType="VARCHAR"/>
+        <result column="PHONE" property="phone" jdbcType="VARCHAR"/>
+        <result column="REQ_NO" property="orderNo" jdbcType="VARCHAR"/>
+        <result column="REQ_TIME" property="reqtime" jdbcType="VARCHAR"/>
+        <result column="ISSUE_STATUS" property="issuestatus" jdbcType="VARCHAR"/>
+        <result column="CAR_NO" property="carno" jdbcType="VARCHAR"/>
+        <result column="REAL_PHONE" property="realphone" jdbcType="VARCHAR"/>
+        <result column="ID" property="id" jdbcType="VARCHAR"/>
+        <result column="REAL_NAME" property="realname" jdbcType="VARCHAR"/>
+        <result column="ISSUE_MSG" property="issuemsg" jdbcType="VARCHAR"/>
+        <result column="FINISH_TIME" property="finishtime" jdbcType="VARCHAR"/>
     </resultMap>
     <select id="queryUserhairpin" resultMap="UserhairMap" parameterType="com.allinpay.entity.UserhairpinVo">
-        select PARTNER_ID,VERSION_PORT,ORDERNO,AUTH_ID,AUTHNAME,SIGNSTATUS,RANDOMSTR,SIGN_NAME,
-        to_char(signdate,'yyyy-mm-dd HH24:mi:ss') SIGNDATE
-        from T_ETC_USERHAIRPIN_DATE suerhair
+        select PARTNER_ID,AUTH_ID,AUTH_NAME,PHONE,REQ_NO,REQ_TIME,ISSUE_STATUS,CAR_NO,REAL_PHONE,ID,REAL_NAME,ISSUE_MSG,
+                 FINISH_TIME
+        from T_ETC_ISSUE suerhair
         <trim prefix="WHERE" prefixOverrides="AND">
 
             <if test="usrh.authId != null and usrh.authId != ''">
@@ -122,19 +126,19 @@
                 AND suerhair.PARTNER_ID = #{usrh.partnerId}
             </if>
             <if test="usrh.authName != null and usrh.authName != ''">
-                AND suerhair.AUTHNAME like '%' || #{usrh.authName} || '%'
+                AND suerhair.AUTH_NAME like '%' || #{usrh.authName} || '%'
             </if>
             <if test="usrh.orderNo != null and usrh.orderNo != ''">
-                AND suerhair.ORDERNO like '%' || #{usrh.orderNo} || '%'
+                AND suerhair.REQ_NO like '%' || #{usrh.orderNo} || '%'
             </if>
             <if test="usrh.signsStatus != null and usrh.signsStatus != ''">
-                AND suerhair.SIGNSTATUS like '%' || #{usrh.signsStatus} || '%'
+                AND suerhair.ISSUE_MSG like '%' || #{usrh.signsStatus} || '%'
             </if>
-            <if test="usrh.createTimeStart != null">
-                AND suerhair.SIGNDATE between #{usrh.createTimeStart} and #{usrh.createTimeEnd}
+            <if test="usrh.queryTimeStart != null and usrh.queryTimeStart != ''">
+                AND suerhair.FINISH_TIME between #{usrh.queryTimeStart} and #{usrh.queryTimeEnd}
             </if>
         </trim>
-        order by SIGNDATE desc
+        order by FINISH_TIME desc
     </select>
 
     <!--机构信息冻结、解冻、注销-->

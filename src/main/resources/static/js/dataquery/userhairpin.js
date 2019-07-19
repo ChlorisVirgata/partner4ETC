@@ -23,8 +23,8 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 partnerId: $("#chanelidquery").val(),//机构编号
                 orderNo: $("#serialnumberquery").val(),//流水号
                 signsStatus: $("#chanetype").val(),//签约结果
-                createTimeStart: $("#creatdate").val() == "" ? "" : $("#creatdate").val().substr(0, 10),//查询创建时间起
-                createTimeEnd: $("#creatdate").val() == "" ? "" : $("#creatdate").val().substr(12, 11)//查询创建时间止
+                queryTimeStart: $("#creatdate").val() == "" ? "" : $("#creatdate").val().substr(0, 10),//查询创建时间起
+                queryTimeEnd: $("#creatdate").val() == "" ? "" : $("#creatdate").val().substr(12, 11)//查询创建时间止
             },
             //分页信息
             request: {
@@ -61,25 +61,30 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             //单元格设置
             cols: [[
                 {field: 'partnerId', title: '机构编号'},
-                {field: 'versionPort', title: '接口版本号'},
-                {field: 'orderNo',  title: '请求流水号'},
                 {field: 'authId',  title: '用户标识'},
                 {field: 'authName',  title: '用户名称'},
-                {field: 'signStatus',  title: '签约结果'},
-                // {field: 'LEGAL_PHONE', width: 100, title: '流水号'},
-                {field: 'signName',  title: '签名'},
-                {field: 'signdate',  title: '请求时间'}
+                {field: 'phone',  title: '机构请求手机号'},
+                {field: 'orderNo',  title: '请求流水号'},
+                {field: 'reqtime',  title: '请求时间'},
+                {field: 'issuestatus',  title: '发行状态'},
+                {field: 'carno',  title: '车牌号'},
+                {field: 'realphone',  title: '绑定手机号'},
+                {field: 'id',  title: '车主身份证'},
+                {field: 'realname',  title: '车主姓名'},
+                {field: 'issuemsg',  title: '发行结果'},
+                {field: 'finishtime', title: '请求完成时间'}
+
             ]],
 
             done: function (res, curr, count) {
 
-                $("[data-field='signStatus']").children().each(function () {
+                $("[data-field='issuestatus']").children().each(function () {
                     if ($(this).text() == '1') {
-                        $(this).text("成功")
+                        $(this).text("完成")
                     } else if ($(this).text() == '2') {
-                        $(this).text("失败")
+                        $(this).text("进行中")
                     } else if ($(this).text() == '3') {
-                        $(this).text("请求中")
+                        $(this).text("失败")
                     }
                 });
             }
