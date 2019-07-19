@@ -25,17 +25,17 @@
     <insert id="insert" parameterType="com.allinpay.entity.PartnerDeposit">
         insert into T_ETC_PARTNER_DEPOSIT (<include refid="Base_Column_List"/>)
         values (
-        #{deposit.kid, jdbcType=VARCHAR2},
-        #{deposit.partnerId, jdbcType=VARCHAR2},
-        #{deposit.deposit, jdbcType=NUMERIC},
-        #{deposit.minDeposit, jdbcType=NUMERIC}
+        #{partnerDeposit.kid, jdbcType=VARCHAR},
+        #{partnerDeposit.partnerId, jdbcType=VARCHAR},
+        #{partnerDeposit.deposit, jdbcType=NUMERIC},
+        #{partnerDeposit.minDeposit, jdbcType=NUMERIC}
         )
     </insert>
 
     <update id="update" parameterType="com.allinpay.entity.PartnerDeposit">
       update T_ETC_PARTNER_DEPOSIT set
-      DEPOSIT = #{deposit.deposit},
-      MIN_DEPOSIT = #{}
-      WHERE KID = #{deposit.kid}
+      DEPOSIT = #{partnerDeposit.deposit},
+      MIN_DEPOSIT = #{partnerDeposit.minDeposit}
+      WHERE KID = #{partnerDeposit.kid}
     </update>
 </mapper>

@@ -146,4 +146,13 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
             type: 1
         });
     }
+
+    form.verify({
+        deposit: function (value, item) {
+            if (value.substr(0, 1) == "0" ||
+                value.indexOf(".")) {
+                return "金额输入有误！";
+            }
+        }
+    })
 });

@@ -8,7 +8,7 @@ import java.util.List;
 public interface PartnerDepositMapper {
     List<PartnerDeposit> selectList(@Param("partnerId") String partnerId);
 
-    void insert(@Param("deposit") PartnerDeposit deposit);
+    void insert(@Param("partnerDeposit") PartnerDeposit partnerDeposit);
 
-    void update(@Param("deposit") PartnerDeposit deposit);
+    void update(@Param("partnerDeposit") PartnerDeposit partnerDeposit);
 }
