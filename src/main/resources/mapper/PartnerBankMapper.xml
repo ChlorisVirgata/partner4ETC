@@ -4,20 +4,18 @@
     <resultMap id="BaseResultMap" type="com.allinpay.entity.PartnerBank">
         <id column="PARTNER_ID" property="partnerId" jdbcType="VARCHAR"/>
         <result column="BANK_ID" property="bankId" jdbcType="VARCHAR"/>
-        <result column="DEPOSIT" property="deposit" jdbcType="NUMERIC"/>
         <result column="CARD_TYPE" property="cardType" jdbcType="VARCHAR"/>
         <result column="STATUS" property="status" jdbcType="VARCHAR"/>
         <result column="INSERT_TIME" property="insertTime" jdbcType="VARCHAR"/>
         <result column="MODIFY_TIME" property="modifyTime" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-        PARTNER_ID,BANK_ID,DEPOSIT,CARD_TYPE,STATUS,INSERT_TIME,MODIFY_TIME
+        PARTNER_ID,BANK_ID,CARD_TYPE,STATUS,INSERT_TIME,MODIFY_TIME
     </sql>
 
     <select id="selectList" parameterType="com.allinpay.controller.query.BankQuery" resultMap="BaseResultMap">
-        select PARTNER_ID,BANK_ID,DEPOSIT,INSERT_TIME,MODIFY_TIME,
-        CARD_TYPE,
-        STATUS
+        select
+        <include refid="Base_Column_List"/>
         from T_ETC_PARTNER_BANK
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="bankQuery.bankId != '' and bankQuery.bankId != null">
@@ -44,7 +42,6 @@
         values (
         #{partnerBank.partnerId, jdbcType=VARCHAR},
         #{partnerBank.bankId, jdbcType=VARCHAR},
-        #{partnerBank.deposit, jdbcType=NUMERIC},
         #{partnerBank.cardType, jdbcType=VARCHAR},
         #{partnerBank.status, jdbcType=VARCHAR},
         #{partnerBank.insertTime, jdbcType=VARCHAR},
@@ -52,19 +49,10 @@
         )
     </insert>
 
-    <update id="updateDeposit" parameterType="com.allinpay.entity.PartnerBank">
-        update T_ETC_PARTNER_BANK set
-        DEPOSIT =  #{partnerBank.deposit, jdbcType=NUMERIC},
-        MODIFY_TIME = #{partnerBank.modifyTime, jdbcType=VARCHAR}
-        WHERE
-        BANK_ID = #{partnerBank.bankId, jdbcType=VARCHAR} AND
-        PARTNER_ID = #{partnerBank.partnerId, jdbcType=VARCHAR} AND
-        CARD_TYPE = #{partnerBank.cardType, jdbcType=VARCHAR}
-    </update>
-
     <update id="updateStatus" parameterType="com.allinpay.entity.PartnerBank">
         update T_ETC_PARTNER_BANK set
-        STATUS = #{partnerBank.status, jdbcType=VARCHAR}
+        STATUS = #{partnerBank.status, jdbcType=VARCHAR},
+        MODIFY_TIME = #{partnerBank.modifyTime, jdbcType=VARCHAR}
         WHERE
         BANK_ID = #{partnerBank.bankId, jdbcType=VARCHAR} AND
         PARTNER_ID = #{partnerBank.partnerId, jdbcType=VARCHAR} AND

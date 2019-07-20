@@ -17,7 +17,7 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
             page: true,
             //请求参数
             where: {
-                bankId: $.trim($("#partnerId").val()),
+                partnerId: $.trim($("#partnerId").val())
             },
             //分页信息
             request: {
@@ -76,6 +76,7 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
         if (obj.event === 'edit') {
             //form表单初始化
             form.val("editFilter", {
+                "kid": myData.kid,
                 "partnerId": myData.partnerId,
                 "deposit": myData.deposit,
                 "minDeposit": myData.minDeposit
@@ -87,6 +88,11 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
 
     //监听form表单提交事件 防止页面跳转
     form.on('submit(addFilter)', function (data) {
+        if (parseInt($("#addForm").find("input[name=deposit]").val())
+            < parseInt($("#addForm").find("input[name=minDeposit]").val())) {
+            layer.alert("签约保证金金额不能小于最低保证金金额");
+            return false;
+        }
         $.ajax({
             url: '/org/deposit/add',
             type: 'post',
@@ -109,6 +115,11 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
         return false;
     });
     form.on('submit(editFilter)', function (data) {
+        if (parseInt($("#editForm").find("input[name=deposit]").val())
+            < parseInt($("#editForm").find("input[name=minDeposit]").val())) {
+            layer.alert("签约保证金金额不能小于最低保证金金额");
+            return false;
+        }
         $.ajax({
             url: '/org/deposit/edit',
             type: 'post',
@@ -148,10 +159,10 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
     }
 
     form.verify({
-        deposit: function (value, item) {
+        numberCheck: function (value, item) {
             if (value.substr(0, 1) == "0" ||
-                value.indexOf(".")) {
-                return "金额输入有误！";
+                value.indexOf(".") != -1) {
+                return "金额有误,请输入正整数！";
             }
         }
     })

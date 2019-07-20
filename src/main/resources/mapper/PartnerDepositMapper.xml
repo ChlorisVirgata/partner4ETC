@@ -22,6 +22,13 @@
         </trim>
     </select>
 
+    <select id="selectOne" parameterType="string" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from T_ETC_PARTNER_DEPOSIT
+        where PARTNER_ID = #{partnerId}
+    </select>
+
     <insert id="insert" parameterType="com.allinpay.entity.PartnerDeposit">
         insert into T_ETC_PARTNER_DEPOSIT (<include refid="Base_Column_List"/>)
         values (

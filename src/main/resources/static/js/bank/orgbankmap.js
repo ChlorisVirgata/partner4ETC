@@ -66,7 +66,6 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
             cols: [[
                 {field: 'partnerId', title: '机构编号'},
                 {field: 'bankId', title: '银行编号'},
-                {field: 'deposit', title: '保证金'},
                 {field: 'cardType', title: '卡类型'},
                 {field: 'status', title: '状态'},
                 {field: 'insertTime', title: '创建日期'},
@@ -82,23 +81,9 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
         search();
     });
 
-    //对 form 表单的select做监听
-    form.on('select(cardFilter)', function () {
-        var $select = $("select[name='cardType']");
-        if ($select.val() == "1") {
-            //借记卡
-            $("#deposit").show();
-            $("input[name='deposit']").attr("lay-verify", "number");
-        } else {
-            $("#deposit").hide();
-            $("input[name='deposit']").attr("lay-verify", "");
-        }
-    });
-
     $("#addBtn").on("click", function () {
         $("#addForm").find("input[name='bankId']").val("");
         $("#addForm").find("input[name='partnerId']").val("");
-        $("#addForm").find("input[name='deposit']").val("");
         openModal("新增", "addForm");
     });
 
@@ -175,7 +160,7 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
         layer.open({
             title: operateName,
             content: $('#' + modalName),
-            area: ['500px', '350px'],
+            area: ['500px', '275px'],
             //点击遮罩关闭窗口
             shadeClose: true,
             //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）

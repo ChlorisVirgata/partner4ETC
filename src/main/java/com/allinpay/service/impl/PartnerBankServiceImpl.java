@@ -66,14 +66,6 @@ public class PartnerBankServiceImpl implements IPartnerBankService {
         //判断该记录是否已存在
         PartnerBank queryPartnerBank = partnerBankMapper.selectOne(partnerBank);
         if (Objects.nonNull(queryPartnerBank)) {
-            if (CommonConstant.CARD_TYPE_DEBT.equals(queryPartnerBank.getStatus())
-                    && Objects.nonNull(queryPartnerBank.getDeposit())
-                    && !queryPartnerBank.getDeposit().equals(partnerBank.getDeposit())) {
-                //更新借记卡保证金
-                partnerBank.setModifyTime(dateFormat.format(new Date()));
-                partnerBankMapper.updateDeposit(partnerBank);
-                return;
-            }
             log.warn("机构银行映射信息已存在：{}", partnerId);
             throw new AllinpayException(BizEnums.PARTNER_BANK_EXIST.getCode(), BizEnums.PARTNER_BANK_EXIST.getMsg());
         }
@@ -84,6 +76,8 @@ public class PartnerBankServiceImpl implements IPartnerBankService {
 
     @Override
     public void updateStatus(PartnerBank partnerBank) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        partnerBank.setModifyTime(dateFormat.format(new Date()));
         partnerBankMapper.updateStatus(partnerBank);
     }
 }

@@ -11,4 +11,6 @@ public interface PartnerDepositMapper {
     void insert(@Param("partnerDeposit") PartnerDeposit partnerDeposit);
 
     void update(@Param("partnerDeposit") PartnerDeposit partnerDeposit);
+
+    PartnerDeposit selectOne(@Param("partnerId") String partnerId);
 }

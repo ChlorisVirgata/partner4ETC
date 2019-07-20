@@ -40,11 +40,16 @@ public class OrgDepositServiceImpl implements IOrgDepositService {
         String kid = UUID.randomUUID().toString().replace("-", "");
         PartnerInfo partnerInfo = infoMapper.selectOne(partnerId);
         if (Objects.isNull(partnerInfo)) {
-            log.error("机构信息【{}】不存在，请检查机构编码", partnerId);
+            log.warn("机构信息【{}】不存在，请检查机构编码", partnerId);
             throw new AllinpayException(BizEnums.ORG_FORMAL_NOT_EXIST.getCode(), BizEnums.ORG_FORMAL_NOT_EXIST.getMsg());
         }
+        PartnerDeposit partnerDeposit = depositMapper.selectOne(partnerId);
+        if (Objects.nonNull(partnerDeposit)) {
+            log.warn("机构【{}】已配置保证金信息", partnerId);
+            throw new AllinpayException(BizEnums.ORG_DEPOSIT_EXIST.getCode(), BizEnums.ORG_DEPOSIT_EXIST.getMsg());
+        }
         if (deposit.getDeposit() < deposit.getMinDeposit()) {
-            log.error("签约保证金金额不能小于最低保证金金额！");
+            log.warn("签约保证金金额不能小于最低保证金金额！");
             throw new AllinpayException(BizEnums.ORG_DEPOSIT_AMOUNT_EXCEPTION.getCode(), BizEnums.ORG_DEPOSIT_AMOUNT_EXCEPTION.getMsg());
         }
         deposit.setKid(kid);
@@ -54,7 +59,7 @@ public class OrgDepositServiceImpl implements IOrgDepositService {
     @Override
     public void editOrgDeposit(PartnerDeposit deposit) {
         if (deposit.getDeposit() < deposit.getMinDeposit()) {
-            log.error("签约保证金金额不能小于最低保证金金额！");
+            log.warn("签约保证金金额不能小于最低保证金金额！");
             throw new AllinpayException(BizEnums.ORG_DEPOSIT_AMOUNT_EXCEPTION.getCode(), BizEnums.ORG_DEPOSIT_AMOUNT_EXCEPTION.getMsg());
         }
         depositMapper.update(deposit);
