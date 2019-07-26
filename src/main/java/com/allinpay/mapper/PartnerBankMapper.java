@@ -13,7 +13,5 @@ public interface PartnerBankMapper {
 
     PartnerBank selectOne(@Param("partnerBank") PartnerBank partnerBank);
 
-    int updateDeposit(@Param("partnerBank") PartnerBank partnerBank);
-
     int updateStatus(@Param("partnerBank") PartnerBank partnerBank);
 }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.allinpay.mapper.PartnerDepositMapper">
+    <resultMap id="BaseResultMap" type="com.allinpay.entity.PartnerDeposit">
+        <id column="KID" property="kid" jdbcType="VARCHAR"/>
+        <result column="PARTNER_ID" property="partnerId" jdbcType="VARCHAR"/>
+        <result column="DEPOSIT" property="deposit" jdbcType="NUMERIC"/>
+        <result column="MIN_DEPOSIT" property="minDeposit" jdbcType="NUMERIC"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        KID,PARTNER_ID,DEPOSIT,MIN_DEPOSIT
+    </sql>
+
+    <select id="selectList" parameterType="string" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        from T_ETC_PARTNER_DEPOSIT
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="partnerId != '' and partnerId != null">
+                PARTNER_ID like '%' || #{partnerId} || '%'
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectOne" parameterType="string" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from T_ETC_PARTNER_DEPOSIT
+        where PARTNER_ID = #{partnerId}
+    </select>
+
+    <insert id="insert" parameterType="com.allinpay.entity.PartnerDeposit">
+        insert into T_ETC_PARTNER_DEPOSIT (<include refid="Base_Column_List"/>)
+        values (
+        #{partnerDeposit.kid, jdbcType=VARCHAR},
+        #{partnerDeposit.partnerId, jdbcType=VARCHAR},
+        #{partnerDeposit.deposit, jdbcType=NUMERIC},
+        #{partnerDeposit.minDeposit, jdbcType=NUMERIC}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.allinpay.entity.PartnerDeposit">
+      update T_ETC_PARTNER_DEPOSIT set
+      DEPOSIT = #{partnerDeposit.deposit},
+      MIN_DEPOSIT = #{partnerDeposit.minDeposit}
+      WHERE KID = #{partnerDeposit.kid}
+    </update>
+</mapper>

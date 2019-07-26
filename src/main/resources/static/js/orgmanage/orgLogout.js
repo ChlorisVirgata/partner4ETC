@@ -66,16 +66,16 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             },
 
             //每页展示的条数
-            limits: [5, 10],
+            limits: [5, 10,20],
             //每页默认显示的数量
-            limit: 5,
+            limit: 10,
             //单元格设置
             cols: [[
                 {field: 'partnerId', title: '机构编号'},
                 {field: 'partnerName', title: '机构名称'},
                 {field: 'partnerType',  title: '机构类型'},
                 {field: 'parentId',  title: '父机构编号'},
-                {field: 'partner_address',  title: '机构地址'},
+                {field: 'partnerAddress',  title: '机构地址'},
                 {field: 'saler',  title: '推广人'},
                 {field: 'parstatus',  title: '机构状态'},
                 {field: 'createTimeX',  title: '创建时间'},
@@ -92,7 +92,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                         $(this).text("汽车服务")
                     } else if ($(this).text() == '02') {
                         $(this).text("互联网平台")
-                    } else if ($(this).text() == '04') {
+                    } else if ($(this).text() == '03') {
                         $(this).text("其他")
                     }
                 });

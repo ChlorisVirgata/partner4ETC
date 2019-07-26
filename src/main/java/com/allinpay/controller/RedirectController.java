@@ -56,6 +56,11 @@ public class RedirectController {
         return "login";
     }
 
+    @RequestMapping("/403")
+    public String forbidden() {
+        return "common/403";
+    }
+
     @RequestMapping("/index")
     public String index() {
         return "common/index";
@@ -69,5 +74,10 @@ public class RedirectController {
     @RequestMapping("/orgbank")
     public String orgbank() {
         return "bank/orgbankmap";
+    }
+
+    @RequestMapping("/orgdeposit")
+    public String orgdeposit() {
+        return "bank/orgdeposit";
     }
 }

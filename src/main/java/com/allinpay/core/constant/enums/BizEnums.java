@@ -53,7 +53,13 @@ public enum BizEnums {
     BANK_EXIST("20000", "银行基础信息已存在"),
     BANK_NOT_EXIST("20001", "银行基础信息不存在"),
 
-    PARTNER_BANK_EXIST("20002", "银行机构映射信息已存在");
+    PARTNER_BANK_EXIST("20002", "银行机构映射信息已存在"),
+
+    /**
+     * 机构保证金配置
+     */
+    ORG_DEPOSIT_AMOUNT_EXCEPTION("30001", "签约保证金金额不能小于最低保证金金额"),
+    ORG_DEPOSIT_EXIST("30002", "机构已配置保证金信息");
 
 
     private String code;

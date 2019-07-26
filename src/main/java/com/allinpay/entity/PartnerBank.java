@@ -13,10 +13,6 @@ public class PartnerBank {
      */
     private String bankId;
     /**
-     * 保证金
-     */
-    private Integer deposit;
-    /**
      * 卡类型 1 借记卡 2 贷记卡
      */
     private String cardType;

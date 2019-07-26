@@ -10,16 +10,14 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
     var search = function () {
         table.render({
             //表格生成的位置：#ID
-            elem: '#orgBankTable',
+            elem: '#depositTable',
             //请求地址
-            url: '/org/bank/getList',
+            url: '/org/deposit/getList',
             //是否分页
             page: true,
             //请求参数
             where: {
-                bankId: $.trim($("#bankId").val()),
-                partnerId: $.trim($("#partnerId").val()),
-                status: $.trim($("#status").val())
+                partnerId: $.trim($("#partnerId").val())
             },
             //分页信息
             request: {
@@ -42,35 +40,17 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
                 msgName: 'msg',
                 dataName: 'data'
             },
-            done: function () {
-                $("tbody td[data-field='status']").children().each(function (index, val) {
-                    if ($(this).text() == "0") {
-                        $(this).text("禁用");
-                    } else if ($(this).text() == "1") {
-                        $(this).text("有效");
-                    }
-                });
-                $("tbody td[data-field='cardType']").children().each(function (index, val) {
-                    if ($(this).text() == "1") {
-                        $(this).text("借记卡");
-                    } else if ($(this).text() == "2") {
-                        $(this).text("贷记卡");
-                    }
-                })
-            },
             //每页展示的条数
             limits: [5, 10, 20],
             //每页默认显示的数量
             limit: 10,
             //单元格设置
             cols: [[
+                {field: 'kid', hide: true},
                 {field: 'partnerId', title: '机构编号'},
-                {field: 'bankId', title: '银行编号'},
-                {field: 'cardType', title: '卡类型'},
-                {field: 'status', title: '状态'},
-                {field: 'insertTime', title: '创建日期'},
-                {field: 'modifyTime', title: '修改日期'},
-                {fixed: 'right', title: '操作', toolbar: '#operator', width: 70}
+                {field: 'deposit', title: '签约保证金'},
+                {field: 'minDeposit', title: '最低保证金'},
+                {fixed: 'right', title: '操作', toolbar: '#operator', width: 65}
             ]]
         });
     };
@@ -82,8 +62,9 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
     });
 
     $("#addBtn").on("click", function () {
-        $("#addForm").find("input[name='bankId']").val("");
         $("#addForm").find("input[name='partnerId']").val("");
+        $("#addForm").find("input[name='deposit']").val("");
+        $("#addForm").find("input[name='minDeposit']").val("");
         openModal("新增", "addForm");
     });
 
@@ -91,46 +72,29 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
     table.on('tool(tableFilter)', function (obj) {
         //获取所在行的数据
         var myData = obj.data;
-        if (obj.event === 'forbidden') {
-            var btnName = $(this).html();
-            var status;
-            if (btnName == "禁用") {
-                status = "0";
-            } else {
-                status = "1";
-            }
-            console.log(btnName);
-            var index = layer.confirm("确定置为" + btnName + "吗？", function () {
-                $.ajax({
-                    url: '/org/bank/status',
-                    type: 'post',
-                    data: {
-                        bankId: myData.bankId,
-                        partnerId: myData.partnerId,
-                        cardType: myData.cardType,
-                        status: status
-                    },
-                    dataType: 'json',
-                    success: function (data) {
-                        layer.close(index);
-                        if (data.code == "00000") {
-                            search();
-                        } else {
-                            layer.alert(data.msg);
-                        }
-                    },
-                    error: function () {
-                        layer.alert("操作失败，请重试！");
-                    }
-                });
-            })
+        //审核
+        if (obj.event === 'edit') {
+            //form表单初始化
+            form.val("editFilter", {
+                "kid": myData.kid,
+                "partnerId": myData.partnerId,
+                "deposit": myData.deposit,
+                "minDeposit": myData.minDeposit
+            });
+            //打开模态框
+            openModal("编辑", "editForm");
         }
     });
 
     //监听form表单提交事件 防止页面跳转
     form.on('submit(addFilter)', function (data) {
+        if (parseInt($("#addForm").find("input[name=deposit]").val())
+            < parseInt($("#addForm").find("input[name=minDeposit]").val())) {
+            layer.alert("签约保证金金额不能小于最低保证金金额");
+            return false;
+        }
         $.ajax({
-            url: '/org/bank/add',
+            url: '/org/deposit/add',
             type: 'post',
             data: $("#addForm").serialize(),
             dataType: 'json',
@@ -150,7 +114,33 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
         });
         return false;
     });
-
+    form.on('submit(editFilter)', function (data) {
+        if (parseInt($("#editForm").find("input[name=deposit]").val())
+            < parseInt($("#editForm").find("input[name=minDeposit]").val())) {
+            layer.alert("签约保证金金额不能小于最低保证金金额");
+            return false;
+        }
+        $.ajax({
+            url: '/org/deposit/edit',
+            type: 'post',
+            data: $("#editForm").serialize(),
+            dataType: 'json',
+            success: function (data) {
+                if (data.code == "00000") {
+                    var index = layer.alert("编辑成功", function () {
+                        layer.closeAll();
+                        search();
+                    });
+                } else {
+                    layer.alert(data.msg);
+                }
+            },
+            error: function () {
+                layer.alert("编辑失败，请重试！");
+            }
+        });
+        return false;
+    });
     form.on('submit(queryFilter)', function (data) {
         return false;
     });
@@ -160,11 +150,20 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
         layer.open({
             title: operateName,
             content: $('#' + modalName),
-            area: ['500px', '275px'],
+            area: ['500px', '270px'],
             //点击遮罩关闭窗口
             shadeClose: true,
             //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
             type: 1
         });
     }
+
+    form.verify({
+        numberCheck: function (value, item) {
+            if (value.substr(0, 1) == "0" ||
+                value.indexOf(".") != -1) {
+                return "金额有误,请输入正整数！";
+            }
+        }
+    })
 });

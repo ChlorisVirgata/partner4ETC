@@ -14,7 +14,7 @@
 
     <select id="selectList" parameterType="com.allinpay.controller.query.BankQuery" resultMap="BaseResultMap">
         select BANK_ID,BANK_NAME,INSERT_TIME,MODIFY_TIME,
-        decode(STATUS,'0','禁用','1','有效','类型有误') STATUS
+        STATUS
         from T_ETC_BANK_INFO
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="bankQuery.bankId != '' and bankQuery.bankId != null">

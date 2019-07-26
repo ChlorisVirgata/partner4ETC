@@ -40,6 +40,11 @@ public class GlobalExceptionHandler {
         return ResponseData.failure(e.getErrorCode(), e.getErrorMsg());
     }
 
+//    @ExceptionHandler(UnauthorizedException.class)
+//    public String unauthorizedExceptionHandler(UnauthorizedException e) {
+//        return "common/403";
+//    }
+
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ResponseData exceptionHandler(Exception e) {

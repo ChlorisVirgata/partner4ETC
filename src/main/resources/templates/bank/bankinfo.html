@@ -27,7 +27,7 @@
         <!--面包屑-->
         <div style="margin: 10px">
             <span class="layui-breadcrumb">
-                <a href="">发卡银行管理</a>
+                <a href="">签约管理</a>
                 <a><cite>银行基础信息</cite></a>
             </span>
         </div>
@@ -123,7 +123,7 @@
     <!--操作菜单页面-->
     <div id="operator" style="display: none;">
         <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-        {{# if(d.status == "有效"){ }}
+        {{# if(d.status == "1"){ }}
         <a class="layui-btn layui-btn-xs layui-btn-danger forbiddenBtn" lay-event="forbidden">禁用</a>
         {{# } else { }}
         <a class="layui-btn layui-btn-xs layui-btn-danger forbiddenBtn" lay-event="forbidden">有效</a>

@@ -3,6 +3,9 @@ package com.allinpay.entity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 
 @Setter
 @Getter
@@ -35,4 +38,15 @@ public class UserhairpinVo extends OrgQueryVo {
      * 签约结果
      */
     private String signsStatus;
+
+
+    /**
+     * 查询创建时间起始
+     */
+    private String queryTimeStart;
+
+    /**
+     * 查询创建时间止
+     */
+    private String queryTimeEnd;
 }

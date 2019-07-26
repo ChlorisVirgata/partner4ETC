@@ -30,7 +30,7 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
             //预读选择的文件，不支持ie8
             obj.preview(function (index, file, result) {
                 //图片链接（base64）
-                $('#licenseImg').attr('src', result);
+                dealImg(file, "licenseImg", "licenseFile", result);
             });
         }
     });
@@ -43,7 +43,7 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
         choose: function (obj) {
             //预读选择的文件，不支持ie8
             obj.preview(function (index, file, result) {
-                $('#legalFrontImg').attr('src', result);
+                dealImg(file, "legalFrontImg", "legalFront", result);
             });
         }
     });
@@ -56,7 +56,7 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
         choose: function (obj) {
             //预读选择的文件，不支持ie8
             obj.preview(function (index, file, result) {
-                $('#legalBackImg').attr('src', result);
+                dealImg(file, "legalBackImg", "legalBack", result);
             });
         }
     });
@@ -70,7 +70,7 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
             //预读选择的文件，不支持ie8
             obj.preview(function (index, file, result) {
                 //图片链接（base64）
-                $('#agreementImg').attr('src', result);
+                dealImg(file, "agreementImg", "agreementFile", result);
             });
         }
     });
@@ -363,5 +363,14 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
             $('#legalBackImg').attr('src', "/etcimg/temp/" + myData.partnerId + "/back/" + myData.idBack);
         $.trim(myData.agreement) == "" ? $('#agreementImg').attr('src', "") :
             $('#agreementImg').attr('src', "/etcimg/temp/" + myData.partnerId + "/agreement/" + myData.agreement);
+    }
+
+    function dealImg(file, imgId, fileName, result) {
+        if (file.size > 0) {
+            $('#' + imgId).attr('src', result);
+        } else {
+            $("input[name=" + fileName + "]").val("");
+            $('#' + imgId).attr('src', "");
+        }
     }
 });
