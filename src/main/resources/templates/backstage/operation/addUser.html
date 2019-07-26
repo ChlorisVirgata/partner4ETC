@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
-    <link rel="stylesheet" href="../../../static/layui/css/layui.css" media="all"/>
+
     <style>
         body {
             margin: 10px;
@@ -19,7 +19,17 @@
             width: 260px;
         }
 
+        .clickfx {
+            color: red;
+        }
+
+        .layui-form-item {
+            margin-top: 10px;
+        }
+
     </style>
+
+
 </head>
 
 <body class="childrenBody">
@@ -42,37 +52,37 @@
         </div>
     </div>
 
-
     <div class="layui-form-item">
         <label class="layui-form-label">角色</label>
-        <div class="layui-input-block">
-            <input type="radio" name="roleId" value="0" title="超级管理员">
-            <input type="radio" name="roleId" value="1" title="普通管理员" checked="">
+        <div class="layui-input-inline">
+            <select name="roleId" xm-select="role-select"
+                    lay-verify="required"
+                    lay-vertype="tips">
+                <option value="">请选择角色</option>
+                <option th:each="role:${roles}" th:value="${role.roleId}" th:text="${role.roleName}"
+                        th:selected="${#arrays.contains((roleIds == null ? #arrays.toIntegerArray(new Integer[]{}) : roleIds), role.roleId)}"></option>
+            </select>
         </div>
     </div>
 
+
     <div class="layui-form-item">
         <label class="layui-form-label">状态</label>
-        <div class="layui-input-block">
+        <div class="layui-input-inline">
             <input type="checkbox" name="status" lay-skin="switch" lay-text="开启|关闭" checked>
         </div>
     </div>
 
-    <!--<div class="layui-form-item">-->
-    <!--<div class="layui-input-block">-->
-    <!--<button class="layui-btn" lay-submit="" lay-filter="*">保存</button>-->
-    <!--<button type="button" class="layui-btn layui-btn-primary" onclick="layerclose();">关闭</button>-->
-    <!--</div>-->
-    <!--</div>-->
     <div class="layui-form-item">
         <div class="layui-input-block">
             <button class="layui-btn" id="dataCommit" lay-submit="" lay-filter="dataCommit">提交</button>
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-            <button type="button" class="layui-btn layui-btn-primary" onclick="layerclose();">关闭</button>
+            <!--<button type="button" class="layui-btn layui-btn-primary" onclick="layerclose();">关闭</button>-->
         </div>
     </div>
 </form>
 <script type="text/javascript" src="../../../static/layui/layui.js"></script>
+<script type="text/javascript" src="../../../static/layui/layui.all.js"></script>
 <script type="text/javascript" src="../../../static/lib/jquery/jquery-3.4.1.min.js"></script>
 <script>
     $(function () {
@@ -86,7 +96,7 @@
                     // layer.msg(JSON.stringify(data.data));
                     $("#username").val(data.data.username);
                     $("#password").val(data.data.password);
-                    $("input[name='roleId']").eq(data.data.roleId).attr("checked", 'checked');
+                    $("#roleId").eq(data.data.roleId).attr("selected", 'true');
                     $("input[name='status']").eq(data.data.status).attr("checked", 'checked');
                 }, error: function () {
                 }
@@ -103,41 +113,39 @@
         })
     }
 
+    function fxclick() {
+        // alert("123");
+        $('.layui-icon layui-icon-ok').toggleClass('clickfx');
+    }
+
 
     layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
         var form = layui.form;
         var layer = layui.layer;
 
 
-        form.on('submit(*)', function(data) {
-            var index = layer.msg('提交中，请稍候',{icon: 16,time:false,shade:0.8});
-            var d = data.field;
-            var url = "/user/add";
-            if(d.id != ""){
-                url = "/user/edit";
-            }
-            $.ajax({
-                url: url,
-                data:d,
-                dataType:"text",
-                success: function(data){
-                    layer.close(index);
-                    if(data == 0){
-                        layer.msg("保存成功！");
-                        parent.queryTea();
-                        parent.close();
-                    }else{
-                        layer.msg("保存失败！");
-                    }
-                },error:function(){
-                    layer.close(index);
-                    layer.msg("保存失败！");
+        $.get("/role/allList", function (r) {
+
+            new Vue({
+                el: '#app12',
+                data: {
+                    roleList: r
                 }
             });
-            return false;
+
         });
+
+
     });
 </script>
+
+
+<script type="text/javascript" src="../../../static/lib/jquery/vue.min.js"></script>
+<script type="text/javascript" src="../../../static/lib/jquery/jquery-3.4.1.min.js"></script>
+<link rel="stylesheet" href="../../../static/layui/css/layui.css" media="all"/>
+<link rel="stylesheet" href="../../../static/css/bootstrap.min.css" media="all"/>
+<link rel="stylesheet" href="../../../static/css/main.css">
+
 
 </body>
 </html>

@@ -30,7 +30,7 @@ public class TEtcSysRole {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "role_id", type = IdType.AUTO)
+    @TableId(value = "ROLE_ID")
     private Integer roleId;
 
     /**
@@ -45,14 +45,8 @@ public class TEtcSysRole {
 
 
     @TableField(exist = false)
-    private List<Long> menuIdList;
+    private List<Integer> menuIdList;
 
-
-    /**
-     * 角色ID列表
-     */
-    @TableField(exist = false)
-    private List<Integer> roleIdList;
 
     /**
      * 创建时间

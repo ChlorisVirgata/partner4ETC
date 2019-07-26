@@ -2,11 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.allinpay.mapper.TEtcUserMapper">
     <!-- 查询用户的所有权限 -->
-    <select id="queryAllPerms" resultType="string">
-		select m.perms from sys_user_role ur
-			LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id
-			LEFT JOIN sys_menu m on rm.menu_id = m.menu_id
-		where ur.user_id = #{userId}
+    <select id="queryAllPerms" resultType="java.lang.String">
+		select distinct a.PERMS from T_ETC_SYS_MENU a right join T_ETC_SYS_ROLE_MENU b on b.MENU_ID = a.MENU_ID  where a.TYPE=2 and b.ROLE_ID = #{roleId}
 	</select>
 
     <!-- 查询用户的所有菜单ID -->
@@ -15,4 +12,17 @@
 			LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id
 		where ur.user_id = #{userId}
 	</select>
+	<select id="selectByUserName" resultType="com.allinpay.entity.TEtcSysUser">
+
+	</select>
+    <select id="selectMaxId" resultType="java.lang.Integer">
+		select max(ROLE_ID) from T_ETC_SYS_ROLE
+	</select>
+
+	<select id="selectMaxRoleId" resultType="java.lang.Integer">
+		select max(ID) from T_ETC_SYS_ROLE_MENU
+	</select>
+	<select id="selectAllPerms" resultType="java.lang.String">
+        select distinct PERMS from T_ETC_SYS_MENU where TYPE=2
+    </select>
 </mapper>

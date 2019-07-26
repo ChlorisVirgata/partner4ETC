@@ -1,3 +1,4 @@
+/*
 package com.allinpay.core.handler;
 
 import com.allinpay.core.common.ResponseData;
@@ -11,9 +12,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+*/
 /**
  * 全局异常处理器
- */
+ *//*
+
 @ControllerAdvice(annotations = {RestController.class, Controller.class})
 @Slf4j
 public class GlobalExceptionHandler {
@@ -41,6 +44,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ResponseData exceptionHandler(Exception e) {
         log.info("系统异常", e);
-        return ResponseData.failure(BizEnums.EXCEPTION.getCode(), BizEnums.EXCEPTION.getMsg());
+        return ResponseData.failure(BizEnums.EXCEPTION.getCode(), e.getMessage());
     }
 }
+*/

@@ -54,15 +54,15 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             cols: [[
                 {type: 'checkbox', fixed: 'left'},
                 // {field: 'id', width: 80, title: 'ID', sort: true},
-                {field: 'userId', width: 100, title: '用户ID', sort: true},
-                {field: 'username', width: 100, title: '用户名'},
-                {field: 'password', width: 150, title: '密码', sort: true},
+                {field: 'userId', width: 80, title: '用户ID', sort: true},
+                {field: 'username', width: 110, title: '用户名'},
+                {field: 'password', width: 120, title: '密码', sort: true},
                 {field: 'status', width: 100, title: '状态', templet: statusTpl},
-                {field: 'roleName', width: 130, title: '角色', sort: true},
-                {field: 'createTime', width: 130, title: '创建时间', sort: true},
-                {field: 'updateTime', width: 130, title: '修改时间'},
+                {field: 'roleName', width: 100, title: '角色', sort: true},
+                {field: 'createTime', width: 170, title: '创建时间', sort: true},
+                {field: 'updateTime', width: 170, title: '修改时间'},
                 {field: 'lastLoginTime', width: 130, title: '最后登录时间', sort: true},
-                {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 120}
+                {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 130}
             ]]
         });
     };
@@ -211,7 +211,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 shadeClose: true,
                 shade: 0.8,
                 area: ['500px', '65%'],
-                content: 'use/add?opreate=edit&userId=' + data.userId, //iframe的url
+                content: '/user/update?opreate=edit&userId=' + data.userId+'&roleIds='+data.roleId, //iframe的url
                 btn: ['关闭'],
                 yes: function () {
                     search();
@@ -244,7 +244,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                     shadeClose: true,
                     shade: 0.8,
                     area: ['500px', '65%'],
-                    content: 'use/add', //iframe的url
+                    content: 'user/add', //iframe的url
                     btn: ['关闭'],
                     yes: function () {
                         search();
@@ -268,7 +268,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 shadeClose: true,
                 shade: 0.8,
                 area: ['500px', '80%'],
-                content: 'use/add', //iframe的url
+                content: 'user/add', //iframe的url
                 btn: ['关闭'],
                 yes: function () {
                     search();

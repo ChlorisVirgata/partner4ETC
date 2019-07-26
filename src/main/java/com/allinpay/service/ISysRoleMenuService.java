@@ -14,7 +14,7 @@ import java.util.List;
  * @since 2019-04-16
  */
 public interface ISysRoleMenuService extends IService<TEtcSysRoleMenu> {
-    void saveOrUpdate(Integer roleId, List<Long> menuIdList);
+    void saveOrUpdate(Integer roleId, List<Integer> menuIdList);
 
     /**
      * 根据角色ID，获取菜单ID列表

@@ -1,5 +1,9 @@
 package com.allinpay.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.allinpay.entity.TEtcSysMenu;
+import com.allinpay.entity.TEtcSysRole;
+import com.allinpay.service.ITEtcSysMenuService;
 import com.allinpay.service.ITEtcSysRoleService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * 系统页面视图
@@ -18,6 +24,9 @@ public class TEtcPageController {
 
     @Autowired
     private ITEtcSysRoleService sysRoleService;
+
+    @Autowired
+    private ITEtcSysMenuService sysMenuService;
 
 
     @RequestMapping(value = {"/", "login.html"})
@@ -35,25 +44,36 @@ public class TEtcPageController {
         return "backstage/userManage";
     }
 
-    @GetMapping("/use/add")
-    @RequiresPermissions("system:user:add")
-    public ModelAndView toAdd(String userId,String opreate) {
-//        List<TEtcSysRole> tEtcSysRoles = sysRoleService.list();
+    @GetMapping("/user/add")
+    @RequiresPermissions("user:add")
+    public ModelAndView userAdd() {
+        List<TEtcSysRole> tEtcSysRoles = sysRoleService.list();
         ModelAndView modelAndView = new ModelAndView("backstage/operation/addUser");
-        modelAndView.addObject("userId",userId);
-        modelAndView.addObject("opreate",opreate);
+        modelAndView.addObject("roles", tEtcSysRoles);
         return modelAndView;
     }
+
+    @GetMapping("/user/update")
+    @RequiresPermissions("user:update")
+    public ModelAndView userUpdate(String userId, String roleIds, String opreate) {
+        List<TEtcSysRole> tEtcSysRoles = sysRoleService.list();
+        ModelAndView modelAndView = new ModelAndView("backstage/operation/editUser");
+        modelAndView.addObject("userId", userId);
+        modelAndView.addObject("roleIds", roleIds);
+        modelAndView.addObject("opreate", opreate);
+        modelAndView.addObject("roles", tEtcSysRoles);
+        return modelAndView;
+    }
+
+
     @RequestMapping("/roleManage")
     public String roleManage() {
         return "backstage/roleManage";
     }
 
-    @GetMapping("/role/add")
-    public ModelAndView roleAdd(Integer roleId,String data) {
+    @GetMapping("/addRole")
+    public ModelAndView roleAdd() {
         ModelAndView modelAndView = new ModelAndView("backstage/operation/addRole");
-        modelAndView.addObject("roleId",roleId);
-        modelAndView.addObject("data",data);
         return modelAndView;
     }
 
@@ -67,20 +87,40 @@ public class TEtcPageController {
     public String menuManage() {
         return "backstage/menuManage";
     }
+
     @GetMapping("/menu/add")
-    //@RequiresPermissions("system:user:add")
-    public String menuAdd() {
-        return "backstage/operation/addMenu";
+    public ModelAndView menuAdd() {
+        ModelAndView modelAndView = new ModelAndView("backstage/operation/addMenu");
+        List<TEtcSysMenu> menus = sysMenuService.menuList();
+        modelAndView.addObject("menus", menus);
+        modelAndView.addObject("menu", new TEtcSysMenu());
+        return modelAndView;
+
     }
 
+    @GetMapping("/menu/edit")
+    public ModelAndView menuEdit(Integer menuId) {
+        ModelAndView modelAndView = new ModelAndView("backstage/operation/addMenu");
+        List<TEtcSysMenu> menus = sysMenuService.menuList();
+        TEtcSysMenu menu = sysMenuService.getById(menuId);
+        modelAndView.addObject("menus", menus);
+        modelAndView.addObject("menu", menu);
+        modelAndView.addObject("operate","edit");
+        return modelAndView;
+
+    }
 
 
     @GetMapping("/role/edit")
-    public String editRole(){
-        return "backstage/operation/addRole";
+    public ModelAndView editRole(Integer roleId) {
+        ModelAndView modelAndView = new ModelAndView("backstage/operation/addRole");
+        TEtcSysRole role = sysRoleService.getById(roleId);
+        modelAndView.addObject("role", role);
+        modelAndView.addObject("roleName", role.getRoleName());
+        modelAndView.addObject("roleId", role.getRoleId());
+        modelAndView.addObject("opreate", "edit");
+        return modelAndView;
     }
-
-
 
 
 }

@@ -7,12 +7,14 @@ import com.allinpay.mapper.TEtcMenuMapper;
 import com.allinpay.mapper.TEtcUserMapper;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -38,8 +40,7 @@ public class UserRealm extends AuthorizingRealm {
     @Autowired
     private TEtcMenuMapper sysMenuMapper;
 
-    public UserRealm() {
-    }
+
 
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         TEtcSysUser user = (TEtcSysUser)principals.getPrimaryPrincipal();
@@ -72,11 +73,11 @@ public class UserRealm extends AuthorizingRealm {
     }
 
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
-        UsernamePasswordToken token = (UsernamePasswordToken)authcToken;
-        TEtcSysUser user = (TEtcSysUser)this.TEtcUserMapper.selectOne((Wrapper)(new QueryWrapper()).eq("username", token.getUsername()));
+        UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
+        TEtcSysUser user = (TEtcSysUser) this.TEtcUserMapper.selectOne((Wrapper) (new QueryWrapper()).eq("username", token.getUsername()));
         if (user == null) {
             throw new UnknownAccountException("账号或密码不正确");
-        } else if (user.getStatus().equals("close")) {
+        } else if (user.getStatus().equals("0")) {
             throw new LockedAccountException("账号已被锁定,请联系管理员");
         } else {
             SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPassword(), Util.bytes(user.getSalt()), this.getName());

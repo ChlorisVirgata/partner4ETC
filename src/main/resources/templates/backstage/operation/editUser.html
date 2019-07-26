@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+
+    <style>
+        body {
+            margin: 10px;
+        }
+
+        .layui-input {
+            width: 260px;
+        }
+
+        .clickfx {
+            color: red;
+        }
+
+        .layui-form-item {
+            margin-top: 10px;
+        }
+
+    </style>
+
+
+</head>
+
+<body class="childrenBody">
+<form class="layui-form" action="/sys/user/add">
+    <input type="hidden" name="userId" id="userId" th:value="${userId}">
+    <input type="hidden" name="roleIds" id="roleIds" th:value="${roleIds}">
+    <input type="hidden" name="opreate" id="opreate" th:value="${opreate}">
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户名</label>
+        <div class="layui-input-inline">
+            <input type="text" name="username" id="username" value="" autocomplete="off" class="layui-input"
+                   lay-verify="required|name">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">角色</label>
+        <div class="layui-input-inline">
+            <select name="roleId" xm-select="role-select"
+                    lay-verify="required"
+                    lay-vertype="tips">
+                <option value="">请选择角色</option>
+                <option th:each="role:${roles}" th:value="${role.roleId}" th:text="${role.roleName}"
+                        th:selected="${roleIds} == ${role.roleId}"
+                ></option>
+            </select>
+        </div>
+    </div>
+
+    <!--  th:selected="${#arrays.contains((roleIds == null ? #arrays.toIntegerArray(new Integer[]{}) : roleIds), role.roleId)}" -->
+    <!--<div class="layui-form-item">-->
+    <!--<label class="layui-form-label">角色</label>-->
+    <!--<div class="layui-input-block">-->
+    <!--<input type="radio" name="roleId" value="0" title="超级管理员">-->
+    <!--<input type="radio" name="roleId" value="1" title="普通管理员" checked="">-->
+    <!--</div>-->
+    <!--</div>-->
+
+
+    <!--<div class="layui-form-item">-->
+    <!--<label class="layui-form-label">复选框</label>-->
+    <!--<div class="layui-input-block" id="layui-input-block-role">-->
+    <!--<input type="checkbox" name="roleIds1" value="1" title="写作">-->
+    <!--<input type="checkbox" name="roleIds1" value="2" title="阅读" checked>-->
+    <!--<input type="checkbox" name="roleIds1" value="3" title="发呆">-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <!--<div id="app">-->
+    <!--<ol>-->
+    <!--<li v-for="site in sites">-->
+    <!--{{ site.name }}-->
+    <!--</li>-->
+    <!--</ol>-->
+    <!--</div>-->
+
+    <!--<div id="app12">-->
+    <!--<ol>-->
+    <!--<li v-for="role in roleList">-->
+    <!--{{ role.roleName }}-->
+    <!--</li>-->
+    <!--</ol>-->
+    <!--</div>-->
+
+
+    <!--   <div class="layui-form-item">
+           <label class="layui-form-label">选择框</label>
+           <div class="layui-input-block">
+               <select name="roleIds">
+                   <li v-for="role in roleList">
+                       &lt;!&ndash;<input type="checkbox" name="roleIds" value="role.roleId" title="{{role.roleName}}">&ndash;&gt;
+                       <option value="role.roleId">{{role.roleName}}</option>
+                   </li>
+               </select>
+           </div>
+       </div>-->
+
+    <!--<div id="app12">-->
+    <!--<div class="layui-form-label">角色</div>-->
+    <!--&lt;!&ndash;  class="checkbox-inline" &ndash;&gt;-->
+    <!--<li v-for="role in roleList">-->
+    <!--<input type="checkbox" name="roleIds" value="role.roleId" title="{{role.roleName}}" checked>-->
+    <!--</li>-->
+    <!--</div>-->
+    <!--<div class="layui-form-item">-->
+    <!--<label class="layui-form-label">复选框</label>-->
+    <!--<div class="layui-input-block" id="app12">-->
+    <!--&lt;!&ndash;<input type="checkbox" name="roleIds" value="0" title="写作">&ndash;&gt;-->
+    <!--&lt;!&ndash;<input type="checkbox" name="roleIds" value="1" title="阅读">&ndash;&gt;-->
+    <!--<label v-for="role in roleList" class="checkbox-inline">-->
+    <!--<input type="checkbox" value="role.roleId" name="roleIds" title="{{role.roleName}}">-->
+    <!--</label>-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <!--  <div class="layui-form-item">
+          <label class="layui-form-label">单选框</label>
+          <div class="layui-input-block">
+              <div>
+                  <label v-for="role in roleList">
+                      <input type="radio" name="roleIds" value="role.roleId" title="{{role.roleName}}">
+                  </label>
+              </div>
+              <input type="radio" name="sex" value="男" title="男" checked="">
+              <input type="radio" name="sex" value="女" title="女">
+          </div>
+      </div>-->
+
+    <!-- <div class="layui-form-item" id="app12">
+         <label class="layui-form-label">原始复选框</label>
+         <div class="layui-input-block">
+             <label v-for="role in roleList">
+                 <input type="checkbox" value="role.roleId" name="roleIds" title="{{role.roleName}}" onclick="fxclick();">
+             </label>
+             &lt;!&ndash;<input type="checkbox" name="like1[write]" lay-skin="primary" title="写作" checked="">&ndash;&gt;
+             &lt;!&ndash;<input type="checkbox" name="like1[read]" lay-skin="primary" title="阅读">&ndash;&gt;
+             &lt;!&ndash;<input type="checkbox" name="like1[game]" lay-skin="primary" title="游戏" disabled="">&ndash;&gt;
+         </div>
+
+         &lt;!&ndash;<ul>
+             {{#  layui.each(roleList, function(index, role){ }}
+             <li>
+                 <span>{{role.roleName}}</span>
+             </li>
+             {{#  }); }}
+
+             {{#  if(roleList.length === 0){ }}
+             无数据
+             {{#  } }}
+         </ul>&ndash;&gt;
+     </div>-->
+
+    <!--<div class="form-group" id="app12">-->
+    <!--<div class="col-sm-2 control-label">角色</div>-->
+    <!--<div class="col-sm-10">-->
+    <!--<label v-for="role in roleList" class="checkbox-inline">-->
+    <!--<input type="checkbox" value="role.roleId"  name="roleIds"  title="{{role.roleName}}"  >{{role.roleName}}-->
+    <!--</label>-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <!--<div class="">-->
+    <!--<label class="layui-form-label">复选框</label>-->
+    <!--<div id="layui-input-block-role">-->
+    <!--<label><input type="checkbox" name="like" value="0">音乐</label>-->
+    <!--<label><input type="checkbox" name="like" value="1">旅游</label>-->
+
+    <!--</div>-->
+    <!--</div>-->
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">状态</label>
+        <div class="layui-input-inline">
+            <input type="checkbox" name="status" lay-skin="switch" lay-text="开启|关闭" checked>
+        </div>
+    </div>
+
+    <!--<div class="layui-form-item">-->
+    <!--<div class="layui-input-block">-->
+    <!--<button class="layui-btn" lay-submit="" lay-filter="*">保存</button>-->
+    <!--<button type="button" class="layui-btn layui-btn-primary" onclick="layerclose();">关闭</button>-->
+    <!--</div>-->
+    <!--</div>-->
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" id="dataCommit" lay-submit="" lay-filter="dataCommit">提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            <!--<button type="button" class="layui-btn layui-btn-primary" onclick="layerclose();">关闭</button>-->
+        </div>
+    </div>
+</form>
+<script type="text/javascript" src="../../../static/layui/layui.js"></script>
+<script type="text/javascript" src="../../../static/layui/layui.all.js"></script>
+<script type="text/javascript" src="../../../static/lib/jquery/jquery-3.4.1.min.js"></script>
+<script>
+    $(function () {
+        var id = $("#userId").val();
+        if (id != "") {
+            $.ajax({
+                url: "/sys/user/queryUserById",
+                data: {"userId": id},
+                dataType: "json",
+                success: function (data) {
+                    // layer.msg(JSON.stringify(data.data));
+                    $("#username").val(data.data.username);
+                    $("#password").val(data.data.password);
+                    $("#roleIds").val(data.data.roleId);
+                    // $("#roleId").eq(data.data.roleId).attr("selected", 'true');
+                    $("input[name='status']").eq(data.data.status).attr("checked", 'checked');
+                }, error: function () {
+                }
+            });
+        }
+    });
+
+    function layerclose() {
+        layui.use(['layer'], function () {
+            var layer = layui.layer;
+            var index = parent.layer.getFrameIndex(window.name);//获取当前弹出层的层级
+            parent.layer.close(index);//关闭弹出层
+            location.reload();//刷新父页面
+        })
+    }
+
+    function fxclick() {
+        // alert("123");
+        $('.layui-icon layui-icon-ok').toggleClass('clickfx');
+    }
+
+
+    layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
+        var form = layui.form;
+        var layer = layui.layer;
+
+
+        /*
+                form.on('submit(*)', function(data) {
+                    var index = layer.msg('提交中，请稍候',{icon: 16,time:false,shade:0.8});
+                    var d = data.field;
+                    var url = "/user/add";
+                    if(d.id != ""){
+                        url = "/user/edit";
+                    }
+                    $.ajax({
+                        url: url,
+                        data:d,
+                        dataType:"text",
+                        success: function(data){
+                            layer.close(index);
+                            if(data == 0){
+                                layer.msg("保存成功！");
+                                parent.queryTea();
+                                parent.close();
+                            }else{
+                                layer.msg("保存失败！");
+                            }
+                        },error:function(){
+                            layer.close(index);
+                            layer.msg("保存失败！");
+                        }
+                    });
+                    return false;
+                });*/
+
+        /*   $.get("/role/select", function (r) {
+               // alert(JSON.stringify(r));
+               var context = "";
+               for (var i = 0; i < r.length; i++) {
+                   context = context + '<label><input type="checkbox" name="roleIds" value="'+r[i].roleId+'">'+r[i].roleName+'</label>';
+                   // alert(context);
+               }
+               var htmlContent = $("#layui-input-block-role");
+               htmlContent.append(context);
+               $("#layui-input-block-role").show();
+               //window.location.reload();
+               // $('#roleList').val(r);
+           });*/
+
+        $.get("/role/allList", function (r) {
+            //alert(JSON.stringify(r));
+            // vm.roleList = r;
+
+            new Vue({
+                el: '#app12',
+                data: {
+                    roleList: r
+                }
+            });
+            // var context = "";
+            // for (var i = 0; i < r.length; i++) {
+            //     context = context + '<label><input type="checkbox" name="roleIds" value="'+r[i].roleId+'">'+r[i].roleName+'</label>';
+            //     // alert(context);
+            // }
+            // var htmlContent = $("#layui-input-block-role");
+            // htmlContent.append(context);
+            // $("#layui-input-block-role").show();
+            //window.location.reload();
+            // $('#roleList').val(r);
+        });
+
+
+    });
+</script>
+
+
+<!--<script>
+    new Vue({
+        el: '#app12',
+        data: {
+            roleList: [
+                {roleName: 'RunoobroleName'},
+                {roleName: 'GoogleroleName'},
+                {roleName: 'TaobaoroleName'}
+            ]
+        }
+    });
+</script>-->
+
+<script type="text/javascript" src="../../../static/lib/jquery/vue.min.js"></script>
+<script type="text/javascript" src="../../../static/lib/jquery/jquery-3.4.1.min.js"></script>
+<link rel="stylesheet" href="../../../static/layui/css/layui.css" media="all"/>
+<link rel="stylesheet" href="../../../static/css/bootstrap.min.css" media="all"/>
+<link rel="stylesheet" href="../../../static/css/main.css">
+
+
+</body>
+</html>

@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.allinpay.mapper.TEtcMenuMapper">
+    <insert id="saveRoleMenu">
+		insert into T_ETC_SYS_ROLE_MENU (ID,ROLE_ID,MENU_ID) values  (#{arg0},#{arg1},#{arg2})
+	</insert>
+
+    <delete id="removeMenuById">
+		DELETE FROM T_ETC_SYS_ROLE_MENU WHERE ROLE_ID = #{arg0}
+	</delete>
+
+
     <select id="queryListParentId" resultType="com.allinpay.entity.TEtcSysMenu">
 		select * from t_etc_sys_menu where parent_id = #{parentId} order by order_num asc
 	</select>
 
     <select id="queryNotButtonList" resultType="com.allinpay.entity.TEtcSysMenu">
 		select * from t_etc_sys_menu where type != 2 order by order_num asc
+	</select>
+	<select id="queryMenuByRoleId" resultType="java.lang.Integer">
+		select MENU_ID from  T_ETC_SYS_ROLE_MENU where ROLE_ID =  #{arg0}
 	</select>
 </mapper>

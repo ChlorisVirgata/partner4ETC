@@ -56,8 +56,12 @@ public class TEtcSysMenu implements Serializable {
     /**
      * 类型     0：目录   1：菜单   2：按钮
      */
+    @TableField("TYPE")
     private String type;
 
+
+    @TableField("TYPE_NAME")
+    private String typeName;
     /**
      * 菜单图标
      */

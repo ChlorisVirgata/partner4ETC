@@ -14,26 +14,41 @@
 <body>
 
 
-<form class="layui-form" action="/menu/add">
-
+<form class="layui-form" action="/menu/addmenu">
+    <input type="hidden" name="menuId" id="menuId" th:value="${menu.menuId}">
+    <input type="hidden" name="operate" id="operate" th:value="${operate}">
     <div class="layui-form-item">
         <label class="layui-form-label">菜单名称</label>
         <div class="layui-input-inline">
-            <input type="text" name="name" autocomplete="off" class="layui-input" lay-verify="required">
+            <input type="text" name="name"  th:value="${menu.name}" autocomplete="off" class="layui-input" lay-verify="required">
         </div>
     </div>
 
+    <!--<div class="layui-form-item">-->
+    <!--<label class="layui-form-label">上级菜单ID</label>-->
+    <!--<div class="layui-input-inline">-->
+    <!--<input type="text" name="parentId" autocomplete="off" class="layui-input" lay-verify="required">-->
+    <!--</div>-->
+    <!--</div>-->
+
     <div class="layui-form-item">
-        <label class="layui-form-label">上级菜单ID</label>
+        <label class="layui-form-label">上级菜单</label>
         <div class="layui-input-inline">
-            <input type="text" name="parentId" autocomplete="off" class="layui-input" lay-verify="required">
+            <select name="parentId" xm-select="role-select"
+                    lay-verify="required"
+                    lay-vertype="tips">
+                <option value="">请选择上级菜单</option>
+                <option th:each="menup:${menus}" th:value="${menup.menuId}" th:text="${menup.name}"
+                        th:selected="${menu.parentId} == ${menup.menuId}"></option>
+            </select>
         </div>
     </div>
+
 
     <div class="layui-form-item">
         <label class="layui-form-label">菜单地址</label>
         <div class="layui-input-inline">
-            <input type="text" name="url" autocomplete="off" class="layui-input" lay-verify="required">
+            <input type="text" name="url" th:value="${menu.url}" autocomplete="off" class="layui-input"></input>
         </div>
     </div>
 
@@ -41,9 +56,9 @@
     <div class="layui-form-item">
         <label class="layui-form-label">类型</label>
         <div class="layui-input-block">
-            <input type="radio" name="type" value="菜单" title="菜单">
-            <input type="radio" name="type" value="目录" title="目录" checked>
-            <input type="radio" name="type" value="权限" title="权限" checked>
+            <input type="radio" name="type" value="0|菜单" title="菜单">
+            <input type="radio" name="type" value="1|目录" title="目录" >
+            <input type="radio" name="type" value="2|权限" title="权限" checked>
         </div>
     </div>
 
@@ -51,21 +66,21 @@
     <div class="layui-form-item">
         <label class="layui-form-label">图标地址</label>
         <div class="layui-input-inline">
-            <input type="text" name="icon" autocomplete="off" class="layui-input">
+            <input type="text" name="icon" th:value="${menu.icon}" autocomplete="off" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">菜单排序</label>
         <div class="layui-input-inline">
-            <input type="text" name="orderNum" autocomplete="off" class="layui-input">
+            <input type="text" name="orderNum" th:value="${menu.orderNum}" autocomplete="off" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">菜单权限</label>
         <div class="layui-input-inline">
-            <input type="text" name="perms" autocomplete="off" class="layui-input">
+            <input type="text" name="perms" th:value="${menu.perms}" autocomplete="off" class="layui-input">
         </div>
     </div>
     <!--<div class="layui-inline">-->
@@ -85,21 +100,36 @@
 </form>
 
 
-<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+ <!--注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的-->
 <!--<script src="../../static/js/jstest.js" charset="utf-8"></script>-->
 <script>
     //Demo
-    layui.use('form', function () {
+    layui.use('form', function (data) {
         var form = layui.form;
-
+        // $.get("/menu/all", function (r) {
+        //     // alert(JSON.stringify(r));
+        //     menu_ztree = $.fn.zTree.init($("#menuTree"), menu_setting, r);
+        //     //展开所有节点
+        //     menu_ztree.expandAll(true);
+        // });
+        // var data = data;
+        // $("#name").val(data.name);
+        // $("#url").val(data.url);
+        // $("#orderNum").val(data.orderNum);
+        // $("#perms").val(data.perms);
+        // $("#type").val(data.type);
+        // $("#icon").val(data.icon);
+        // $(function (data) {
+        //
+        // });
         //监听提交
-        form.on('submit(formDemo)', function (data) {
-            layer.msg(JSON.stringify(data.field));
-            return false;
-        });
+        // form.on('submit(formDemo)', function (data) {
+        //     layer.msg(JSON.stringify(data.field));
+        //     return false;
+        // });
     });
 
-    var data = checkStatus.data;  //获取选中行数据
+    // var data = checkStatus.data;  //获取选中行数据
 
 </script>
 </body>

@@ -5,6 +5,8 @@ import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+
 /**
  * Author : wuchao
  * Date   : 2019/6/28
@@ -28,5 +30,11 @@ public abstract class BaseController {
         return operatorName;
     }
 
+    public static HashMap<String, Integer> map = new HashMap<String, Integer>();
+
+    static {
+        map.put("roleId", 0);
+        map.put("roleMenuId", 0);
+    }
 
 }

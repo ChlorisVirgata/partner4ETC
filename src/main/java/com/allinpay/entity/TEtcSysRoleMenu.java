@@ -34,7 +34,7 @@ public class TEtcSysRoleMenu   {
     /**
      * 菜单ID
      */
-    private Long menuId;
+    private Integer menuId;
 
 
 }

@@ -1,7 +1,9 @@
 package com.allinpay.mapper;
 
 import com.allinpay.entity.TEtcSysMenu;
+import com.allinpay.entity.TEtcSysRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Insert;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,4 +29,12 @@ public interface TEtcMenuMapper extends BaseMapper<TEtcSysMenu> {
      * 获取不包含按钮的菜单列表
      */
     List<TEtcSysMenu> queryNotButtonList();
+
+
+    Boolean saveRoleMenu(Integer roleMenuId, Integer roleId,Integer menuId);
+
+    Boolean removeMenuById(Integer roleId );
+
+
+    List<Integer> queryMenuByRoleId(Integer roleId);
 }

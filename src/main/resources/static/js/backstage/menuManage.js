@@ -43,7 +43,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 {field: 'parentId', width: 80, title: '上级菜单ID', sort: true},
                 {field: 'name', width: 80, title: '菜单名称'},
                 {field: 'url', width: 80, title: '菜单地址', sort: true},
-                {field: 'type', width: 80, title: '菜单类型', sort: true},
+                {field: 'typeName', width: 80, title: '菜单类型', sort: true},
                 {field: 'icon', width: 80, title: '图标'},
                 {field: 'perms', width: 80, title: '权限'},
                 {field: 'orderNum', width: 80, title: '菜单排序'},
@@ -143,16 +143,15 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 layer.close(index);
                 search();
             });
-        } else if (obj.event === 'edit') {
-            var data = checkStatus.data;  //获取选中行数据
-            layer.alert(JSON.stringify(data));
+        } else if (obj.event === 'edit_menu') {
+            // var data = checkStatus.data;
             layer.open({
                 type: 2,
                 title: '添加菜单',
                 shadeClose: true,
                 shade: 0.8,
                 area: ['500px', '80%'],
-                content: 'menu/add', //iframe的url
+                content: 'menu/edit?menuId=' + data.menuId, //iframe的url
                 btn: ['关闭'],
                 yes: function () {
                     search();

@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author wuchao
@@ -17,5 +17,9 @@ import java.util.HashMap;
 public interface ITEtcSysUserService extends IService<TEtcSysUser> {
 
 
-    ResponseBean queryPage(Integer pageNo, Integer pageSize, HashMap map);
+    ResponseBean queryPage(Integer pageNo, Integer pageSize, String username);
+
+    String addUser(TEtcSysUser etcSysUser, String opreate);
+    Integer selectMaxId();
+    Integer selectMaxRoleId();
 }
