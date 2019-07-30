@@ -50,24 +50,24 @@ public class TEtcSysUserServiceImpl extends ServiceImpl<TEtcUserMapper, TEtcSysU
         return ResponseBean.ok(sysRoleList, pageInfo.getTotal());
     }
 
-    public String addUser(TEtcSysUser etcSysUser, String opreate) {
+    public ResponseBean addUser(TEtcSysUser etcSysUser, String opreate) {
         if (opreate != null && opreate.equals("edit")) {
             TEtcSysUser user = tEtcUserMapper.selectById(etcSysUser.getUserId());
             String dateStr = getString(etcSysUser, user);
             user.setUsername(etcSysUser.getUsername());
             user.setUpdateTime(dateStr);
-            return ResponseBean.resultStr(tEtcUserMapper.updateById(user) > 0);
+            return ResponseBean.ok(tEtcUserMapper.updateById(user) > 0);
         }
         TEtcSysUser user = tEtcUserMapper.selectOne(new QueryWrapper<TEtcSysUser>().eq("username", etcSysUser.getUsername()));
         if (user != null) {
-            return "用户名重复";
+            return ResponseBean.error("用户名重复");
         }
         String salt = RandomStringUtils.randomAlphanumeric(20);
         etcSysUser.setSalt(salt);
         String dateStr = getString(etcSysUser, etcSysUser);
         etcSysUser.setCreateTime(dateStr);
         etcSysUser.setPassword(ShiroUtils.sha256(etcSysUser.getPassword(), etcSysUser.getSalt()));
-        return ResponseBean.resultStr(tEtcUserMapper.insert(etcSysUser) > 0);
+        return ResponseBean.ok(tEtcUserMapper.insert(etcSysUser) > 0);
     }
 
     @Override

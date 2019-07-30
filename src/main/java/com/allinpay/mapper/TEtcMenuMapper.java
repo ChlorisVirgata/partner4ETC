@@ -7,10 +7,11 @@ import org.apache.ibatis.annotations.Insert;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author wuchao
@@ -31,10 +32,12 @@ public interface TEtcMenuMapper extends BaseMapper<TEtcSysMenu> {
     List<TEtcSysMenu> queryNotButtonList();
 
 
-    Boolean saveRoleMenu(Integer roleMenuId, Integer roleId,Integer menuId);
+    Boolean saveRoleMenu(Integer roleMenuId, Integer roleId, Integer menuId);
 
-    Boolean removeMenuById(Integer roleId );
+    Boolean removeMenuById(Integer roleId);
 
 
     List<Integer> queryMenuByRoleId(Integer roleId);
+
+
 }

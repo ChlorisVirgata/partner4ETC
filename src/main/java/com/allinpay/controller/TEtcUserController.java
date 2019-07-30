@@ -46,7 +46,7 @@ public class TEtcUserController extends BaseController {
     @RequestMapping("/add")
     @ResponseBody
     @Transactional
-    public String add(TEtcSysUser etcSysUser, String opreate,Integer[] roleId) {
+    public ResponseBean add(TEtcSysUser etcSysUser, String opreate,Integer[] roleId) {
         return etcSysUserService.addUser(etcSysUser, opreate);
     }
 

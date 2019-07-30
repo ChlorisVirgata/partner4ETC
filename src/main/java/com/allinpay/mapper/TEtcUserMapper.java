@@ -19,9 +19,8 @@ public interface TEtcUserMapper extends BaseMapper<TEtcSysUser> {
 
     /**
      * 查询用户的所有权限
-     *
      */
-    Set<String> queryAllPerms(Integer roleId);
+    Set<String> selectAllPermsByRoleId(Integer roleId);
 
     /**
      * 查询用户的所有菜单ID

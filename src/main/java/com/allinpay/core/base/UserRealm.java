@@ -37,38 +37,19 @@ import org.springframework.stereotype.Component;
 public class UserRealm extends AuthorizingRealm {
     @Autowired
     private TEtcUserMapper TEtcUserMapper;
-    @Autowired
-    private TEtcMenuMapper sysMenuMapper;
-
 
 
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        TEtcSysUser user = (TEtcSysUser)principals.getPrimaryPrincipal();
+        TEtcSysUser user = (TEtcSysUser) principals.getPrimaryPrincipal();
         Integer userId = user.getUserId();
-        Object permsList;
-        Iterator iter;
+        Set<String> permsList;
         if (userId == Constant.SUPER_ADMIN) {
-            List<TEtcSysMenu> menuList = this.sysMenuMapper.selectList((Wrapper)null);
-            permsList = new ArrayList(menuList.size());
-            iter = menuList.iterator();
-            while(iter.hasNext()) {
-                TEtcSysMenu menu = (TEtcSysMenu)iter.next();
-                ((List)permsList).add(menu.getPerms());
-            }
+            permsList = this.TEtcUserMapper.selectAllPerms();
         } else {
-            permsList = this.TEtcUserMapper.queryAllPerms(userId);
-        }
-
-        Set<String> permsSet = new HashSet();
-        iter = ((List)permsList).iterator();
-        while(iter.hasNext()) {
-            String perms = (String)iter.next();
-            if (!StringUtils.isBlank(perms)) {
-                permsSet.addAll(Arrays.asList(perms.trim().split(",")));
-            }
+            permsList = this.TEtcUserMapper.selectAllPermsByRoleId(userId);
         }
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        info.setStringPermissions(permsSet);
+        info.setStringPermissions(permsList);
         return info;
     }
 
