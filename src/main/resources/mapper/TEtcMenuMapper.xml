@@ -17,7 +17,7 @@
     <select id="queryNotButtonList" resultType="com.allinpay.entity.TEtcSysMenu">
 		select * from t_etc_sys_menu where type != 2 order by order_num asc
 	</select>
-	<select id="queryMenuByRoleId" resultType="java.lang.Integer">
+    <select id="queryMenuByRoleId" resultType="java.lang.Integer">
 		select MENU_ID from  T_ETC_SYS_ROLE_MENU where ROLE_ID =  #{arg0}
 	</select>
 </mapper>
