@@ -33,30 +33,32 @@
 </head>
 
 <body class="childrenBody">
-<form class="layui-form" action="/sys/user/add">
+<div class="layui-form">
     <input type="hidden" name="userId" id="userId" th:value="${userId}">
     <input type="hidden" name="opreate" id="opreate" th:value="${opreate}">
     <div class="layui-form-item">
         <label class="layui-form-label">用户名</label>
         <div class="layui-input-inline">
-            <input type="text" name="username" id="username" value="" autocomplete="off" class="layui-input"
-                   lay-verify="required|name">
+            <input type="text" name="username" id="username" value="" lay-verify="required" autocomplete="off"
+                   class="layui-input"
+            >
         </div>
     </div>
-
+    <!--  lay-verify="required"-->
     <div class="layui-form-item">
         <label class="layui-form-label">密码</label>
         <div class="layui-input-inline">
-            <input type="text" name="password" id="password" value="" autocomplete="off" class="layui-input"
-                   lay-verify="required">
+            <input type="text" name="password" id="password" value="" lay-verify="required" autocomplete="off"
+                   class="layui-input"
+            >
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">角色</label>
         <div class="layui-input-inline">
-            <select name="roleId" xm-select="role-select"
-                    lay-verify="required"
+            <select name="roleId" id="roleId" xm-select="role-select"
+                    <!--lay-verify="required"-->
                     lay-vertype="tips">
                 <option value="">请选择角色</option>
                 <option th:each="role:${roles}" th:value="${role.roleId}" th:text="${role.roleName}"
@@ -69,7 +71,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">状态</label>
         <div class="layui-input-inline">
-            <input type="checkbox" name="status" lay-skin="switch" lay-text="开启|关闭" checked>
+            <input type="checkbox" name="status" id="status" lay-skin="switch" lay-text="开启|关闭" checked>
         </div>
     </div>
 
@@ -80,7 +82,7 @@
             <!--<button type="button" class="layui-btn layui-btn-primary" onclick="layerclose();">关闭</button>-->
         </div>
     </div>
-</form>
+</div>
 <script type="text/javascript" src="../../../static/layui/layui.js"></script>
 <script type="text/javascript" src="../../../static/layui/layui.all.js"></script>
 <script type="text/javascript" src="../../../static/lib/jquery/jquery-3.4.1.min.js"></script>
@@ -119,10 +121,16 @@
     }
 
 
-    layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
+    layui.use(['table', 'element', 'layer', 'form'], function () {
         var form = layui.form;
         var layer = layui.layer;
+        var table = layui.element;
+        var $ = layui.$;
 
+        form.on('select(roleId)', function (data) {
+            console.log(data.elem);
+            alert(data.elem);
+        });
 
         $.get("/role/allList", function (r) {
 
@@ -135,6 +143,55 @@
 
         });
 
+        $("#dataCommit").on("click", function () {
+            var sel = document.getElementById('roleId');
+            var index = sel.selectedIndex;
+            var roleId = sel.options[index].value;
+            var statusId = document.getElementById('status');
+            var statusValue = statusId.checked ? '1' : '0';
+
+            //自定义验证规则
+            if ($("#username").val() == '') {
+                layer.msg('用户名不能为空');
+                return;
+            }
+            //自定义验证规则
+            if ($("#password").val() == '') {
+                layer.msg('密码不能为空');
+                return;
+            }
+            if (roleId == '') {
+                layer.msg('选择角色');
+                return;
+            }
+            $.ajax({
+                url: '/sys/user/add',
+                type: 'post',
+                data: {
+                    username: $("#username").val(),
+                    password: $("#password").val(),
+                    roleId: roleId,
+                    status: statusValue
+                },
+                // async: false,
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code == "0") {
+                        var index = layer.msg(data.msg, function () {
+                            //点击确认按钮执行回调函数
+                            layer.closeAll();
+                            search();
+                        });
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                    // alert(JSON.stringify(data));
+                },
+                error: function () {
+                    layer.msg("操作失败，请重试！");
+                }
+            });
+        });
 
     });
 </script>
