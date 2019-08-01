@@ -33,7 +33,8 @@
 </head>
 
 <body class="childrenBody">
-<form class="layui-form" action="/sys/user/add">
+<!-- action="/sys/user/add" -->
+<div class="layui-form">
     <input type="hidden" name="userId" id="userId" th:value="${userId}">
     <input type="hidden" name="roleIds" id="roleIds" th:value="${roleIds}">
     <input type="hidden" name="opreate" id="opreate" th:value="${opreate}">
@@ -48,7 +49,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">角色</label>
         <div class="layui-input-inline">
-            <select name="roleId" xm-select="role-select"
+            <select name="roleId" id="roleId" xm-select="role-select"
                     lay-verify="required"
                     lay-vertype="tips">
                 <option value="">请选择角色</option>
@@ -183,7 +184,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">状态</label>
         <div class="layui-input-inline">
-            <input type="checkbox" name="status" lay-skin="switch" lay-text="开启|关闭" checked>
+            <input type="checkbox" name="status" id="status" lay-skin="switch" lay-text="开启|关闭" checked>
         </div>
     </div>
 
@@ -195,12 +196,12 @@
     <!--</div>-->
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button class="layui-btn" id="dataCommit" lay-submit="" lay-filter="dataCommit">提交</button>
+            <button class="layui-btn" id="dataUpdate" lay-submit="" lay-filter="dataUpdate">提交</button>
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             <!--<button type="button" class="layui-btn layui-btn-primary" onclick="layerclose();">关闭</button>-->
         </div>
     </div>
-</form>
+</div>
 <script type="text/javascript" src="../../../static/layui/layui.js"></script>
 <script type="text/javascript" src="../../../static/layui/layui.all.js"></script>
 <script type="text/javascript" src="../../../static/lib/jquery/jquery-3.4.1.min.js"></script>
@@ -234,59 +235,59 @@
         })
     }
 
-    function fxclick() {
-        // alert("123");
-        $('.layui-icon layui-icon-ok').toggleClass('clickfx');
-    }
-
 
     layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
         var form = layui.form;
         var layer = layui.layer;
 
+        $("#dataUpdate").on("click", function () {
+            var sel = document.getElementById('roleId');
+            var index = sel.selectedIndex;
+            var roleId = sel.options[index].value;
+            var statusId = document.getElementById('status');
+            alert(statusId);
+            var statusValue = statusId.checked ? '1' : '0';
 
-        /*
-                form.on('submit(*)', function(data) {
-                    var index = layer.msg('提交中，请稍候',{icon: 16,time:false,shade:0.8});
-                    var d = data.field;
-                    var url = "/user/add";
-                    if(d.id != ""){
-                        url = "/user/edit";
+            //自定义验证规则
+            if ($("#username").val() == '') {
+                layer.msg('用户名不能为空');
+                return;
+            }
+            if (roleId == '') {
+                layer.msg('选择角色');
+                return;
+            }
+            $.ajax({
+                url: '/sys/user/add',
+                type: 'post',
+                data: {
+                    username: $("#username").val(),
+                    userId: $("#userId").val(),
+                    opreate: $("#opreate").val(),
+                    roleId: roleId,
+                    status: statusValue
+                },
+                // async: false,
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code == "0") {
+                        var index = layer.msg(data.msg, function () {
+                            //点击确认按钮执行回调函数
+                            var index = parent.layer.getFrameIndex(window.name);//获取当前弹出层的层级
+                            parent.layer.close(index);//关闭弹出层
+                            layer.closeAll();
+                            search();
+                        });
+                    } else {
+                        layer.msg(data.msg);
                     }
-                    $.ajax({
-                        url: url,
-                        data:d,
-                        dataType:"text",
-                        success: function(data){
-                            layer.close(index);
-                            if(data == 0){
-                                layer.msg("保存成功！");
-                                parent.queryTea();
-                                parent.close();
-                            }else{
-                                layer.msg("保存失败！");
-                            }
-                        },error:function(){
-                            layer.close(index);
-                            layer.msg("保存失败！");
-                        }
-                    });
-                    return false;
-                });*/
-
-        /*   $.get("/role/select", function (r) {
-               // alert(JSON.stringify(r));
-               var context = "";
-               for (var i = 0; i < r.length; i++) {
-                   context = context + '<label><input type="checkbox" name="roleIds" value="'+r[i].roleId+'">'+r[i].roleName+'</label>';
-                   // alert(context);
-               }
-               var htmlContent = $("#layui-input-block-role");
-               htmlContent.append(context);
-               $("#layui-input-block-role").show();
-               //window.location.reload();
-               // $('#roleList').val(r);
-           });*/
+                    // alert(JSON.stringify(data));
+                },
+                error: function () {
+                    layer.msg("操作失败，请重试！");
+                }
+            });
+        });
 
         $.get("/role/allList", function (r) {
             //alert(JSON.stringify(r));

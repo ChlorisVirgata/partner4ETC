@@ -1,11 +1,9 @@
 package com.allinpay.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.allinpay.entity.TEtcSysMenu;
 import com.allinpay.entity.TEtcSysRole;
 import com.allinpay.service.ITEtcSysMenuService;
 import com.allinpay.service.ITEtcSysRoleService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,7 +43,6 @@ public class TEtcPageController {
     }
 
     @GetMapping("/user/add")
-    @RequiresPermissions("user:add")
     public ModelAndView userAdd() {
         List<TEtcSysRole> tEtcSysRoles = sysRoleService.list();
         ModelAndView modelAndView = new ModelAndView("backstage/operation/addUser");
@@ -54,7 +51,6 @@ public class TEtcPageController {
     }
 
     @GetMapping("/user/update")
-    @RequiresPermissions("user:update")
     public ModelAndView userUpdate(String userId, String roleIds, String opreate) {
         List<TEtcSysRole> tEtcSysRoles = sysRoleService.list();
         ModelAndView modelAndView = new ModelAndView("backstage/operation/editUser");

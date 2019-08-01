@@ -180,6 +180,9 @@
                         var index = layer.msg(data.msg, function () {
                             //点击确认按钮执行回调函数
                             layer.closeAll();
+                            //点击确认按钮执行回调函数
+                            var index = parent.layer.getFrameIndex(window.name);//获取当前弹出层的层级
+                            parent.layer.close(index);//关闭弹出层
                             search();
                         });
                     } else {
