@@ -245,7 +245,6 @@
             var index = sel.selectedIndex;
             var roleId = sel.options[index].value;
             var statusId = document.getElementById('status');
-            alert(statusId);
             var statusValue = statusId.checked ? '1' : '0';
 
             //自定义验证规则
@@ -273,10 +272,10 @@
                     if (data.code == "0") {
                         var index = layer.msg(data.msg, function () {
                             //点击确认按钮执行回调函数
+                            // parent.layer.reload();
                             var index = parent.layer.getFrameIndex(window.name);//获取当前弹出层的层级
-                            parent.layer.close(index);//关闭弹出层
-                            layer.closeAll();
-                            search();
+                            // parent.layer.close(index);
+                            return true;
                         });
                     } else {
                         layer.msg(data.msg);
@@ -286,7 +285,10 @@
                 error: function () {
                     layer.msg("操作失败，请重试！");
                 }
-            });
+
+            })
+            ;
+
         });
 
         $.get("/role/allList", function (r) {

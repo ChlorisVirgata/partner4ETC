@@ -34,4 +34,6 @@ public interface TEtcUserMapper extends BaseMapper<TEtcSysUser> {
     Integer selectMaxRoleId();
 
     Set<String> selectAllPerms();
+
+    TEtcSysUser saveUserInfo(TEtcSysUser etcSysUser);
 }

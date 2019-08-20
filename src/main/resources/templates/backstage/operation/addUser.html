@@ -58,11 +58,11 @@
         <label class="layui-form-label">角色</label>
         <div class="layui-input-inline">
             <select name="roleId" id="roleId" xm-select="role-select"
-                    <!--lay-verify="required"-->
-                    lay-vertype="tips">
-                <option value="">请选择角色</option>
-                <option th:each="role:${roles}" th:value="${role.roleId}" th:text="${role.roleName}"
-                        th:selected="${#arrays.contains((roleIds == null ? #arrays.toIntegerArray(new Integer[]{}) : roleIds), role.roleId)}"></option>
+            <!--lay-verify="required"-->
+            lay-vertype="tips">
+            <option value="">请选择角色</option>
+            <option th:each="role:${roles}" th:value="${role.roleId}" th:text="${role.roleName}"
+                    th:selected="${#arrays.contains((roleIds == null ? #arrays.toIntegerArray(new Integer[]{}) : roleIds), role.roleId)}"></option>
             </select>
         </div>
     </div>
@@ -178,12 +178,9 @@
                 success: function (data) {
                     if (data.code == "0") {
                         var index = layer.msg(data.msg, function () {
-                            //点击确认按钮执行回调函数
-                            layer.closeAll();
-                            //点击确认按钮执行回调函数
                             var index = parent.layer.getFrameIndex(window.name);//获取当前弹出层的层级
-                            parent.layer.close(index);//关闭弹出层
-                            search();
+                            // parent.layer.reload();
+                            // parent.layer.close(index);
                         });
                     } else {
                         layer.msg(data.msg);

@@ -128,8 +128,24 @@
                 // alert(JSON.stringify(r));
                 menu_ztree = $.fn.zTree.init($("#menuTree"), menu_setting, r);
                 //展开所有节点
-                menu_ztree.expandAll(true);
+                menu_ztree.expandAll(false);
+                var roleId = $("#roleId").val();
+                if (roleId != '') {
+                    checkNodeData(roleId);
+                }
+
             });
+
+            function checkNodeData(roleId) {
+                $.get("/menu/queryRoleMenuIds?roleId=" + roleId, function (r) {
+                    var checkMenuIds = r;
+                    for (var i = 0; i < checkMenuIds.length; i++) {
+                        var node = menu_ztree.getNodeByParam("menuId", checkMenuIds[i]);
+                        menu_ztree.checkNode(node, true, false);
+                    }
+                });
+            }
+
 
             $("#dataCommit").on("click", function () {
                 var nodes = menu_ztree.getCheckedNodes(true);
