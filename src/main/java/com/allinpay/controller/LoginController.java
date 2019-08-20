@@ -76,7 +76,7 @@ public class LoginController {
     public String logout() {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
-        return "redirect:/web/login";
+        return "redirect:/manage/login";
     }
 
     /**

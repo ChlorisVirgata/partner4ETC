@@ -188,7 +188,7 @@ layui.use(['layer', 'form', 'element', 'upload'], function () {
                 if (data.code == "00000") {
                     var index = layer.alert("操作成功", function () {
                         layer.close(index);
-                        window.location.href = "/web/orgEnter";
+                        window.location.href = "/manage/orgEnter";
                     });
                 } else {
                     layer.alert(data.msg);

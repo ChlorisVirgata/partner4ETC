@@ -16,7 +16,7 @@ layui.use('layer', function () {
             // console.log("sessionStatus= " + sessionStatus);
             if (sessionStatus == 'timeout') {
                 var top = getTopWindow();
-                top.location.href = "/web/login";
+                top.location.href = "/manage/login";
             }
         }
 

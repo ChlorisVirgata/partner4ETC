@@ -37,7 +37,7 @@ public class TEtcPageController {
         return "common/index";
     }
 
-    @RequestMapping("/userManage")
+    @RequestMapping("/manage/userManage")
     public String userManage() {
         return "backstage/userManage";
     }
@@ -62,7 +62,7 @@ public class TEtcPageController {
     }
 
 
-    @RequestMapping("/roleManage")
+    @RequestMapping("/manage/roleManage")
     public String roleManage() {
         return "backstage/roleManage";
     }
@@ -79,7 +79,7 @@ public class TEtcPageController {
     }
 
 
-    @RequestMapping("/menuManage")
+    @RequestMapping("/manage/menuManage")
     public String menuManage() {
         return "backstage/menuManage";
     }

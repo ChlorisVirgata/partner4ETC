@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/web")
+@RequestMapping("/manage")
 /**
  * @description: 页面转发controller
  * @author: tanguang

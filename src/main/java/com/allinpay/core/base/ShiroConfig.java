@@ -8,11 +8,9 @@ import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSource
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
-import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -44,12 +42,12 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(securityManager);
-        shiroFilter.setLoginUrl("/web/login");
+        shiroFilter.setLoginUrl("/manage/login");
         Map<String, String> filterMap = new LinkedHashMap();
         filterMap.put("/templates/**", "anon");
         filterMap.put("/static/**", "anon");
         filterMap.put("/favicon.ico", "anon");
-        filterMap.put("/web/login", "anon");
+        filterMap.put("/manage/login", "anon");
         filterMap.put("/sys/user/logout", "anon");
         filterMap.put("/etc/captcha", "anon");
         filterMap.put("/etc/login", "anon");
@@ -58,7 +56,7 @@ public class ShiroConfig {
         filterMap.put("/etcimg/**", "anon");
         filterMap.put("/**", "authc");
         shiroFilter.setSuccessUrl("/index");
-        shiroFilter.setUnauthorizedUrl("/web/403");
+        shiroFilter.setUnauthorizedUrl("/manage/403");
         shiroFilter.setFilterChainDefinitionMap(filterMap);
         return shiroFilter;
     }
