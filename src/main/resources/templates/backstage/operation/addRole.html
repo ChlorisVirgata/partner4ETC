@@ -43,7 +43,8 @@
 <body>
 
 
-<form class="layui-form" action="/role/add">
+<!--<form class="layui-form" action="/role/add">-->
+<form class="layui-form">
     <input type="hidden" name="menuIdList" id="menuIdList"/>
     <input type="hidden" name="roleId" id="roleId" th:value="${roleId}">
     <input type="hidden" name="opreate" id="opreate" th:value="${opreate}"/>
@@ -57,11 +58,17 @@
         </div>
     </div>
 
+    <!--  <div class="layui-form-item">
+          <label class="layui-form-label">状态</label>
+          <div class="layui-input-block">
+              <input type="radio" name="status" value="1" title="启用" checked="">
+              <input type="radio" name="status" value="0" title="停用">
+          </div>
+      </div>-->
     <div class="layui-form-item">
         <label class="layui-form-label">状态</label>
-        <div class="layui-input-block">
-            <input type="radio" name="status" value="1" title="启用" checked="">
-            <input type="radio" name="status" value="0" title="停用">
+        <div class="layui-input-inline">
+            <input type="checkbox" name="status" id="status" lay-skin="switch" lay-text="开启|关闭" checked>
         </div>
     </div>
 
@@ -98,69 +105,100 @@
 </script>
 <script>
     layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
-            var form = layui.form;
-            var layer = layui.layer;
-            var table = layui.table;
+        var form = layui.form;
+        var layer = layui.layer;
+        var table = layui.table;
+        var $ = layui.$;
 
-            //菜单树
-            var menu_ztree;
-            var menu_setting = {
-                data: {
-                    simpleData: {
-                        enable: true,
-                        idKey: "menuId",
-                        pIdKey: "parentId",
-                        rootPId: -1
-                    },
-                    key: {
-                        url: "nourl"
-                    }
-                },
-                check: {
+        //菜单树
+        var menu_ztree;
+        var menu_setting = {
+            data: {
+                simpleData: {
                     enable: true,
-                    nocheckInherit: true
+                    idKey: "menuId",
+                    pIdKey: "parentId",
+                    rootPId: -1
+                },
+                key: {
+                    url: "nourl"
                 }
-            };
+            },
+            check: {
+                enable: true,
+                nocheckInherit: true
+            }
+        };
 
 
-            //加载菜单树
-            $.get("/menu/all", function (r) {
-                // alert(JSON.stringify(r));
-                menu_ztree = $.fn.zTree.init($("#menuTree"), menu_setting, r);
-                //展开所有节点
-                menu_ztree.expandAll(false);
-                var roleId = $("#roleId").val();
-                if (roleId != '') {
-                    checkNodeData(roleId);
-                }
-
-            });
-
-            function checkNodeData(roleId) {
-                $.get("/menu/queryRoleMenuIds?roleId=" + roleId, function (r) {
-                    var checkMenuIds = r;
-                    for (var i = 0; i < checkMenuIds.length; i++) {
-                        var node = menu_ztree.getNodeByParam("menuId", checkMenuIds[i]);
-                        menu_ztree.checkNode(node, true, false);
-                    }
-                });
+        //加载菜单树
+        $.get("/menu/all", function (r) {
+            // alert(JSON.stringify(r));
+            menu_ztree = $.fn.zTree.init($("#menuTree"), menu_setting, r);
+            //展开所有节点
+            menu_ztree.expandAll(false);
+            var roleId = $("#roleId").val();
+            if (roleId != '') {
+                checkNodeData(roleId);
             }
 
+        });
 
-            $("#dataCommit").on("click", function () {
-                var nodes = menu_ztree.getCheckedNodes(true);
-                var menuIds = new Array();
-                for (var i = 0; i < nodes.length; i++) {
-                    menuIds.push(nodes[i].menuId);
-                    // alert(nodes[i].menuId);
+        function checkNodeData(roleId) {
+            $.get("/menu/queryRoleMenuIds?roleId=" + roleId, function (r) {
+                var checkMenuIds = r;
+                for (var i = 0; i < checkMenuIds.length; i++) {
+                    var node = menu_ztree.getNodeByParam("menuId", checkMenuIds[i]);
+                    menu_ztree.checkNode(node, true, false);
                 }
-                // menuIdList.setValue(menuIds);
-                $('#menuIdList').val(menuIds);
             });
-
-
         }
-    );
+
+
+        $("#dataCommit").on("click", function () {
+            var nodes = menu_ztree.getCheckedNodes(true);
+            var menuIds = new Array();
+            for (var i = 0; i < nodes.length; i++) {
+                menuIds.push(nodes[i].menuId);
+                // alert(nodes[i].menuId);
+            }
+            // menuIdList.setValue(menuIds);
+            $('#menuIdList').val(menuIds);
+
+            var statusId = document.getElementById('status');
+            var statusValue = statusId.checked ? '1' : '0';
+
+
+            $.ajax({
+                url: '/role/operate',
+                type: 'post',
+                data: {
+                    roleName: $("#roleName").val(),
+                    opreate: $("#opreate").val(),
+                    roleId: $("#roleId").val(),
+                    status: statusValue,
+                    menuIdList: $('#menuIdList').val(),
+                },
+
+
+                async: false,
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code == 0) {
+                        var index = layer.msg(data.msg, function () {
+                            var index = parent.layer.getFrameIndex(window.name);//获取当前弹出层的层级
+                            layer.closeAll();
+                        });
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                },
+                error: function () {
+                    layer.msg("操作失败，请重试！");
+                }
+            });
+        });
+    });
 </script>
 </body>
 </html>

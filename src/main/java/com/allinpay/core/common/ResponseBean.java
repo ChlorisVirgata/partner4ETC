@@ -63,7 +63,7 @@ public class ResponseBean<T>  {
     }
 
     public static ResponseBean success() {
-        return new ResponseBean(0, "");
+        return new ResponseBean(0, "操作成功");
     }
     public static ResponseBean error(String msg) {
         return new ResponseBean(1, msg);

@@ -198,7 +198,9 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                         "id": data.userId
                     },
                     success: function () {
-                        location.href = index.html;
+                        search();
+                        layer.closeAll();
+                        // location.href = index.html;
                     }
                 });
                 layer.close(index);

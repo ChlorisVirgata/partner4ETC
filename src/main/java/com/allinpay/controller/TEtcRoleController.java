@@ -45,26 +45,26 @@ public class TEtcRoleController extends BaseController {
     }
 
     @RequestMapping("/allList")
-    public   List<TEtcSysRole>  allList() {
+    public List<TEtcSysRole> allList() {
         List<TEtcSysRole> tEtcSysRoleList = itEtcSysRoleService.list();
         return tEtcSysRoleList;
     }
 
 
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    @RequestMapping(value = "/operate", method = RequestMethod.POST)
     @ResponseBody
-    public String add(TEtcSysRole etcSysRole,String opreate) {
-        if(opreate.equals("edit")){
+    public ResponseBean add(TEtcSysRole etcSysRole, String opreate) {
+        if (opreate.equals("edit")) {
             etcSysRole.setUpdateTime(new Date());
             Boolean val = itEtcSysMenuService.updateRole(etcSysRole);
-            return ResponseBean.resultStr(val && itEtcSysRoleService.updateById(etcSysRole));
+            return ResponseBean.result(val && itEtcSysRoleService.updateById(etcSysRole));
         }
         Integer roleId = map.get("roleId") + 1;
         map.put("roleId", roleId);
         etcSysRole.setRoleId(roleId);
         etcSysRole.setCreateTime(new Date());
         Boolean val = itEtcSysMenuService.saveOrUpdateData(roleId, etcSysRole.getMenuIdList());
-        return ResponseBean.resultStr(val && itEtcSysRoleService.save(etcSysRole));
+        return ResponseBean.result(val && itEtcSysRoleService.save(etcSysRole));
     }
 
     @RequestMapping("/del")
@@ -72,7 +72,6 @@ public class TEtcRoleController extends BaseController {
         itEtcSysMenuService.removeMenuById(id);
         return ResponseBean.result(itEtcSysRoleService.removeById(id));
     }
-
 
 
 }
