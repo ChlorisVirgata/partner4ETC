@@ -18,6 +18,7 @@ import java.util.List;
  * @author 吴超
  */
 @Controller
+@RequestMapping("/manage")
 public class TEtcPageController {
 
     @Autowired
@@ -32,12 +33,8 @@ public class TEtcPageController {
         return "login";
     }
 
-    @RequestMapping(value = {"/index"})
-    public String index() {
-        return "common/index";
-    }
 
-    @RequestMapping("/manage/userManage")
+    @RequestMapping("/userManage")
     public String userManage() {
         return "backstage/userManage";
     }
@@ -62,24 +59,39 @@ public class TEtcPageController {
     }
 
 
-    @RequestMapping("/manage/roleManage")
+    @RequestMapping("/roleManage")
     public String roleManage() {
         return "backstage/roleManage";
     }
 
-    @GetMapping("/addRole")
+    @GetMapping("/role/add")
     public ModelAndView roleAdd() {
         ModelAndView modelAndView = new ModelAndView("backstage/operation/addRole");
         return modelAndView;
     }
 
-    @GetMapping("/use/selectrole")
-    public String selectrole() {
-        return "backstage/selectrole";
+
+    @GetMapping("/role/edit")
+    public ModelAndView editRole(Integer roleId) {
+        ModelAndView modelAndView = new ModelAndView("backstage/operation/addRole");
+        TEtcSysRole role = sysRoleService.getById(roleId);
+        modelAndView.addObject("role", role);
+        modelAndView.addObject("roleName", role.getRoleName());
+        modelAndView.addObject("roleId", role.getRoleId());
+        modelAndView.addObject("opreate", "edit");
+        return modelAndView;
     }
 
+    
+    
 
-    @RequestMapping("/manage/menuManage")
+//    @GetMapping("/use/selectrole")
+//    public String selectrole() {
+//        return "backstage/selectrole";
+//    }
+
+
+    @RequestMapping("/menuManage")
     public String menuManage() {
         return "backstage/menuManage";
     }
@@ -101,22 +113,12 @@ public class TEtcPageController {
         TEtcSysMenu menu = sysMenuService.getById(menuId);
         modelAndView.addObject("menus", menus);
         modelAndView.addObject("menu", menu);
-        modelAndView.addObject("operate","edit");
+        modelAndView.addObject("operate", "edit");
         return modelAndView;
 
     }
 
 
-    @GetMapping("/role/edit")
-    public ModelAndView editRole(Integer roleId) {
-        ModelAndView modelAndView = new ModelAndView("backstage/operation/addRole");
-        TEtcSysRole role = sysRoleService.getById(roleId);
-        modelAndView.addObject("role", role);
-        modelAndView.addObject("roleName", role.getRoleName());
-        modelAndView.addObject("roleId", role.getRoleId());
-        modelAndView.addObject("opreate", "edit");
-        return modelAndView;
-    }
 
 
 }

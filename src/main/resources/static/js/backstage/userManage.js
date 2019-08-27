@@ -211,7 +211,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 shadeClose: true,
                 shade: 0.8,
                 area: ['500px', '65%'],
-                content: '/user/update?opreate=edit&userId=' + data.userId+'&roleIds='+data.roleId, //iframe的url
+                content: '/manage/user/update?opreate=edit&userId=' + data.userId+'&roleIds='+data.roleId, //iframe的url
                 btn: ['关闭'],
                 yes: function () {
                     search();

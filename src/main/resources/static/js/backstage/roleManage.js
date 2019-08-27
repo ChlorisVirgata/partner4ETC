@@ -147,7 +147,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                     shadeClose: true,
                     shade: 0.8,
                     area: ['450px', '80%'],
-                    content: '/addRole', //iframe的url
+                    content: '/manage/role/add', //iframe的url
                     btn: ['关闭'],
                     yes: function () {
                         search();

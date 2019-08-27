@@ -51,11 +51,11 @@ public class ShiroConfig {
         filterMap.put("/sys/user/logout", "anon");
         filterMap.put("/etc/captcha", "anon");
         filterMap.put("/etc/login", "anon");
-        filterMap.put("/login.html", "anon");
+        filterMap.put("/index", "anon");
         filterMap.put("/static/js/**", "anon");
         filterMap.put("/etcimg/**", "anon");
         filterMap.put("/**", "authc");
-        shiroFilter.setSuccessUrl("/index");
+        shiroFilter.setSuccessUrl("/manage/index");
         shiroFilter.setUnauthorizedUrl("/manage/403");
         shiroFilter.setFilterChainDefinitionMap(filterMap);
         return shiroFilter;

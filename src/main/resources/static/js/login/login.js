@@ -17,7 +17,7 @@ layui.use(['layer', 'form'], function () {
             dataType: 'json',
             success: function (data) {
                 if (data.code === "00000") {
-                    parent.location.href = '/index';
+                    parent.location.href = 'index';
                 } else {
                     $("#notice").find("div").html(data.msg);
                     $("#notice").show().delay(3000).hide(0);
