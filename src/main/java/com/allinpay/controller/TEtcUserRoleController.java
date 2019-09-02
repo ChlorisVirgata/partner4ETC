@@ -30,7 +30,7 @@ public class TEtcUserRoleController extends BaseController implements CommandLin
         map.put("roleMenuId", maxRoleId);
     }
 
-    @RequestMapping("/index")
+    @RequestMapping("/manage/index")
     public String index() {
         return "common/index";
     }

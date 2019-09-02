@@ -18,7 +18,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             //表格生成的位置：#ID
             elem: '#orginfotable',
             //请求地址getList
-            url: '/query/org/getList',
+            url: '/manage/query/org/getList',
             //是否分页
             page: true,
             //请求参数
@@ -120,7 +120,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
         if (obj.event === 'logout') {
             var index = layer.confirm('确定注销？', function () {
                 $.ajax({
-                    url: '/query/org/blockOrg',
+                    url: '/manage/query/org/blockOrg',
                     type: 'post',
                     data: {
                         partnerId: data.partnerId,

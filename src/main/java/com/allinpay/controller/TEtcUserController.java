@@ -24,7 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @since 2019-07-03
  */
 @RestController
-@RequestMapping("/sys/user")
+@RequestMapping("/manage/sys/user")
 public class TEtcUserController extends BaseController {
 
     @Autowired

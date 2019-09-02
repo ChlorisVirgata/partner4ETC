@@ -13,7 +13,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             //表格生成的位置：#ID
             elem: '#orginfotable',
             //请求地址getList
-            url: '/query/userhairpin/getList',
+            url: '/manage/query/userhairpin/getList',
             //是否分页
             page: true,
             //请求参数

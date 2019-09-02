@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  * @date: 2019-07-02 16:58
  */
 @RestController
-@RequestMapping("/org/audit")
+@RequestMapping("/manage/org/audit")
 public class OrgAuditController {
     @Autowired
     private IOrgAuditService auditService;

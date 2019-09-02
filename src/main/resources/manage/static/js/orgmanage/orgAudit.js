@@ -25,7 +25,7 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate'], function () {
             //表格生成的位置：#ID
             elem: '#auditTable',
             //请求地址
-            url: '/org/audit/getList',
+            url: '/manage/org/audit/getList',
             //是否分页
             page: true,
             //请求参数
@@ -106,7 +106,7 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate'], function () {
             area: ['300px', '150px']
         }, function (value, index, elem) {
             $.ajax({
-                url: '/org/audit/refuse',
+                url: '/manage/org/audit/refuse',
                 type: 'post',
                 data: {
                     partnerId: $("#partnerId").val(),
@@ -132,7 +132,7 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate'], function () {
     //审核成功
     $("#approveSubmit").on("click", function () {
         $.ajax({
-            url: '/org/audit/approve',
+            url: '/manage/org/audit/approve',
             type: 'post',
             data: $("#auditForm").serialize(),
             dataType: 'json',
@@ -210,12 +210,12 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate'], function () {
     //展示图片信息 图片路径+图片名称
     function showImg(myData) {
         $.trim(myData.license) == "" ? $('#licenseImg').attr('src', "") :
-            $('#licenseImg').attr('src', "/etcimg/temp/" + myData.partnerId + "/license/" + myData.license);
+            $('#licenseImg').attr('src', "/manage/etcimg/temp/" + myData.partnerId + "/license/" + myData.license);
         $.trim(myData.idFront) == "" ? $('#legalFrontImg').attr('src', "") :
-            $('#legalFrontImg').attr('src', "/etcimg/temp/" + myData.partnerId + "/front/" + myData.idFront);
+            $('#legalFrontImg').attr('src', "/manage/etcimg/temp/" + myData.partnerId + "/front/" + myData.idFront);
         $.trim(myData.idBack) == "" ? $('#legalBackImg').attr('src', "") :
-            $('#legalBackImg').attr('src', "/etcimg/temp/" + myData.partnerId + "/back/" + myData.idBack);
+            $('#legalBackImg').attr('src', "/manage/etcimg/temp/" + myData.partnerId + "/back/" + myData.idBack);
         $.trim(myData.agreement) == "" ? $('#agreementImg').attr('src', "") :
-            $('#agreementImg').attr('src', "/etcimg/temp/" + myData.partnerId + "/agreement/" + myData.agreement);
+            $('#agreementImg').attr('src', "/manage/etcimg/temp/" + myData.partnerId + "/agreement/" + myData.agreement);
     }
 });

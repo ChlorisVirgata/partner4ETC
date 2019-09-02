@@ -12,7 +12,7 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
             //表格生成的位置：#ID
             elem: '#orgBankTable',
             //请求地址
-            url: '/org/bank/getList',
+            url: '/manage/org/bank/getList',
             //是否分页
             page: true,
             //请求参数
@@ -102,7 +102,7 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
             console.log(btnName);
             var index = layer.confirm("确定置为" + btnName + "吗？", function () {
                 $.ajax({
-                    url: '/org/bank/status',
+                    url: '/manage/org/bank/status',
                     type: 'post',
                     data: {
                         bankId: myData.bankId,
@@ -130,7 +130,7 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
     //监听form表单提交事件 防止页面跳转
     form.on('submit(addFilter)', function (data) {
         $.ajax({
-            url: '/org/bank/add',
+            url: '/manage/org/bank/add',
             type: 'post',
             data: $("#addForm").serialize(),
             dataType: 'json',

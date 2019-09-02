@@ -81,7 +81,7 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
             //表格生成的位置：#ID
             elem: '#modifyTable',
             //请求地址
-            url: '/org/modify/getList',
+            url: '/manage/org/modify/getList',
             //是否分页
             page: true,
             //请求参数
@@ -212,9 +212,9 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
         var formData = new FormData(document.getElementById("editForm"));
         var url;
         if (btnId == "editSubmit") {
-            url = "/org/modify/edit";
+            url = "/manage/org/modify/edit";
         } else if (btnId == "sendAuditSubmit") {
-            url = "/org/modify/sendAudit";
+            url = "/manage/org/modify/sendAudit";
         } else {
             layer.alert("系统异常");
             return;
@@ -356,13 +356,13 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
     //展示图片信息 图片路径+图片名称
     function showImg(myData) {
         $.trim(myData.license) == "" ? $('#licenseImg').attr('src', "") :
-            $('#licenseImg').attr('src', "/etcimg/temp/" + myData.partnerId + "/license/" + myData.license);
+            $('#licenseImg').attr('src', "/manage/etcimg/temp/" + myData.partnerId + "/license/" + myData.license);
         $.trim(myData.idFront) == "" ? $('#legalFrontImg').attr('src', "") :
-            $('#legalFrontImg').attr('src', "/etcimg/temp/" + myData.partnerId + "/front/" + myData.idFront);
+            $('#legalFrontImg').attr('src', "/manage/etcimg/temp/" + myData.partnerId + "/front/" + myData.idFront);
         $.trim(myData.idBack) == "" ? $('#legalBackImg').attr('src', "") :
-            $('#legalBackImg').attr('src', "/etcimg/temp/" + myData.partnerId + "/back/" + myData.idBack);
+            $('#legalBackImg').attr('src', "/manage/etcimg/temp/" + myData.partnerId + "/back/" + myData.idBack);
         $.trim(myData.agreement) == "" ? $('#agreementImg').attr('src', "") :
-            $('#agreementImg').attr('src', "/etcimg/temp/" + myData.partnerId + "/agreement/" + myData.agreement);
+            $('#agreementImg').attr('src', "/manage/etcimg/temp/" + myData.partnerId + "/agreement/" + myData.agreement);
     }
 
     function dealImg(file, imgId, fileName, result) {

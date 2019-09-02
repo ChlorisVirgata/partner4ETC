@@ -1,7 +1,6 @@
 package com.allinpay.controller;
 
 
-import com.alibaba.fastjson.JSONObject;
 import com.allinpay.core.common.BaseController;
 import com.allinpay.core.common.ResponseBean;
 import com.allinpay.entity.TEtcSysRole;
@@ -14,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * <p>
@@ -25,7 +26,7 @@ import java.util.*;
  * @since 2019-07-05
  */
 @RestController
-@RequestMapping("/role")
+@RequestMapping("/manage/role")
 public class TEtcRoleController extends BaseController {
 
     @Autowired

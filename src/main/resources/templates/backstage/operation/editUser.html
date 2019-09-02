@@ -210,7 +210,7 @@
         var id = $("#userId").val();
         if (id != "") {
             $.ajax({
-                url: "/sys/user/queryUserById",
+                url: "/manage/sys/user/queryUserById",
                 data: {"userId": id},
                 dataType: "json",
                 success: function (data) {
@@ -257,7 +257,7 @@
                 return;
             }
             $.ajax({
-                url: '/sys/user/add',
+                url: '/manage/sys/user/add',
                 type: 'post',
                 data: {
                     username: $("#username").val(),
@@ -291,7 +291,7 @@
 
         });
 
-        $.get("/role/allList", function (r) {
+        $.get("/manage/role/allList", function (r) {
             //alert(JSON.stringify(r));
             // vm.roleList = r;
 

@@ -2,7 +2,7 @@ layui.use('jquery', function () {
     var $ = layui.jquery;
     //查询父级机构
     $.ajax({
-        url: '/query/org/normalOrgList',
+        url: '/manage/query/org/normalOrgList',
         type: 'get',
         async: false,
         dataType: 'json',
@@ -170,9 +170,9 @@ layui.use(['layer', 'form', 'element', 'upload'], function () {
         var formData = new FormData(document.getElementById("addForm"));
         var url;
         if (btnId == "addSubmit") {
-            url = "/org/enter/add";
+            url = "/manage/org/enter/add";
         } else if (btnId == "sendAuditSubmit") {
-            url = "/org/enter/sendAudit";
+            url = "/manage/org/enter/sendAudit";
         } else {
             layer.alert("系统异常");
             return;

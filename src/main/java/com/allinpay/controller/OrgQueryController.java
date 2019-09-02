@@ -28,7 +28,7 @@ import java.util.List;
  * @date: 2019-07-02 16:58
  */
 @RestController
-@RequestMapping("/query")
+@RequestMapping("/manage/query")
 @Slf4j
 public class OrgQueryController {
 

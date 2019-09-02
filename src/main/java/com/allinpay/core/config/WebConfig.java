@@ -22,7 +22,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         //访问js/css/img/file等静态资源 pathPatterns指的是url路径规则
         registry.addResourceHandler("/manage/static/**").addResourceLocations("classpath:/manage/static/");
         //配置磁盘外虚拟目录映射 用于访问上传的图片
-        registry.addResourceHandler("/etcimg/**").addResourceLocations("file:/app/zjjt/images/");
+        registry.addResourceHandler("/manage/etcimg/**").addResourceLocations("file:/app/zjjt/images/");
         //访问html资源，一般是设置进制访问的
         registry.addResourceHandler("/**").addResourceLocations("classpath:/templates/");
     }

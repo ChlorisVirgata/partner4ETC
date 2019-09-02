@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
  * @date: 2019-07-02 16:58
  */
 @RestController
-@RequestMapping("/org/modify")
+@RequestMapping("/manage/org/modify")
 public class OrgModifyController {
     @Autowired
     private IOrgModifyService modifyService;

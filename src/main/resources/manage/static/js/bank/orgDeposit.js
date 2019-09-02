@@ -12,7 +12,7 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
             //表格生成的位置：#ID
             elem: '#depositTable',
             //请求地址
-            url: '/org/deposit/getList',
+            url: '/manage/org/deposit/getList',
             //是否分页
             page: true,
             //请求参数
@@ -94,7 +94,7 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
             return false;
         }
         $.ajax({
-            url: '/org/deposit/add',
+            url: '/manage/org/deposit/add',
             type: 'post',
             data: $("#addForm").serialize(),
             dataType: 'json',
@@ -121,7 +121,7 @@ layui.use(['table', 'element', 'layer', 'form'], function () {
             return false;
         }
         $.ajax({
-            url: '/org/deposit/edit',
+            url: '/manage/org/deposit/edit',
             type: 'post',
             data: $("#editForm").serialize(),
             dataType: 'json',

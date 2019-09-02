@@ -11,7 +11,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             //表格生成的位置：#ID
             elem: '#menuTable',
             //请求地址
-            url: '/menu/list',
+            url: '/manage/menu/list',
             toolbar: '#toolbarDemo'
             , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             //是否分页
@@ -132,7 +132,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             layer.confirm('真的删除行么', function (index) {
                 obj.del();
                 table.reload("menuTable", {
-                    url: '/menu/del',
+                    url: '/manage/menu/del',
                     where: {
                         id: data.menuId
                     },

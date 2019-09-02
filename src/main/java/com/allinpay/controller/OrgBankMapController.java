@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date: 2019-07-10
  */
 @RestController
-@RequestMapping("/org/bank")
+@RequestMapping("/manage/org/bank")
 public class OrgBankMapController {
     @Autowired
     private IPartnerBankService partnerBankService;

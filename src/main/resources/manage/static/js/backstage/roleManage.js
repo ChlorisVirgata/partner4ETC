@@ -18,7 +18,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             //表格生成的位置：#ID
             elem: '#roleTable',
             //请求地址
-            url: '/role/list',
+            url: '/manage/role/list',
             cellMinWidth: 80,  //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             toolbar: '#toolbarDemo',
             //是否分页
@@ -60,7 +60,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
     //条件查询
     $("#queryBtn").on("click", function () {
         table.reload('roleTable', {
-            url: "/role/list"
+            url: "/manage/role/list"
             , where: {
                 rolename: $("#rolename").val()
             }
@@ -96,7 +96,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             layer.confirm('真的删除行么', function (index) {
                 obj.del();
                 table.reload("roleTable", {
-                    url: '/role/del',
+                    url: '/manage/role/del',
                     where: {
                         id: data.roleId
                     },

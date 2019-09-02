@@ -24,7 +24,7 @@ import java.util.List;
  * @since 2019-07-05
  */
 @RestController
-@RequestMapping("/menu")
+@RequestMapping("/manage/menu")
 public class TEtcSysMenuController extends BaseController {
 
     @Autowired

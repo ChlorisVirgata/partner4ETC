@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
  * @date: 2019-07-02 16:58
  */
 @RestController
-@RequestMapping("/org/enter")
+@RequestMapping("/manage/org/enter")
 @Slf4j
 public class OrgEnterController {
     @Autowired

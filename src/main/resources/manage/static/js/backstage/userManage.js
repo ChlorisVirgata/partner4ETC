@@ -22,7 +22,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             //表格生成的位置：#ID
             elem: '#userTable',
             //请求地址
-            url: '/sys/user/list',
+            url: '/manage/sys/user/list',
             //是否分页
             page: true,
             toolbar: '#toolbarDemo',
@@ -70,7 +70,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
     //条件查询
     $("#queryBtn").on("click", function () {
         table.reload('userTable', {
-            url: "/sys/user/list"
+            url: "/manage/sys/user/list"
             , where: {
                 username: $("#username").val()
             }
@@ -193,7 +193,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             layer.confirm('真的删除行么', function (index) {
                 obj.del();
                 table.reload("userTable", {
-                    url: '/sys/user/del',
+                    url: '/manage/sys/user/del',
                     where: {
                         "id": data.userId
                     },
