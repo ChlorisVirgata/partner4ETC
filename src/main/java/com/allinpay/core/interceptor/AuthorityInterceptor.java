@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServletResponse;
  * @date: 2019-07-09
  */
 public class AuthorityInterceptor implements HandlerInterceptor {
-    private static String LOGIN = "/etc/login";
-    private static String RANDOM_CODE = "/etc/captcha";
+    private static String LOGIN = "/manage/etc/login";
+    private static String RANDOM_CODE = "/manage/etc/captcha";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {

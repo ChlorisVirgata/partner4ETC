@@ -12,7 +12,7 @@ layui.use(['layer', 'form'], function () {
         }
         $.ajax({
             type: 'post',
-            url: '/etc/login',
+            url: '/manage/etc/login',
             data: $("#loginForm").serialize(),
             dataType: 'json',
             success: function (data) {
@@ -36,7 +36,7 @@ layui.use(['layer', 'form'], function () {
 
     //更换验证码
     $("#captchaImg").on("click", function () {
-        $("#captchaImg").attr("src", "/etc/captcha?t=" + new Date());
+        $("#captchaImg").attr("src", "/manage/etc/captcha?t=" + new Date());
     });
 
     //参数校验

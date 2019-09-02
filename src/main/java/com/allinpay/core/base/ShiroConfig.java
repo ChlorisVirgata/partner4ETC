@@ -45,14 +45,13 @@ public class ShiroConfig {
         shiroFilter.setLoginUrl("/manage/login");
         Map<String, String> filterMap = new LinkedHashMap();
         filterMap.put("/templates/**", "anon");
-        filterMap.put("/static/**", "anon");
+        filterMap.put("/manage/static/**", "anon");
         filterMap.put("/favicon.ico", "anon");
         filterMap.put("/manage/login", "anon");
         filterMap.put("/sys/user/logout", "anon");
-        filterMap.put("/etc/captcha", "anon");
-        filterMap.put("/etc/login", "anon");
+        filterMap.put("/manage/etc/captcha", "anon");
+        filterMap.put("/manage/etc/login", "anon");
         filterMap.put("/index", "anon");
-        filterMap.put("/static/js/**", "anon");
         filterMap.put("/etcimg/**", "anon");
         filterMap.put("/**", "authc");
         shiroFilter.setSuccessUrl("/manage/index");

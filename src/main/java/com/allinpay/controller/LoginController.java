@@ -32,7 +32,7 @@ import java.io.OutputStream;
 import java.util.Random;
 
 @Controller
-@RequestMapping("/etc")
+@RequestMapping("/manage/etc")
 @Slf4j
 public class LoginController {
 
