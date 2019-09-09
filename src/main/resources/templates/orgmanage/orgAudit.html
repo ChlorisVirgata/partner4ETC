@@ -29,6 +29,7 @@
     <div th:include="common/menu :: menu"></div>
     <!--查询页面 -->
     <div class="layui-body">
+        <input hidden id="pdfUrl"/>
         <!--面包屑-->
         <div style="margin: 10px">
             <span class="layui-breadcrumb">
@@ -199,12 +200,8 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <label class="layui-form-label">协议图片</label>
-                <div class="layui-upload">
-                    <div class="layui-upload-list">
-                        <img class="layui-upload-img" id="agreementImg">
-                    </div>
-                </div>
+                <label class="layui-form-label">协议文件</label>
+                <button class="layui-btn" id="agreementBtn" style="float: left" type="button">预览</button>
             </div>
         </div>
         <div class="layui-form-item">

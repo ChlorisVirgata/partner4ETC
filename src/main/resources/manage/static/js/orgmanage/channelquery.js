@@ -170,6 +170,10 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
         layer.closeAll();
     });
 
+    $("#agreementBtn").on("click", function () {
+        window.open($("#serverUrl").val() + $("#pdfUrl").val());
+    });
+
     function showinfo(data){
 
         $("#chanelidshow").val(data.partnerId);//机构编号
@@ -195,7 +199,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
         $('#license').attr('src', "/manage/etcimg/org/" + data.partnerId + "/license/" + data.license);
         $('#front').attr('src', "/manage/etcimg/org/" + data.partnerId + "/front/" + data.idFront);
         $("#back").attr("src", "/manage/etcimg/org/" + data.partnerId + "/back/" + data.idBack);
-        $("#aggre").attr("src", "/manage/etcimg/org/" + data.partnerId + "/agreement/" + data.agreement);
+        $("#pdfUrl").val("/manage/etcimg/org/" + data.partnerId + "/agreement/" + data.agreement);
 
         //打开模态框
         openModal("详细信息", "editForm");

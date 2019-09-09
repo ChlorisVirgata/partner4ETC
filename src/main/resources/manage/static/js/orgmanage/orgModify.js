@@ -61,20 +61,6 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
         }
     });
 
-    upload.render({
-        elem: '#agreementBtn',
-        field: "agreementFile",
-        accept: "images",
-        auto: false,
-        choose: function (obj) {
-            //预读选择的文件，不支持ie8
-            obj.preview(function (index, file, result) {
-                //图片链接（base64）
-                dealImg(file, "agreementImg", "agreementFile", result);
-            });
-        }
-    });
-
     //抽取查询方法
     var search = function () {
         table.render({
@@ -121,9 +107,6 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
             //每页默认显示的数量
             limit: 10,
             loading: true,
-            // done: function() {
-            //     var str = $("table").find("td[data-fild='partnerType']").find("div").html();
-            // },
             //单元格设置
             cols: [[
                 {field: 'partnerId', width: 90, title: '机构编号'},
@@ -178,6 +161,16 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
         layer.closeAll();
     });
 
+    $("input[name='agreementFile']").on("change", function () {
+        var $agreementFile = $("input[name='agreementFile']");
+        var fileType = $agreementFile.val().substr($agreementFile.val().lastIndexOf(".") + 1);
+        if (fileType != "pdf") {
+            layer.alert("只支持pdf格式文件");
+            $agreementFile.val("");
+        } else {
+            $("#agreementId").hide();
+        }
+    });
 
     //监听table行工具事件 如详情、编辑、删除操作
     table.on('tool(tableFilter)', function (obj) {
@@ -201,6 +194,7 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
                 "contactPhone": myData.contactPhone,
                 "status": myData.status
             });
+
             showImg(myData);
             //打开模态框
             openModal("编辑", "editForm");
@@ -339,8 +333,8 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
         if (!$('#legalBackImg').attr('src')) {
             $legalBack.attr("lay-verify", "required").attr("lay-reqText", "请上传法人身份证反面图片");
         }
-        if (!$('#agreementImg').attr('src')) {
-            $agreement.attr("lay-verify", "required").attr("lay-reqText", "请上传协议图片");
+        if (!$("#agreementId").text()) {
+            $agreement.attr("lay-verify", "required").attr("lay-reqText", "请上传协议文件");
         }
     }
 
@@ -361,8 +355,13 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate', 'upload'], function (
             $('#legalFrontImg').attr('src', "/manage/etcimg/temp/" + myData.partnerId + "/front/" + myData.idFront);
         $.trim(myData.idBack) == "" ? $('#legalBackImg').attr('src', "") :
             $('#legalBackImg').attr('src', "/manage/etcimg/temp/" + myData.partnerId + "/back/" + myData.idBack);
-        $.trim(myData.agreement) == "" ? $('#agreementImg').attr('src', "") :
-            $('#agreementImg').attr('src', "/manage/etcimg/temp/" + myData.partnerId + "/agreement/" + myData.agreement);
+
+        if ($.trim(myData.agreement) == "") {
+            $('#agreementId').text("");
+        } else {
+            $('#agreementId').text(myData.agreement);
+            $('#agreementId').show();
+        }
     }
 
     function dealImg(file, imgId, fileName, result) {

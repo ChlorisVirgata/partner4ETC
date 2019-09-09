@@ -98,6 +98,10 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate'], function () {
         $("#modifyTime").val("");
     });
 
+    $("#agreementBtn").on("click", function () {
+        window.open($("#serverUrl").val() + $("#pdfUrl").val());
+    });
+
     //审核失败
     $("#refuse").on("click", function () {
         layer.prompt({
@@ -215,7 +219,7 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate'], function () {
             $('#legalFrontImg').attr('src', "/manage/etcimg/temp/" + myData.partnerId + "/front/" + myData.idFront);
         $.trim(myData.idBack) == "" ? $('#legalBackImg').attr('src', "") :
             $('#legalBackImg').attr('src', "/manage/etcimg/temp/" + myData.partnerId + "/back/" + myData.idBack);
-        $.trim(myData.agreement) == "" ? $('#agreementImg').attr('src', "") :
-            $('#agreementImg').attr('src', "/manage/etcimg/temp/" + myData.partnerId + "/agreement/" + myData.agreement);
+        $.trim(myData.agreement) == "" ? $("#pdfUrl").val("")
+            : $("#pdfUrl").val("/manage/etcimg/temp/" + myData.partnerId + "/back/" + myData.idBack);
     }
 });

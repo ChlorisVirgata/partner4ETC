@@ -24,7 +24,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
         String url = request.getRequestURI();
         //登录、获取验证码直接放行
-        if (LOGIN.equals(url) || RANDOM_CODE.equals(url)) {
+        if (LOGIN.equals(url) || RANDOM_CODE.equals(url) || "/error".equals(url)) {
             return true;
         }
 

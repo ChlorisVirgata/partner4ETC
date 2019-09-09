@@ -70,20 +70,6 @@ layui.use(['layer', 'form', 'element', 'upload'], function () {
         }
     });
 
-    upload.render({
-        elem: '#agreementBtn',
-        field: "agreementFile",
-        accept: "images",
-        auto: false,
-        choose: function (obj) {
-            //预读选择的文件，不支持ie8
-            obj.preview(function (index, file, result) {
-                //图片链接（base64）
-                dealImg(file, "agreementImg", "agreementFile", result);
-            });
-        }
-    });
-
     //添加
     $("#addSubmit").on("click", function () {
         checkParamsForAdd();
@@ -94,6 +80,14 @@ layui.use(['layer', 'form', 'element', 'upload'], function () {
     $("#sendAuditSubmit").on("click", function () {
         checkParamsForSendAudit();
         btnId = "sendAuditSubmit";
+    });
+
+    $("#agreementId").on("change", function () {
+        var fileType = $("#agreementId").val().substr($("#agreementId").val().lastIndexOf(".") + 1);
+        if (fileType != "pdf") {
+            layer.alert("只支持pdf格式文件");
+            $("#agreementId").val("");
+        }
     });
 
     //表单参数验证
@@ -153,7 +147,7 @@ layui.use(['layer', 'form', 'element', 'upload'], function () {
         $license.attr("lay-verify", "required").attr("lay-reqText", "请上传营业执照图片");
         $legalFront.attr("lay-verify", "required").attr("lay-reqText", "请上传法人身份证正面图片");
         $legalBack.attr("lay-verify", "required").attr("lay-reqText", "请上传法人身份证反面图片");
-        $agreement.attr("lay-verify", "required").attr("lay-reqText", "请上传协议图片");
+        $agreement.attr("lay-verify", "required").attr("lay-reqText", "请上传协议文件");
     }
 
     //给指定的$对象赋值属性

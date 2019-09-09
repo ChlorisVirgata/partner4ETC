@@ -8,6 +8,7 @@
     <title>机构信息变更</title>
     <link href="/manage/static/layui/css/layui.css" rel="stylesheet">
     <link href="/manage/static/css/common.css" rel="stylesheet">
+
     <style type="text/css">
         .layui-form-label {
             width: 115px;
@@ -233,12 +234,10 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <label class="layui-form-label">协议图片</label>
-                <div class="layui-upload">
-                    <button class="layui-btn" id="agreementBtn" style="float: left;" type="button">上传图片</button>
-                    <div class="layui-upload-list">
-                        <img class="layui-upload-img" id="agreementImg">
-                    </div>
+                <label class="layui-form-label">协议文件</label>
+                <div class="layui-upload" style="float: left;">
+                    <input name="agreementFile" style="margin-top: 5px" type="file" value=""/></br>
+                    <p id="agreementId" style="float: left"></p>
                 </div>
             </div>
         </div>
