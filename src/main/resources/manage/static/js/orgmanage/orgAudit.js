@@ -220,6 +220,6 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate'], function () {
         $.trim(myData.idBack) == "" ? $('#legalBackImg').attr('src', "") :
             $('#legalBackImg').attr('src', "/manage/etcimg/temp/" + myData.partnerId + "/back/" + myData.idBack);
         $.trim(myData.agreement) == "" ? $("#pdfUrl").val("")
-            : $("#pdfUrl").val("/manage/etcimg/temp/" + myData.partnerId + "/back/" + myData.idBack);
+            : $("#pdfUrl").val("/manage/etcimg/temp/" + myData.partnerId + "/back/" + myData.agreement);
     }
 });
