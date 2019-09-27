@@ -80,4 +80,9 @@ public class RedirectController {
     public String orgdeposit() {
         return "bank/orgdeposit";
     }
+
+    @RequestMapping("/notify")
+    public String notiry() {
+        return "bank/notifyinfo";
+    }
 }
