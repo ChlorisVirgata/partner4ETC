@@ -59,8 +59,12 @@ public enum BizEnums {
      * 机构保证金配置
      */
     ORG_DEPOSIT_AMOUNT_EXCEPTION("30001", "签约保证金金额不能小于最低保证金金额"),
-    ORG_DEPOSIT_EXIST("30002", "机构已配置保证金信息");
+    ORG_DEPOSIT_EXIST("30002", "机构已配置保证金信息"),
 
+    /**
+     * 机构保证金配置
+     */
+    ORG_SIGN_RESULT_NOTIFY_CONFIG_EXIST("60001", "签约结果通知配置信息已存在");
 
     private String code;
     private String msg;
