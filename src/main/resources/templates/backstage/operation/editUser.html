@@ -27,6 +27,10 @@
             margin-top: 10px;
         }
 
+        .layui-form-item {
+            margin-left: 130px;
+        }
+
     </style>
 
 
@@ -184,7 +188,14 @@
     <div class="layui-form-item">
         <label class="layui-form-label">状态</label>
         <div class="layui-input-inline">
-            <input type="checkbox" name="status" id="status" lay-skin="switch" lay-text="开启|关闭" checked>
+            <div class="layui-input-inline">
+                <div th:if="${status} eq '0'">
+                    <input type="checkbox" name="status" id="status" lay-skin="switch" lay-text="开启|关闭" >
+                </div>
+                <div th:if="${status} eq '1'">
+                    <input type="checkbox" name="status" id="status" lay-skin="switch" lay-text="开启|关闭" checked>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -210,7 +221,7 @@
         var id = $("#userId").val();
         if (id != "") {
             $.ajax({
-                url: "/manage/sys/user/queryUserById",
+                url: "/manage/user/queryUserById",
                 data: {"userId": id},
                 dataType: "json",
                 success: function (data) {
@@ -257,7 +268,7 @@
                 return;
             }
             $.ajax({
-                url: '/manage/sys/user/add',
+                url: '/manage/user/add',
                 type: 'post',
                 data: {
                     username: $("#username").val(),

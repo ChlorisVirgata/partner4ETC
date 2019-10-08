@@ -2,6 +2,7 @@ package com.allinpay.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/manage")
@@ -51,7 +52,7 @@ public class RedirectController {
         return "dataquery/passagemoney";
     }
 
-    @RequestMapping("/login")
+    @RequestMapping("/loginpage")
     public String login() {
         return "login";
     }
@@ -59,11 +60,6 @@ public class RedirectController {
     @RequestMapping("/403")
     public String forbidden() {
         return "common/403";
-    }
-
-    @RequestMapping("/index")
-    public String index() {
-        return "common/index";
     }
 
     @RequestMapping("/bank")

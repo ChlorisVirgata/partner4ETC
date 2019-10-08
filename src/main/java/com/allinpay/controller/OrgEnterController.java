@@ -5,6 +5,7 @@ import com.allinpay.entity.PartnerAudit;
 import com.allinpay.entity.PartnerStorage;
 import com.allinpay.service.IOrgEnterService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,7 @@ public class OrgEnterController {
      * @Return: com.allinpay.core.common.ResponseData
      */
     @PostMapping("/sendAudit")
+    @RequiresPermissions("org:enter:sendAudit")
     public ResponseData sendAudit(MultipartHttpServletRequest request, PartnerAudit audit) {
         enterService.sendOrgAudit(request, audit);
         return ResponseData.success().setData(null);
@@ -40,6 +42,7 @@ public class OrgEnterController {
      * @Return: com.allinpay.core.common.ResponseData
      */
     @PostMapping("/add")
+    @RequiresPermissions("org:enter:add")
     public ResponseData add(MultipartHttpServletRequest request, PartnerStorage storage) {
         enterService.addOrg(request, storage);
         return ResponseData.success().setData(null);

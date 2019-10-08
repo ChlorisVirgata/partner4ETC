@@ -9,13 +9,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
-    @Autowired
-    private AuthorityInterceptor interceptor;
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(interceptor).addPathPatterns("/**");
-    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

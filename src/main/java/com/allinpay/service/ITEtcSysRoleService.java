@@ -15,5 +15,5 @@ import java.util.HashMap;
  * @since 2019-07-05
  */
 public interface ITEtcSysRoleService extends IService<TEtcSysRole> {
-    ResponseBean queryPage(Integer pageNo, Integer pageSize, HashMap map);
+    ResponseBean queryPage(Integer pageNo, Integer pageSize, String  roleName);
 }

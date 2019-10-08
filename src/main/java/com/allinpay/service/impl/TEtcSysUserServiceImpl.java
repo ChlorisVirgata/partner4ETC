@@ -41,11 +41,7 @@ public class TEtcSysUserServiceImpl extends ServiceImpl<TEtcUserMapper, TEtcSysU
     @Override
     public ResponseBean queryPage(Integer pageNo, Integer pageSize, String username) {
         Page page = PageHelper.startPage(pageNo, pageSize);
-        Map map = new HashMap();
-        if (StringUtils.isNotEmpty(username)) {
-            map.put("username", username);
-        }
-        List<TEtcSysUser> sysRoleList = (List) tEtcUserMapper.selectByMap(map);
+        List<TEtcSysUser> sysRoleList = (List) tEtcUserMapper.selectList(new QueryWrapper<TEtcSysUser>().like("username", username).orderByDesc("USER_ID"));
         PageInfo<TEtcSysUser> pageInfo = new PageInfo<TEtcSysUser>(sysRoleList);
         return ResponseBean.ok(sysRoleList, pageInfo.getTotal());
     }
@@ -55,7 +51,9 @@ public class TEtcSysUserServiceImpl extends ServiceImpl<TEtcUserMapper, TEtcSysU
             TEtcSysUser user = tEtcUserMapper.selectById(etcSysUser.getUserId());
             String dateStr = getString(etcSysUser, user);
             user.setUsername(etcSysUser.getUsername());
+            user.setRoleId(etcSysUser.getRoleId());
             user.setUpdateTime(dateStr);
+            user.setStatus(etcSysUser.getStatus());
             return ResponseBean.ok(tEtcUserMapper.updateById(user) > 0);
         }
         TEtcSysUser user = tEtcUserMapper.selectOne(new QueryWrapper<TEtcSysUser>().eq("username", etcSysUser.getUsername()));
@@ -78,6 +76,14 @@ public class TEtcSysUserServiceImpl extends ServiceImpl<TEtcUserMapper, TEtcSysU
     @Override
     public Integer selectMaxRoleId() {
         return tEtcUserMapper.selectMaxRoleId();
+    }
+
+    @Override
+    public boolean updatePassword(Integer userId, String password, String newPassword) {
+        TEtcSysUser userEntity = new TEtcSysUser();
+        userEntity.setPassword(newPassword);
+        return this.update(userEntity,
+                new QueryWrapper<TEtcSysUser>().eq("user_id", userId).eq("password", password));
     }
 
     private String getString(TEtcSysUser etcSysUser, TEtcSysUser user) {

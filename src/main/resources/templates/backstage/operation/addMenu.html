@@ -10,6 +10,14 @@
     <link href="../../../manage/static/layui/css/layui.css" media="all" rel="stylesheet">
     <script charset="utf-8" src="../../../manage/static/layui/layui.js"></script>
 
+    <style type="text/css">
+        .layui-form-item {
+            margin-left: 105px;
+        }
+        .layui-form-item .layui-input-inline {
+            width: 265px;
+        }
+    </style>
 </head>
 <body>
 
@@ -56,19 +64,36 @@
     <div class="layui-form-item">
         <label class="layui-form-label">类型</label>
         <div class="layui-input-block">
-            <input type="radio" name="type" value="0|菜单" title="菜单">
-            <input type="radio" name="type" value="1|目录" title="目录" >
-            <input type="radio" name="type" value="2|权限" title="权限" checked>
+            <div th:if="!${menu.type}">
+                <input type="radio" name="type" value="0|菜单" title="菜单" >
+                <input type="radio" name="type" value="1|目录" title="目录" >
+                <input type="radio" name="type" value="2|权限" title="权限" >
+            </div>
+            <div th:if="${menu.type} eq '0'">
+                <input type="radio" name="type" value="0|菜单" title="菜单" checked>
+                <input type="radio" name="type" value="1|目录" title="目录" >
+                <input type="radio" name="type" value="2|权限" title="权限" >
+            </div>
+            <div th:if="${menu.type} eq '1'">
+                <input type="radio" name="type" value="0|菜单" title="菜单" >
+                <input type="radio" name="type" value="1|目录" title="目录" checked>
+                <input type="radio" name="type" value="2|权限" title="权限" >
+            </div>
+            <div th:if="${menu.type} eq '2'">
+                <input type="radio" name="type" value="0|菜单" title="菜单" >
+                <input type="radio" name="type" value="1|目录" title="目录" >
+                <input type="radio" name="type" value="2|权限" title="权限" checked>
+            </div>
         </div>
     </div>
 
 
-    <div class="layui-form-item">
+<!--    <div class="layui-form-item">
         <label class="layui-form-label">图标地址</label>
         <div class="layui-input-inline">
             <input type="text" name="icon" th:value="${menu.icon}" autocomplete="off" class="layui-input">
         </div>
-    </div>
+    </div>-->
 
     <div class="layui-form-item">
         <label class="layui-form-label">菜单排序</label>

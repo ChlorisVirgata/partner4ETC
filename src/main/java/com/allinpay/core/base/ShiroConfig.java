@@ -8,9 +8,11 @@ import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSource
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -42,17 +44,19 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(securityManager);
-        shiroFilter.setLoginUrl("/manage/login");
+        shiroFilter.setLoginUrl("/manage/loginpage");
         Map<String, String> filterMap = new LinkedHashMap();
         filterMap.put("/templates/**", "anon");
         filterMap.put("/manage/static/**", "anon");
         filterMap.put("/favicon.ico", "anon");
+        filterMap.put("/manage/loginpage", "anon");
+        filterMap.put("/manage/logout", "anon");
+        filterMap.put("/manage/captcha", "anon");
         filterMap.put("/manage/login", "anon");
-        filterMap.put("/manage/sys/user/logout", "anon");
-        filterMap.put("/manage/etc/captcha", "anon");
-        filterMap.put("/manage/etc/login", "anon");
-        filterMap.put("/manage/index", "anon");
-        filterMap.put("/manage/etcimg/**", "anon");
+        filterMap.put("/index", "anon");
+        filterMap.put("/manage/static/plugins/*", "anon");
+        filterMap.put("/manage/static/js/**", "anon");
+        filterMap.put("/etcimg/**", "anon");
         filterMap.put("/**", "authc");
         shiroFilter.setSuccessUrl("/manage/index");
         shiroFilter.setUnauthorizedUrl("/manage/403");
@@ -60,11 +64,19 @@ public class ShiroConfig {
         return shiroFilter;
     }
 
+
+    @Bean
+    @DependsOn({"lifecycleBeanPostProcessor"})
+    public DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator(){
+        DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
+        advisorAutoProxyCreator.setProxyTargetClass(true);
+        return advisorAutoProxyCreator;
+    }
+
     @Bean("lifecycleBeanPostProcessor")
     public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
     }
-
 
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
@@ -72,4 +84,7 @@ public class ShiroConfig {
         advisor.setSecurityManager(securityManager);
         return advisor;
     }
+
+
+
 }

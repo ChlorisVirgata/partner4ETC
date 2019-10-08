@@ -6,6 +6,7 @@ import com.allinpay.core.common.ResponseData;
 import com.allinpay.entity.PartnerAudit;
 import com.allinpay.entity.PartnerStorage;
 import com.allinpay.service.IOrgModifyService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +31,7 @@ public class OrgModifyController {
      * @Return: com.allinpay.core.common.ResponseData
      */
     @GetMapping("/getList")
+    @RequiresPermissions("org:modify:getList")
     public ResponseData getList(OrgModifyQuery query) {
         PageVO<PartnerAudit> pageVO = modifyService.selectByCondition(query);
         return ResponseData.success().setData(pageVO);

@@ -1,7 +1,6 @@
 #tomcat端口号 根路径配置
 server:
-  port: 9090
-#  port: 9999
+  port: 8090
 
 spring:
   thymeleaf:
@@ -10,36 +9,98 @@ spring:
     content-type: text/html
     #开发模式关闭缓存，看到实时页面
     cache: false
+  #使用redis
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+    timeout: 0
+    pool:
+      max-active: 8
+      max-wait: -1
+      max-idle: 8
+      min-idle: 0
 
+  #rabbitmq
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    #开启发送确认
+    publisher-confirms: true
+    #开启发送失败退回
+    publisher-returns: true
+    listener:
+      simple:
+        #手动应答,开启ack
+        acknowledge-mode: manual
+        #是否支持重试
+        retry:
+          enabled: true
   #数据源配置
   datasource:
-    #    url: jdbc:oracle:thin:@10.48.1.253:1521:ora11g
-    #    username: zjallinpaytest
-    #    password: zjallinpaytest
-    url: jdbc:oracle:thin:@172.16.211.26:1566:qjsdb
-    username: zjjtdev
-    password: Asd_13579
+    url: jdbc:oracle:thin:@10.48.1.253:1521:ora11g
+    username: zjallinpaytest
+    password: zjallinpaytest
     driverClassName: oracle.jdbc.OracleDriver
-    #连接池的配置信息
-    initialSize: 5
-    minIdle: 5
-    maxActive: 200
-    maxWait: 60000
-    timeBetweenEvictionRunsMillis: 60000
-    minEvictableIdleTimeMillis: 300000
-    validationQuery: SELECT 1 FROM DUAL
-    testWhileIdle: true
-    testOnBorrow: false
-    testOnReturn: false
-    poolPreparedStatements: true
-    maxPoolPreparedStatementPerConnectionSize: 20
-    multiStatementAllow: true
-    #配置该过滤器StatFilter druid后台才能看到SQL监控记录,为支持oracle批量出入，暂时去除wall过滤器
-    filters: stat,slf4j,config
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 10
+      min-idle: 10
+      max-active: 200
+      # 配置获取连接等待超时的时间
+      max-wait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
 
+      #      filter: stat,slf4j,config
+      #配置该过滤器StatFilter druid后台才能看到SQL监控记录,为支持oracle批量出入，暂时去除wall过滤器
+      connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      use-oracle-implicit-cache: true
+      enable: true
+      filters: stat,slf4j,config
+      web-stat-filter:
+        enabled: true
+        profile-enable: true
+        session-stat-enable: true
+        # 默认sessionStatMaxCount是1000个，你也可以按需要进行配置
+        session-stat-max-count: 1000
+        url-pattern: /*
+        # 排除一些不必要的url，比如.js,/jslib/等等
+        #        exclusions= *js,*gif,*jpg,*bmp,*png,*css,*ico,/druid/*
+        exclusions: '*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*'
+#        filters: stat,slf4j,config
+
+#统计web请求
+
+
+banner:
+  charset: UTF-8 #横幅编码
+  image:
+    height: 20
+    invert: true #横幅背景是否是空白
+    location: #横幅图像资源地址
+    margin: 10 #横幅向左位移
+    width: 150
+
+#开启MyBatis的二级缓存
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*.xml
   type-aliases-package: com.allinpay.entity
+  configuration:
+    cache-enabled: true
+  global-config:
+    banner: false
 
 # 分页配置
 pagehelper:
@@ -47,15 +108,7 @@ pagehelper:
   reasonable: false
   supportMethodsArguments: true
   params: count=countSql
-# druid控制台相关参数设置
-druid:
-  config:
-    username: root
-    password: root
-    allow: 127.0.0.1
-    deny: 192.168.1.103
-    resetEnable: false
-    logSlowSql: true
+
 
 #配置日志文件路径
 logging:

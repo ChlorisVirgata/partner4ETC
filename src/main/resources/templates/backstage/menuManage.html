@@ -9,23 +9,37 @@
     <link href="/manage/static/layui/css/layui.css" rel="stylesheet">
     <link href="/manage/static/css/common.css" rel="stylesheet">
     <script src="/manage/static/layui/layui.js"></script>
+    <!--<script type="text/javascript" src="../../manage/static/plugins/frame/js/fsDict.js?v=2.0.0"></script>-->
     <head>
         <meta charset="UTF-8">
         <title>Title</title>
     </head>
+    <style type="text/css">
+        .layui-form-item .layui-input-inline {
+            float: left;
+            width: 73%;
+            margin-right: 0px;
+        }
+
+        .layui-input-block {
+            min-height: 36px;
+            width: 450px;
+            margin-left: 10%;
+        }
+    </style>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
-    <div th:include="common/header :: header"></div>
-    <div th:include="common/menu :: menu"></div>
+    <!--<div th:include="common/header :: header"></div>-->
+    <!--<div th:include="common/menu :: menu"></div>-->
     <!--查询页面 -->
     <div class="layui-body">
         <!--面包屑-->
-        <div style="margin: 10px">
-            <span class="layui-breadcrumb">
-                <a href="">后台管理</a>
-                <a><cite>目录管理</cite></a>
-            </span>
-        </div>
+        <!--    <div style="margin: 10px">
+                <span class="layui-breadcrumb">
+                    <a href="">后台管理</a>
+                    <a><cite>目录管理</cite></a>
+                </span>
+            </div>-->
 
 
         <div class="layui-inline" id="layerDemo">
@@ -36,7 +50,18 @@
                     <div class="layui-input-inline" style="width: 200px;">
                         <input autocomplete="off" class="layui-input" id="name" name="name" type="text">
                     </div>
+                </div>
 
+                <div class="layui-inline">
+                    <label class="layui-form-label">类型</label>
+                    <div class="layui-input-inline" style="width: 200px;">
+                        <select name="menutype" id="menutype" lay-filter="type">
+                            <option value=""></option>
+                            <option value="0">菜单</option>
+                            <option value="1">目录</option>
+                            <option value="2">权限</option>
+                        </select>
+                    </div>
                 </div>
             </form>
 
@@ -48,20 +73,124 @@
 
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
-                <!--<button class="layui-btn layui-btn-normal" lay-event="getCheckData">获取选中数据</button>-->
-                <button class="layui-btn layui-btn-normal" lay-event="menuQueryBtn" type="reset">查询</button>
+                <button class="layui-btn layui-btn-normal" lay-event="menuQueryBtn">查询</button>
                 <button class="layui-btn layui-btn-normal" lay-event="resetBtn" type="reset">重置</button>
-                <button class="layui-btn layui-btn-normal" lay-event="addMenuBtn">新增</button>
+                <!--<button class="layui-btn layui-btn-normal" lay-event="addMenuBtn">新增</button>-->
+                <button class="layui-btn layui-btn-normal" lay-event="addMenuFrom">新增</button>
             </div>
         </script>
-
 
         <script type="text/html" id="barmenu">
             <a class="layui-btn layui-btn-xs" lay-event="edit_menu">编辑</a>
             <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
         </script>
     </div>
-    <div th:include="common/footer :: footer"></div>
+
+    <!-- 新增表单 -->
+    <form class="layui-form" id="addFormContent" lay-filter="addFilter"
+          style="display: none;margin: 10px; text-align: center">
+        <input type="hidden" name="menuId" id="menuId">
+        <input type="hidden" name="operate" id="operate">
+        <!--<input type="hidden" name="menus" id="menus" th:value="${menus}">-->
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="name" autocomplete="off" class="layui-input"
+                       lay-verify="required">
+            </div>
+        </div>
+
+        <!--<div class="layui-form-item">-->
+        <!--<label class="layui-form-label">上级菜单ID</label>-->
+        <!--<div class="layui-input-inline">-->
+        <!--<input type="text" name="parentId" autocomplete="off" class="layui-input" lay-verify="required">-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="layui-form-item">-->
+        <!--<label class="layui-form-label">上级菜单</label>-->
+        <!--<div class="layui-input-inline" style="width: 450px;">-->
+        <!--<select id="parentId" name="parentId" required="" lay-verType="tips" lay-verify="required"-->
+        <!--class="fsSelect fsDict" dict="menuInfo"-->
+        <!--addNull="1">-->
+        <!--</select>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">上级菜单</label>
+            <div class="layui-input-inline">
+                <select name="parentId" id="parentId" xm-select="role-select"
+                        lay-verify="required"
+                        lay-vertype="tips">
+                    <!--<option value="">请选择上级菜单</option>-->
+                    <!--<option th:each="menup:${menus}" th:value="${menup.menuId}" th:text="${menup.name}"
+                    th:selected="${parentId} == ${menup.menuId}"></option>-->
+                </select>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单地址</label>
+            <div class="layui-input-inline">
+                <input type="text" name="url" autocomplete="off" class="layui-input"></input>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">类型</label>
+            <div class="layui-input-block" name="radioType" id="radioType">
+                <!--<input type="radio" name="type" value="0|菜单" title="菜单">
+                <input type="radio" name="type" value="1|目录" title="目录">
+                <input type="radio" name="type" value="2|权限" title="权限">-->
+            </div>
+        </div>
+
+
+        <!--    <div class="layui-form-item">
+                <label class="layui-form-label">图标地址</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="icon" th:value="${menu.icon}" autocomplete="off" class="layui-input">
+                </div>
+            </div>-->
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单排序</label>
+            <div class="layui-input-inline">
+                <input type="text" name="orderNum" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单权限</label>
+            <div class="layui-input-inline">
+                <input type="text" name="perms" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <!--<div class="layui-inline">-->
+        <!--<label class="layui-form-label">密码</label>-->
+        <!--<div class="layui-input-inline">-->
+        <!--<input type="text" name="password" autocomplete="off" class="layui-input">-->
+        <!--</div>-->
+        <!--</div>-->
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" id="dataSubmit" name="dataSubmit" lay-filter="dataCommit" lay-submit>提交
+                </button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+        <!--<div class="layui-form-item">
+            <div class="layui-input-block" style="margin-left: 29px;">
+                <button class="layui-btn" id="addSubmit" lay-submit>保存</button>
+            </div>
+        </div>-->
+    </form>
+    <!--<div th:include="common/footer :: footer"></div>-->
 
 </div>
 </body>

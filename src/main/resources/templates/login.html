@@ -8,7 +8,6 @@
     <title>ETC后台管理系统</title>
     <link href="/manage/static/layui/css/layui.css" rel="stylesheet">
     <style type="text/css">
-        /*居中处理*/
         html, body {
             height: 100%;
         }
@@ -48,13 +47,11 @@
         <br/>
         <br/>
         <div class="layui-form-item">
-            <!--<label class="layui-form-label">用户名：</label>-->
             <div class="layui-input-inline" style="width: 300px; margin-left:80px;">
                 <input class="layui-input" id="username" name="username" placeholder="请输入用户名" type="text">
             </div>
         </div>
         <div class="layui-form-item">
-            <!--<label class="layui-form-label">密码：</label>-->
             <div class="layui-input-inline" style="width: 300px; margin-left:80px;">
                 <input class="layui-input" name="password" placeholder="请输入密码" type="password">
             </div>
@@ -67,9 +64,9 @@
                     <input autocomplete="off" class="layui-input" name="captcha" placeholder="请输入验证码" type="text">
                 </div>
             </div>
-            <div class="layui-inline">
-                <img id="captchaImg" src="/manage/etc/captcha" style="height: 35px;" title="点击刷新"/>
-            </div>
+            <!--<div class="layui-inline">-->
+                <!--<img id="captchaImg" src="/manage/captcha" style="height: 35px;" title="点击刷新"/>-->
+            <!--</div>-->
         </div>
         <div class="layui-form-item" id="notice" style="display: none">
             <label class="layui-form-label"></label>

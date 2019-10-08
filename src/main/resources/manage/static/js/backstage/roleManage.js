@@ -46,12 +46,12 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             limit: 10,
             //单元格设置
             cols: [[
-                {type: 'checkbox', fixed: 'left'},
+                // {type: 'checkbox', fixed: 'left'},
                 {field: 'roleId', width: 140, title: '角色ID', sort: true},
-                {field: 'roleName', width: 160, title: '角色名称'},
+                {field: 'roleName', width: 160, title: '角色名称', sort: true},
                 {field: 'status', width: 160, title: '状态', templet: statusTpl},
                 {field: 'createTime', width: 210, title: '创建时间', sort: true},
-                {field: 'updateTime', width: 210, title: '更新时间'},
+                {field: 'updateTime', width: 210, title: '更新时间', sort: true},
                 {fixed: 'right', title: '操作', toolbar: '#barRole', width: 140}
             ]]
         });
@@ -93,7 +93,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
     table.on('tool(roleTable)', function (obj) {
         var data = obj.data;
         if (obj.event === 'del') {
-            layer.confirm('真的删除行么', function (index) {
+            layer.confirm('是否删除', function (index) {
                 obj.del();
                 table.reload("roleTable", {
                     url: '/manage/role/del',
@@ -114,9 +114,9 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 type: 2,
                 title: '编辑角色',
                 shadeClose: true,
-                shade: 0.8,
-                area: ['450px', '60%'],
-                content: 'role/edit?roleId=' + data.roleId, //iframe的url
+                shade: 0.1,
+                area: ['640px', '440px'],
+                content: '/manage/editRole?roleId=' + data.roleId, //iframe的url
                 btn: ['关闭'],
                 yes: function () {
                     search();
@@ -147,9 +147,9 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                     type: 2,
                     title: '添加角色',
                     shadeClose: true,
-                    shade: 0.8,
-                    area: ['450px', '80%'],
-                    content: '/manage/role/add', //iframe的url
+                    shade: 0.1,
+                    area: ['640px', '440px'],
+                    content: '/manage/addRole', //iframe的url
                     btn: ['关闭'],
                     yes: function () {
                         search();
@@ -176,6 +176,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             data: {
                 id: '001'
             },
+
             // async: false,
             dataType: 'json',
             success: function (data) {

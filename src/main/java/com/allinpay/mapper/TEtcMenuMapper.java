@@ -1,5 +1,6 @@
 package com.allinpay.mapper;
 
+import com.allinpay.entity.MenuInfo;
 import com.allinpay.entity.TEtcSysMenu;
 import com.allinpay.entity.TEtcSysRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -24,7 +25,7 @@ public interface TEtcMenuMapper extends BaseMapper<TEtcSysMenu> {
      *
      * @param parentId 父菜单ID
      */
-    List<TEtcSysMenu> queryListParentId(Integer parentId);
+    List<MenuInfo> queryListParentId(Integer parentId);
 
     /**
      * 获取不包含按钮的菜单列表
@@ -35,6 +36,8 @@ public interface TEtcMenuMapper extends BaseMapper<TEtcSysMenu> {
     Boolean saveRoleMenu(Integer roleMenuId, Integer roleId, Integer menuId);
 
     Boolean removeMenuById(Integer roleId);
+
+    List<Integer> queryAllMenuId(Integer roleId);
 
 
     List<Integer> queryMenuByRoleId(Integer roleId);

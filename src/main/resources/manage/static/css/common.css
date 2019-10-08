@@ -4,6 +4,7 @@
 }
 
 
+
 .layui-layout-admin .layui-side {
     position: absolute;
     top: 50px;
@@ -19,7 +20,7 @@
     user-select: none
 }
 
-.layui-layout-admin .layui-side .layui-nav-item ,.layui-side-scroll {
+.layui-layout-admin .layui-side .layui-nav-item, .layui-side-scroll {
     background-color: #324157;
 }
 
@@ -31,11 +32,11 @@
     background-color: #324157;
     color: #f2f2f2;
     font-size: 18px;
-    font-family: Myriad Pro,Helvetica Neue,Arial,Helvetica,sans-serif;
+    font-family: Myriad Pro, Helvetica Neue, Arial, Helvetica, sans-serif;
     font-weight: bold;
     overflow: hidden;
     line-height: 50px;
     transition: all .3s;
     white-space: nowrap;
-    box-shadow: 1px 0 2px 0 rgba(0,0,0,.05);
+    box-shadow: 1px 0 2px 0 rgba(0, 0, 0, .05);
 }

@@ -1,19 +1,21 @@
 package com.allinpay.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.allinpay.core.common.BaseController;
 import com.allinpay.core.common.ResponseBean;
 import com.allinpay.core.util.DateUtils;
+import com.allinpay.entity.MenuInfo;
 import com.allinpay.entity.TEtcSysMenu;
 import com.allinpay.service.ITEtcSysMenuService;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>
@@ -31,13 +33,16 @@ public class TEtcSysMenuController extends BaseController {
     private ITEtcSysMenuService etcSysMenuService;
 
     @RequestMapping("/list")
-    public ResponseBean roleList(Integer pageNo, Integer pageSize, String name) {
-        HashMap map = new HashMap<>();
-        if (!StringUtils.isBlank(name)) {
-            map.put("name", name);
-        }
-        ResponseBean data = etcSysMenuService.queryPage(pageNo, pageSize, map);
+    @RequiresPermissions("menu:list")
+    public ResponseBean roleList(Integer pageNo, Integer pageSize, String name, Integer type) {
+        ResponseBean data = etcSysMenuService.queryPage(pageNo, pageSize, name,type);
         return data;
+    }
+
+    @RequestMapping("/getPmenuList")
+    public List<TEtcSysMenu> menuList() {
+        List<TEtcSysMenu> menus = etcSysMenuService.menuList();
+        return menus;
     }
 
     @RequestMapping("/all")
@@ -46,17 +51,19 @@ public class TEtcSysMenuController extends BaseController {
         return list;
     }
 
+
     @RequestMapping("/addmenu")
     @ResponseBody
-    public String add(TEtcSysMenu sysMenu,String operate) {
-        if(operate.equals("edit")){
+    @RequiresPermissions("menu:add")
+    public ResponseBean add(TEtcSysMenu sysMenu, String operate) {
+        if (operate != null && operate.equals("edit")) {
             String dateStr = getString(sysMenu);
             sysMenu.setUpdateTime(dateStr);
-            return ResponseBean.resultStr(etcSysMenuService.updateById(sysMenu));
+            return ResponseBean.result(etcSysMenuService.updateById(sysMenu));
         }
         String dateStr = getString(sysMenu);
         sysMenu.setCreateTime(dateStr);
-        return ResponseBean.resultStr(etcSysMenuService.save(sysMenu));
+        return ResponseBean.result(etcSysMenuService.save(sysMenu));
     }
 
     private String getString(TEtcSysMenu sysMenu) {
@@ -68,6 +75,7 @@ public class TEtcSysMenuController extends BaseController {
     }
 
     @RequestMapping("/del")
+    @RequiresPermissions("menu:del")
     public ResponseBean del(Integer id) {
         return ResponseBean.result(etcSysMenuService.removeById(id));
     }
@@ -76,6 +84,20 @@ public class TEtcSysMenuController extends BaseController {
     public List<Integer> queryRoleMenuIds(Integer roleId) {
         List<Integer> menuIds = etcSysMenuService.checkMenuIdByRole(roleId);
         return menuIds;
+    }
+
+    /**
+     * 导航菜单
+     */
+    @RequestMapping("/nav")
+    @RequiresPermissions("menu:nav")
+    public HashMap nav() {
+        List<MenuInfo> menuList = etcSysMenuService.getUserMenuList(getUserId());
+        HashMap map = new HashMap();
+        map.put("code", 0);
+        map.put("msg", "success");
+        map.put("menuList", menuList);
+        return map;
     }
 
 }

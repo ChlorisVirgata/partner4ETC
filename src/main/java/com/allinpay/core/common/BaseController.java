@@ -24,6 +24,10 @@ public abstract class BaseController {
         return getUser().getUserId();
     }
 
+    protected Integer getRoleId() {
+        return getUser().getRoleId();
+    }
+
     protected String getUserName() {
         TEtcSysUser userEntity = getUser();
         String operatorName = userEntity.getUsername();

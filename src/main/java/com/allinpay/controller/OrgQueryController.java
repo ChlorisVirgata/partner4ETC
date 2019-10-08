@@ -7,6 +7,7 @@ import com.allinpay.entity.*;
 import com.allinpay.service.IOrgQueryService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,6 +44,7 @@ public class OrgQueryController {
      * @return
      */
     @GetMapping("/org/getList")
+    @RequiresPermissions("org:getList")
     public ResponseData queryOrgInfo(OrgQueryVo orgque) {
         PageVO<OrgQueryBack> querylist = orgquery.queryorginfo(orgque);
         return ResponseData.success().setData(querylist);
@@ -55,6 +57,7 @@ public class OrgQueryController {
      * @return
      */
     @GetMapping("/passagemoney/getList")
+    @RequiresPermissions("passagemoney:getList")
     public ResponseData queryPassagemoney(PassageMoneyVo passm) {
         PageVO<PassageMoneyBack> querylist = orgquery.queryPassagemoney(passm);
         return ResponseData.success().setData(querylist);
@@ -67,6 +70,7 @@ public class OrgQueryController {
      * @return
      */
     @GetMapping("/userhairpin/getList")
+    @RequiresPermissions("userhairpin:getList")
     public ResponseData queryUserhairpin(UserhairpinVo usrh) {
         PageVO<UserhairpinBack> querylist = orgquery.queryUserhairpin(usrh);
         return ResponseData.success().setData(querylist);
@@ -79,6 +83,7 @@ public class OrgQueryController {
      * @return
      */
     @PostMapping("/org/blockOrg")
+    @RequiresPermissions("org:blockOrg")
     public ResponseData blockOrg(OrgQueryVo orgque) {
         TEtcSysUser user=(TEtcSysUser)SecurityUtils.getSubject().getPrincipal();
         orgque.setSysUser(user.getUsername());
@@ -87,6 +92,7 @@ public class OrgQueryController {
     }
 
     @GetMapping("/org/normalOrgList")
+    @RequiresPermissions("org:normalOrgList")
     public ResponseData normalOrgList() {
         List<PartnerInfo> partnerInfoList = orgquery.selectByNormalStatus();
         return ResponseData.success().setData(partnerInfoList);

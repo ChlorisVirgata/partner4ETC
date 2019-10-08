@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.patchca.color.ColorFactory;
@@ -32,7 +33,7 @@ import java.io.OutputStream;
 import java.util.Random;
 
 @Controller
-@RequestMapping("/manage/etc")
+@RequestMapping("/manage")
 @Slf4j
 public class LoginController {
 
@@ -61,23 +62,15 @@ public class LoginController {
             //设置认证时间的时效,即超过该时间需要重新登录。 设置为10分钟，单位毫秒
             subject.getSession().setTimeout(600000);
             return ResponseData.success().setData(subject.getPrincipal());
-        } catch (AuthenticationException e) {
+        } catch (IncorrectCredentialsException e){
+            throw new AllinpayException(BizEnums.USER_AUTHENTICATION_FAIL.getCode(), "密码用户名密码不正确");
+        } catch (Exception e) {
             log.error("认证失败:{}", e.getMessage());
-            throw new AllinpayException(BizEnums.USER_AUTHENTICATION_FAIL.getCode(), BizEnums.USER_AUTHENTICATION_FAIL.getMsg());
+            throw new AllinpayException(BizEnums.USER_AUTHENTICATION_FAIL.getCode(), e.getMessage());
         }
     }
 
-    /**
-     * @Description: 退出
-     * @Param:
-     * @Return: ResponseData
-     */
-    @RequestMapping("logout")
-    public String logout() {
-        Subject subject = SecurityUtils.getSubject();
-        subject.logout();
-        return "redirect:/manage/login";
-    }
+
 
     /**
      * @Description: 获取验证码

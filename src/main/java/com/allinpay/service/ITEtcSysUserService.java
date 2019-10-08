@@ -20,6 +20,10 @@ public interface ITEtcSysUserService extends IService<TEtcSysUser> {
     ResponseBean queryPage(Integer pageNo, Integer pageSize, String username);
 
     ResponseBean addUser(TEtcSysUser etcSysUser, String opreate);
+
     Integer selectMaxId();
+
     Integer selectMaxRoleId();
+
+    boolean updatePassword(Integer userId, String password, String newPassword);
 }

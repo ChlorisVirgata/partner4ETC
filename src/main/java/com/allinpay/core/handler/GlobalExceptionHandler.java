@@ -4,12 +4,14 @@ import com.allinpay.core.common.ResponseData;
 import com.allinpay.core.constant.enums.BizEnums;
 import com.allinpay.core.exception.AllinpayException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * 全局异常处理器
@@ -37,10 +39,13 @@ public class GlobalExceptionHandler {
         return ResponseData.failure(e.getErrorCode(), e.getErrorMsg());
     }
 
-//    @ExceptionHandler(UnauthorizedException.class)
-//    public String unauthorizedExceptionHandler(UnauthorizedException e) {
-//        return "common/403";
-//    }
+    @ExceptionHandler(UnauthorizedException.class)
+    public ModelAndView unauthorizedExceptionHandler(UnauthorizedException e) {
+        log.info("没有权限 ： " + e.getMessage());
+        ModelAndView model = new ModelAndView("/common/403");
+        model.addObject("message", " 没有权限 ： " + e.getMessage().replaceAll("Subject does not have permission", ""));
+        return model;
+    }
 
     @ExceptionHandler(Exception.class)
     @ResponseBody

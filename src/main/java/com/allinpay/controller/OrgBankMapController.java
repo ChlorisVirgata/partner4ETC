@@ -5,6 +5,7 @@ import com.allinpay.core.common.PageVO;
 import com.allinpay.core.common.ResponseData;
 import com.allinpay.entity.PartnerBank;
 import com.allinpay.service.IPartnerBankService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ public class OrgBankMapController {
      * @Return: com.allinpay.core.common.ResponseData
      */
     @RequestMapping("/getList")
+    @RequiresPermissions("bank:getList")
     public ResponseData getList(BankQuery bankQuery) {
         PageVO<PartnerBank> pageVo = partnerBankService.selectByCondition(bankQuery);
         return ResponseData.success().setData(pageVo);
@@ -38,6 +40,7 @@ public class OrgBankMapController {
      * @Return: com.allinpay.core.common.ResponseData
      */
     @PostMapping("/add")
+    @RequiresPermissions("bank:add")
     public ResponseData add(PartnerBank partnerBank) {
         partnerBankService.addOrgBank(partnerBank);
         return ResponseData.success().setData(null);
@@ -49,6 +52,7 @@ public class OrgBankMapController {
      * @Return: com.allinpay.core.common.ResponseData
      */
     @RequestMapping("/status")
+    @RequiresPermissions("bank:status")
     public ResponseData status(PartnerBank partnerBank) {
         partnerBankService.updateStatus(partnerBank);
         return ResponseData.success().setData(null);

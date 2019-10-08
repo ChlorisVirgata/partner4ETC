@@ -5,6 +5,7 @@ import com.allinpay.core.common.PageVO;
 import com.allinpay.core.common.ResponseData;
 import com.allinpay.entity.BankInfo;
 import com.allinpay.service.IBankInfoService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,7 @@ public class BankController {
      * @Return: com.allinpay.core.common.ResponseData
      */
     @GetMapping("/getList")
+    @RequiresPermissions("bankinfo:getList")
     public ResponseData getList(BankQuery bankQuery) {
         PageVO<BankInfo> pageVO = bankInfoService.selectByCondition(bankQuery);
         return ResponseData.success().setData(pageVO);
@@ -37,6 +39,7 @@ public class BankController {
      * @Return: com.allinpay.core.common.ResponseData
      */
     @PostMapping("/add")
+    @RequiresPermissions("bankinfo:add")
     public ResponseData add(@RequestParam("bankId") String bankId,
                             @RequestParam("bankName") String bankName) {
         bankInfoService.addBank(bankId, bankName);
@@ -49,6 +52,7 @@ public class BankController {
      * @Return: com.allinpay.core.common.ResponseData
      */
     @PostMapping("/edit")
+    @RequiresPermissions("bankinfo:edit")
     public ResponseData edit(@RequestParam("bankId") String bankId,
                              @RequestParam("bankName") String bankName) {
         bankInfoService.editBank(bankId, bankName);
@@ -61,6 +65,7 @@ public class BankController {
      * @Return: com.allinpay.core.common.ResponseData
      */
     @RequestMapping("/status")
+    @RequiresPermissions("bankinfo:status")
     public ResponseData status(@RequestParam("status") String status,
                                @RequestParam("bankId") String bankId) {
         bankInfoService.updateStatus(bankId, status);

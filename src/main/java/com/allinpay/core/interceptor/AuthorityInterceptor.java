@@ -14,11 +14,12 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @description: 主要针对于url的拦截，session超时处理，权限控制
  * @author: tanguang
- * @date: 2019-07-09
- */
+ * @date: 2019-07-09*/
+
+
 public class AuthorityInterceptor implements HandlerInterceptor {
-    private static String LOGIN = "/manage/etc/login";
-    private static String RANDOM_CODE = "/manage/etc/captcha";
+    private static String LOGIN = "/manage/login";
+    private static String RANDOM_CODE = "/manage/captcha";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {

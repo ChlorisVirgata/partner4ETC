@@ -46,7 +46,7 @@ public class UserRealm extends AuthorizingRealm {
         if (userId == Constant.SUPER_ADMIN) {
             permsList = this.TEtcUserMapper.selectAllPerms();
         } else {
-            permsList = this.TEtcUserMapper.selectAllPermsByRoleId(userId);
+            permsList = this.TEtcUserMapper.selectAllPermsByRoleId(user.getRoleId());
         }
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         info.setStringPermissions(permsList);
@@ -57,7 +57,7 @@ public class UserRealm extends AuthorizingRealm {
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
         TEtcSysUser user = (TEtcSysUser) this.TEtcUserMapper.selectOne((Wrapper) (new QueryWrapper()).eq("username", token.getUsername()));
         if (user == null) {
-            throw new UnknownAccountException("账号或密码不正确");
+            throw new UnknownAccountException("账号不存在");
         } else if (user.getStatus().equals("0")) {
             throw new LockedAccountException("账号已被锁定,请联系管理员");
         } else {

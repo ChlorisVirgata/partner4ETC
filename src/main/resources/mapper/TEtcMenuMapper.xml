@@ -10,7 +10,7 @@
 	</delete>
 
 
-    <select id="queryListParentId" resultType="com.allinpay.entity.TEtcSysMenu">
+    <select id="queryListParentId" resultType="com.allinpay.entity.MenuInfo">
 		select * from t_etc_sys_menu where parent_id = #{parentId} order by order_num asc
 	</select>
 
@@ -19,5 +19,9 @@
 	</select>
     <select id="queryMenuByRoleId" resultType="java.lang.Integer">
 		select MENU_ID from  T_ETC_SYS_ROLE_MENU where ROLE_ID =  #{arg0}
+	</select>
+
+	<select id="queryAllMenuId" resultType="java.lang.Integer">
+        select distinct me.menu_id from T_ETC_SYS_ROLE_MENU me where me.role_id = #{roleId}
 	</select>
 </mapper>

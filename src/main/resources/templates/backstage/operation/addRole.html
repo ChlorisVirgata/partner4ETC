@@ -38,6 +38,14 @@
             margin: 26px;
         }
 
+        .layui-form-item {
+            margin-left: 130px;
+        }
+
+        .form-group {
+            margin-left: 120px;
+        }
+
     </style>
 </head>
 <body>
@@ -68,7 +76,12 @@
     <div class="layui-form-item">
         <label class="layui-form-label">状态</label>
         <div class="layui-input-inline">
-            <input type="checkbox" name="status" id="status" lay-skin="switch" lay-text="开启|关闭" checked>
+            <div th:if="!${status}">
+                <input type="checkbox" name="status" id="status" lay-skin="switch" lay-text="开启|关闭">
+            </div>
+            <div th:if="${status} eq '1'">
+                <input type="checkbox" name="status" id="status" lay-skin="switch" lay-text="开启|关闭" checked>
+            </div>
         </div>
     </div>
 
@@ -86,7 +99,7 @@
 
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button class="layui-btn" id="dataCommit" lay-submit="" lay-filter="dataCommit">提交</button>
+            <button type="button" class="layui-btn" id="dataCommit" lay-submit="" lay-filter="dataCommit">提交</button>
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
     </div>
@@ -110,7 +123,6 @@
         var table = layui.table;
         var $ = layui.$;
 
-        //菜单树
         var menu_ztree;
         var menu_setting = {
             data: {
@@ -131,11 +143,8 @@
         };
 
 
-        //加载菜单树
         $.get("/manage/menu/all", function (r) {
-            // alert(JSON.stringify(r));
             menu_ztree = $.fn.zTree.init($("#menuTree"), menu_setting, r);
-            //展开所有节点
             menu_ztree.expandAll(false);
             var roleId = $("#roleId").val();
             if (roleId != '') {
@@ -156,6 +165,10 @@
 
 
         $("#dataCommit").on("click", function () {
+            if($("#roleName").val() == ''){
+                layer.alert("必填项不能为空");
+                return;
+            }
             var nodes = menu_ztree.getCheckedNodes(true);
             var menuIds = new Array();
             for (var i = 0; i < nodes.length; i++) {
@@ -185,9 +198,17 @@
                 dataType: 'json',
                 success: function (data) {
                     if (data.code == 0) {
+                        // alert(JSON.stringify(data));
+                        // var index = layer.alert(data.msg, function () {
+                        //     var index = parent.layer.getFrameIndex(window.name);//获取当前弹出层的层级
+                        //     layer.closeAll();
+                        // });
+                        // layer.alert(JSON.stringify(data.msg));
+                        // layer.closeAll();
                         var index = layer.msg(data.msg, function () {
-                            var index = parent.layer.getFrameIndex(window.name);//获取当前弹出层的层级
+                            // alert(JSON.stringify(data.msg));
                             layer.closeAll();
+                            //search();
                         });
                     } else {
                         layer.msg(data.msg);

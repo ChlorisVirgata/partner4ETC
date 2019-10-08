@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户管理</title>
+    <link href="/manage/static/layui/css/layui.css" rel="stylesheet">
+    <link href="/manage/static/css/common.css" rel="stylesheet">
+    <script src="/manage/static/layui/layui.js"></script>
+
+
+</head>
+
+
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--<div th:include="common/header :: header"></div>-->
+    <!--<div th:include="common/menu :: menu"></div>-->
+    <div class="layui-body">
+     <!--   <div style="margin: 10px">
+            <span class="layui-breadcrumb">
+                <a href="">后台管理</a>
+                <a><cite>用户管理</cite></a>
+            </span>
+        </div>-->
+
+
+        <div class="layui-inline" id="layerDemo">
+            <form class="layui-form" id="formDemo" lay-filter="queryFilter">
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户名称</label>
+                    <div class="layui-input-inline" style="width: 200px;">
+                        <input autocomplete="off" class="layui-input" id="username" name="username" type="text">
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-normal" lay-event="queryBtn" >查询</button>
+                <button class="layui-btn layui-btn-normal" lay-event="resetBtn" type="reset">重置</button>
+                <button class="layui-btn layui-btn-normal" lay-event="addUserBtn">新增</button>
+            </div>
+        </script>
+        <table class="layui-hide" id="userTable" lay-filter="userTable"></table>
+        <script type="text/html" id="barDemo">
+            <a class="layui-btn layui-btn-xs" lay-event="edit_selectrole">编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        </script>
+    </div>
+
+    <!--<div th:include="common/footer :: footer"></div>-->
+
+    <!-- 修改密码 -->
+    <div id="addUser" style="display: none;height: 135px">
+        <form class="form-horizontal">
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="username" value="" lay-verify="required" autocomplete="off"
+                           class="layui-input"
+                    >
+                </div>
+            </div>
+            <!--  lay-verify="required"-->
+            <div class="layui-form-item">
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="password" id="password" value="" lay-verify="required" autocomplete="off"
+                           class="layui-input"
+                    >
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色</label>
+                <div class="layui-input-inline">
+                    <select name="roleId" id="roleId" xm-select="role-select" lay-vertype="tips">
+                    <option value="">请选择角色</option>
+                    <option th:each="role:${roles}" th:value="${role.roleId}" th:text="${role.roleName}"
+                            th:selected="${#arrays.contains((roleIds == null ? #arrays.toIntegerArray(new Integer[]{}) : roleIds), role.roleId)}"></option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">状态</label>
+                <div class="layui-input-inline">
+                    <input type="checkbox" name="status" id="status" lay-skin="switch" lay-text="开启|关闭" checked>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+
+<script src="/manage/static/js/backstage/userManage.js"></script>
+
+
+
+</html>

@@ -1,7 +1,6 @@
 package com.allinpay.core.util;
 
 import com.allinpay.entity.TEtcSysUser;
-import com.allinpay.core.exception.RRException;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.session.Session;
@@ -42,6 +41,10 @@ public class ShiroUtils {
         return getUserEntity().getUserId();
     }
 
+    public static Integer getRoleId() {
+        return getUserEntity().getRoleId();
+    }
+
     public static void setSessionAttribute(Object key, Object value) {
         getSession().setAttribute(key, value);
     }
@@ -58,13 +61,6 @@ public class ShiroUtils {
         SecurityUtils.getSubject().logout();
     }
 
-    public static String getKaptcha(String key) {
-        Object kaptcha = getSessionAttribute(key);
-        if (kaptcha == null) {
-            throw new RRException("验证码已失效");
-        }
-        getSession().removeAttribute(key);
-        return kaptcha.toString();
-    }
+
 
 }

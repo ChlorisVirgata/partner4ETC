@@ -12,12 +12,12 @@ layui.use(['layer', 'form'], function () {
         }
         $.ajax({
             type: 'post',
-            url: '/manage/etc/login',
+            url: '/manage/login',
             data: $("#loginForm").serialize(),
             dataType: 'json',
             success: function (data) {
                 if (data.code === "00000") {
-                    parent.location.href = '/manage/index';
+                    parent.location.href = 'index';
                 } else {
                     $("#notice").find("div").html(data.msg);
                     $("#notice").show().delay(3000).hide(0);
@@ -36,7 +36,7 @@ layui.use(['layer', 'form'], function () {
 
     //更换验证码
     $("#captchaImg").on("click", function () {
-        $("#captchaImg").attr("src", "/manage/etc/captcha?t=" + new Date());
+        $("#captchaImg").attr("src", "/manage/captcha?t=" + new Date());
     });
 
     //参数校验
