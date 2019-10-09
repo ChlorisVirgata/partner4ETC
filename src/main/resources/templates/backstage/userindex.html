@@ -7,7 +7,17 @@
     <link href="/manage/static/css/common.css" rel="stylesheet">
     <script src="/manage/static/layui/layui.js"></script>
 
-
+    <style type="text/css">
+        .layui-input-block {
+            margin-left: 0px;
+            min-height: 36px;
+        }
+        .layui-input, .layui-textarea {
+            display: block;
+            width: 253px;
+            padding-left: 10px;
+        }
+    </style>
 </head>
 
 
@@ -46,6 +56,7 @@
         <table class="layui-hide" id="userTable" lay-filter="userTable"></table>
         <script type="text/html" id="barDemo">
             <a class="layui-btn layui-btn-xs" lay-event="edit_selectrole">编辑</a>
+            <a class="layui-btn layui-btn-xs" lay-event="edit_pw">修改密码</a>
             <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
         </script>
     </div>
@@ -53,46 +64,77 @@
     <!--<div th:include="common/footer :: footer"></div>-->
 
     <!-- 修改密码 -->
-    <div id="addUser" style="display: none;height: 135px">
-        <form class="form-horizontal">
-            <div class="layui-form-item">
-                <label class="layui-form-label">用户名</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="username" value="" lay-verify="required" autocomplete="off"
-                           class="layui-input"
-                    >
-                </div>
+    <form class="layui-form" id="editPassWord" lay-filter="addFilter"
+          style="display: none;margin: 10px; text-align: center">
+        <input type="hidden" name="userId" id="userId">
+        <div class="layui-form-item">
+            <label class="layui-form-label">旧密码</label>
+            <div class="layui-input-inline">
+                <input type="text" name="password" id="password" lay-verify="required" autocomplete="off"
+                       class="layui-input"
+                >
             </div>
-            <!--  lay-verify="required"-->
-            <div class="layui-form-item">
-                <label class="layui-form-label">密码</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="password" id="password" value="" lay-verify="required" autocomplete="off"
-                           class="layui-input"
-                    >
-                </div>
+        </div>
+        <!--  lay-verify="required"-->
+        <div class="layui-form-item">
+            <label class="layui-form-label">新密码</label>
+            <div class="layui-input-inline">
+                <input type="text" name="newPassword" id="newPassword" lay-verify="required" autocomplete="off"
+                       class="layui-input"
+                >
             </div>
-
-            <div class="layui-form-item">
-                <label class="layui-form-label">角色</label>
-                <div class="layui-input-inline">
-                    <select name="roleId" id="roleId" xm-select="role-select" lay-vertype="tips">
-                        <option value="">请选择角色</option>
-                        <option th:each="role:${roles}" th:value="${role.roleId}" th:text="${role.roleName}"
-                                th:selected="${#arrays.contains((roleIds == null ? #arrays.toIntegerArray(new Integer[]{}) : roleIds), role.roleId)}"></option>
-                    </select>
-                </div>
-            </div>
+        </div>
 
 
-            <div class="layui-form-item">
-                <label class="layui-form-label">状态</label>
-                <div class="layui-input-inline">
-                    <input type="checkbox" name="status" id="status" lay-skin="switch" lay-text="开启|关闭" checked>
-                </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" id="dataSubmit" name="dataSubmit" lay-filter="dataCommit" lay-submit>提交
+                </button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
+
+    <!-- <div id="addUser" style="display: none;height: 135px">
+         <form class="form-horizontal">
+             <div class="layui-form-item">
+                 <label class="layui-form-label">用户名</label>
+                 <div class="layui-input-inline">
+                     <input type="text" name="username" lay-verify="required" autocomplete="off"
+                            class="layui-input"
+                     >
+                 </div>
+             </div>
+             &lt;!&ndash;  lay-verify="required"&ndash;&gt;
+             <div class="layui-form-item">
+                 <label class="layui-form-label">密码</label>
+                 <div class="layui-input-inline">
+                     <input type="text" name="password" id="password" lay-verify="required" autocomplete="off"
+                            class="layui-input"
+                     >
+                 </div>
+             </div>
+
+             <div class="layui-form-item">
+                 <label class="layui-form-label">角色</label>
+                 <div class="layui-input-inline">
+                     <select name="roleId" id="roleId" xm-select="role-select" lay-vertype="tips">
+                         <option value="">请选择角色</option>
+                         <option th:each="role:${roles}" th:value="${role.roleId}" th:text="${role.roleName}"
+                                 th:selected="${#arrays.contains((roleIds == null ? #arrays.toIntegerArray(new Integer[]{}) : roleIds), role.roleId)}"></option>
+                     </select>
+                 </div>
+             </div>
+
+
+             <div class="layui-form-item">
+                 <label class="layui-form-label">状态</label>
+                 <div class="layui-input-inline">
+                     <input type="checkbox" name="status" id="status" lay-skin="switch" lay-text="开启|关闭" checked>
+                 </div>
+             </div>
+         </form>
+     </div>-->
 </div>
 </body>
 

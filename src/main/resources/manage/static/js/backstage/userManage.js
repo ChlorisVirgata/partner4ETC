@@ -61,8 +61,8 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 {field: 'roleName', width: 100, title: '角色', sort: true},
                 {field: 'createTime', width: 170, title: '创建时间', sort: true},
                 {field: 'updateTime', width: 170, title: '修改时间', sort: true},
-                {field: 'lastLoginTime', width: 130, title: '最后登录时间', sort: true},
-                {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 130}
+                // {field: 'lastLoginTime', width: 130, title: '最后登录时间', sort: true},
+                {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 200}
             ]]
         });
     };
@@ -118,13 +118,13 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
     });
 
     //打开模态框
-    function openModal(operateName, modalName) {
+    function openModal(operateName, modalName,w,h) {
         layer.open({
             //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
             type: 1,
             title: operateName,
             content: $('#' + modalName),
-            area: ['515px', '400px'],
+            area: [w, h],
             //点击遮罩关闭窗口
             shadeClose: true,
             shade: 0.1,
@@ -135,6 +135,36 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             }
         });
     }
+
+    //监听form表单提交事件 防止页面跳转
+    $("#dataSubmit").on("click", function () {
+      /*  if ($("#editPassWord").find("input[name=password]").val() == ''){
+           layui.alert('旧密码不能为空');
+        }
+        if ($("#editPassWord").find("input[name=newPassword]").val() == ''){
+            layui.alert('新密码不能为空');
+        }*/
+        $.ajax({
+            url: '/manage/user/password',
+            type: 'post',
+            data: $("#editPassWord").serialize(),
+            dataType: 'json',
+            success: function (data) {
+                if (data.code === 0) {
+                    var index = layer.alert("保存成功", function () {
+                        layer.closeAll();
+                        search();
+                    });
+                } else {
+                    layer.alert(data.msg);
+                }
+            },
+            error: function () {
+                layer.alert("新增失败，请重试！");
+            }
+        });
+        return false;
+    });
 
     //监听行工具事件
     table.on('tool(userTable)', function (obj) {
@@ -171,10 +201,13 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 }
 
             });
+        } else if (obj.event === 'edit_pw') {
+            form.val("addFilter", {
+                "userId": data.userId,
+            });
+            openModal("修改密码", "editPassWord", '450px', '280px');
         }
     });
-
-
 
 
     $('#layerDemo .layui-btn').on('click', function () {

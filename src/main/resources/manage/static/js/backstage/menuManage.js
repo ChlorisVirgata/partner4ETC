@@ -109,11 +109,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
 
     //监听form表单提交事件 防止页面跳转
     $("#dataSubmit").on("click", function () {
-        // if (parseInt($("#addForm").find("input[name=deposit]").val())
-        //     < parseInt($("#addForm").find("input[name=minDeposit]").val())) {
-        //     layer.alert("签约保证金金额不能小于最低保证金金额");
-        //     return false;
-        // }
+
         $.ajax({
             url: '/manage/menu/addmenu',
             type: 'post',

@@ -93,13 +93,14 @@ public class TEtcUserController extends BaseController {
 
     @RequestMapping("/password")
     @RequiresPermissions("user:password")
-    public ResponseBean password(String password, String newPassword) {
+    public ResponseBean password(String password, String newPassword, Integer userId) {
+        TEtcSysUser user = etcSysUserService.getById(userId);
         if (StringUtils.isBlank(newPassword)) {
             throw new AllinpayException("新密码不为能空");
         }
-        password = ShiroUtils.sha256(password, getUser().getSalt());
-        newPassword = ShiroUtils.sha256(newPassword, getUser().getSalt());
-        boolean flag = etcSysUserService.updatePassword(getUserId(), password, newPassword);
+        password = ShiroUtils.sha256(password, user.getSalt());
+        newPassword = ShiroUtils.sha256(newPassword, user.getSalt());
+        boolean flag = etcSysUserService.updatePassword(userId, password, newPassword);
         if (!flag) {
             return ResponseBean.error("原密码不正确");
         }
