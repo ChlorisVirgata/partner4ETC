@@ -73,6 +73,19 @@ public class OrgQueryController {
     }
 
     /**
+     * 用户发卡数据导出
+     *
+     * @param usrh
+     * @return
+     */
+    @GetMapping("/userhairpin/export")
+    public PageVO<UserhairpinBack> exportUserhairpin(UserhairpinVo usrh) {
+        usrh.setPageSize(10000000);
+        PageVO<UserhairpinBack> querylist = orgquery.queryUserhairpin(usrh);
+        return querylist;
+    }
+
+    /**
      * 冻结、解冻、注销机构
      *
      * @param orgque
