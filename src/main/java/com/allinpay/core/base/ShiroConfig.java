@@ -48,7 +48,7 @@ public class ShiroConfig {
         filterMap.put("/manage/static/**", "anon");
         filterMap.put("/favicon.ico", "anon");
         filterMap.put("/manage/login", "anon");
-        filterMap.put("/manage/sys/user/logout", "anon");
+        filterMap.put("/manage/user/logout", "anon");
         filterMap.put("/manage/etc/captcha", "anon");
         filterMap.put("/manage/etc/login", "anon");
         filterMap.put("/manage/index", "anon");

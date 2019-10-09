@@ -18,7 +18,8 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             , page: true,
             //请求参数
             where: {
-                name: $("#name").val()
+                name: $("#name").val(),
+                type: $("#menutype").val()
             },
             //分页信息
             request: {
@@ -38,17 +39,17 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             limit: 10,
             //单元格设置
             cols: [[
-                {type: 'radio'},
+                // {type: 'radio'},
                 {field: 'menuId', width: 80, title: '菜单ID', sort: true},
                 {field: 'parentId', width: 80, title: '上级菜单ID', sort: true},
-                {field: 'name', width: 80, title: '菜单名称'},
-                {field: 'url', width: 80, title: '菜单地址', sort: true},
-                {field: 'typeName', width: 80, title: '菜单类型', sort: true},
-                {field: 'icon', width: 80, title: '图标'},
-                {field: 'perms', width: 80, title: '权限'},
-                {field: 'orderNum', width: 80, title: '菜单排序'},
+                {field: 'name', width: 120, title: '菜单名称', sort: true},
+                {field: 'url', width: 120, title: '菜单地址', sort: true},
+                {field: 'typeName', width: 120, title: '菜单类型', sort: true},
+                // {field: 'icon', width: 80, title: '图标', sort: true},
+                {field: 'perms', width: 120, title: '权限', sort: true},
+                {field: 'orderNum', width: 80, title: '菜单排序', sort: true},
                 {field: 'createTime', width: 150, title: '创建时间', sort: true},
-                {field: 'updateTime', width: 150, title: '更新时间'},
+                // {field: 'updateTime', width: 150, title: '更新时间', sort: true},
                 {fixed: 'right', title: '操作', toolbar: '#barmenu', width: 120}
             ]]
         });
@@ -65,6 +66,9 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             case 'menuQueryBtn':
                 search();
                 break;
+            case 'menuPermQueryBtn':
+                search();
+                break;
             case 'resetBtn':
                 $("#name").val("");
                 break;
@@ -73,36 +77,107 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                     type: 2,
                     title: '添加菜单',
                     shadeClose: true,
-                    shade: 0.8,
-                    area: ['500px', '80%'],
-                    content: 'menu/add', //iframe的url
+                    shade: 0.1,
+                    area: ['640px', '460px'],
+                    content: '/manage/addMenu', //iframe的url
                     btn: ['关闭'],
                     yes: function () {
                         search();
                         layer.closeAll();
                     }
-
                 });
                 break;
+            case 'addMenuFrom':
+                openModal("新增菜单", "addFormContent", '', '');
+                break;
         }
-        ;
     });
-
-
     //页面加载就查询列表
     search();
 
-    // $("#menuQueryBtn").on("click", function () {
-    //     search();
-    //     break;
-    // });
+    /* function openModal(operateName, modalName) {
+         layer.open({
+             title: operateName,
+             content: $('#' + modalName),
+             area: ['500px', '270px'],
+             //点击遮罩关闭窗口
+             shadeClose: true,
+             //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+             type: 1
+         });
+     }*/
 
+    //监听form表单提交事件 防止页面跳转
+    $("#dataSubmit").on("click", function () {
+        // if (parseInt($("#addForm").find("input[name=deposit]").val())
+        //     < parseInt($("#addForm").find("input[name=minDeposit]").val())) {
+        //     layer.alert("签约保证金金额不能小于最低保证金金额");
+        //     return false;
+        // }
+        $.ajax({
+            url: '/manage/menu/addmenu',
+            type: 'post',
+            data: $("#addFormContent").serialize(),
+            dataType: 'json',
+            success: function (data) {
+                if (data.code === 0) {
+                    var index = layer.alert("保存成功", function () {
+                        layer.closeAll();
+                        search();
+                    });
+                } else {
+                    layer.alert(data.msg);
+                }
+            },
+            error: function () {
+                layer.alert("新增失败，请重试！");
+            }
+        });
+        return false;
+    });
+    var commonFun = {
+            loadRadioSelect: function (type) {
+                var op = "";
+                if (type === '0') {
+                    op += "<input type=\"radio\" name=\"type\" value=\"0|菜单\" title=\"菜单\" checked>\n" +
+                        "                <input type=\"radio\" name=\"type\" value=\"1|目录\" title=\"目录\" >\n" +
+                        "                <input type=\"radio\" name=\"type\" value=\"2|权限\" title=\"权限\" >";
+                } else if (type === '1') {
+                    op += " <input type=\"radio\" name=\"type\" value=\"0|菜单\" title=\"菜单\" >\n" +
+                        "                <input type=\"radio\" name=\"type\" value=\"1|目录\" title=\"目录\" checked>\n" +
+                        "                <input type=\"radio\" name=\"type\" value=\"2|权限\" title=\"权限\" >";
+                } else if (type === '2') {
+                    op += "<input type=\"radio\" name=\"type\" value=\"0|菜单\" title=\"菜单\" >\n" +
+                        "                <input type=\"radio\" name=\"type\" value=\"1|目录\" title=\"目录\" >\n" +
+                        "                <input type=\"radio\" name=\"type\" value=\"2|权限\" title=\"权限\" checked>";
+                } else {
+                    op += "<input type=\"radio\" name=\"type\" value=\"0|菜单\" title=\"菜单\" >\n" +
+                        "                <input type=\"radio\" name=\"type\" value=\"1|目录\" title=\"目录\" >\n" +
+                        "                <input type=\"radio\" name=\"type\" value=\"2|权限\" title=\"权限\" >";
+                }
+                $("#radioType").html(op);
+                form.render('select');//重新渲染
+            },
+            loadPmenuSelect: function (pid) {
+                var option = "<option value=''>请选择上级菜单</option>";
+                $.post("/manage/menu/getPmenuList", function (data) {
+                    var str = "";
+                    for (var i = 0; i < data.length; i++) {
+                        option += "<option value='" + data[i].menuId + "'";
+                        if (data[i].menuId == pid) {
+                            option += "selected";
+                        }
+                        option += ">" + data[i].name + "</option>";
+                        $("#parentId").html(option);
+                    }
+                    form.render();//重新渲染
+                })
+            }
+        }
+    ;
     //重置参数
     $("#resetBtn").on("click", function () {
-        //alert("resetBtn")
         $("#name").val("");
-
-        // layer.alert("参数清除");
     });
 
     //重置参数
@@ -111,8 +186,8 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             type: 2,
             title: '添加菜单',
             shadeClose: true,
-            shade: 0.8,
-            area: ['500px', '80%'],
+            shade: 0.1,
+            area: ['640px', '440px'],
             content: 'menu/add', //iframe的url
             btn: ['关闭'],
             yes: function () {
@@ -127,9 +202,9 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
     //监听行工具事件
     table.on('tool(menuTable)', function (obj) {
         var data = obj.data;
-        //console.log(obj)
+        console.log(obj)
         if (obj.event === 'del') {
-            layer.confirm('真的删除行么', function (index) {
+            layer.confirm('是否删除', function (index) {
                 obj.del();
                 table.reload("menuTable", {
                     url: '/manage/menu/del',
@@ -147,20 +222,33 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             });
         } else if (obj.event === 'edit_menu') {
             // var data = checkStatus.data;
-            layer.open({
-                type: 2,
-                title: '添加菜单',
-                shadeClose: true,
-                shade: 0.8,
-                area: ['500px', '80%'],
-                content: 'menu/edit?menuId=' + data.menuId, //iframe的url
-                btn: ['关闭'],
-                yes: function () {
-                    search();
-                    layer.closeAll();
-                }
-
+            //form表单初始化
+            form.val("addFilter", {
+                "menuId": data.menuId,
+                "name": data.name,
+                "url": data.url,
+                "type": data.type,
+                "orderNum": data.orderNum,
+                "perms": data.perms,
+                "operate": 'edit'
             });
+            //打开模态框
+            openModal("编辑菜单", "addFormContent", data.parentId, data.type);
+            // alert(JSON.stringify(data));
+            // layer.open({
+            //     type: 2,
+            //     title: '编辑菜单',
+            //     shadeClose: true,
+            //     shade: 0.1,
+            //     area: ['640px', '440px'],
+            //     content: '/manage/editMenu?menuId=' + data.menuId, //iframe的url
+            //     btn: ['关闭'],
+            //     yes: function () {
+            //         search();
+            //         layer.closeAll();
+            //     }
+            //
+            // });
         }
     });
 
@@ -171,10 +259,10 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             var that = this;
             layer.open({
                 type: 2,
-                title: '添加用户',
+                title: '添加用户3',
                 shadeClose: true,
-                shade: 0.8,
-                area: ['500px', '80%'],
+                shade: 0.1,
+                area: ['640px', '440px'],
                 content: 'menu/add', //iframe的url
                 btn: ['关闭'],
                 yes: function () {
@@ -191,23 +279,6 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
         var othis = $(this), method = othis.data('method');
         active[method] ? active[method].call(this, othis) : '';
     });
-
-
-    //打开添加页面模态框
-    // $("#addBtn").on("click", function () {
-    //     layer.open({
-    //         type: 2,
-    //         title: '添加角色',
-    //         shadeClose: true,
-    //         shade: 0.8,
-    //         area: ['500px', '80%'],
-    //         content: 'addUser11.html', //iframe的url
-    //         btn: ['确认', '取消'],
-    //     });
-    //     alert("add")
-    //     // break;
-    //     //openModal("添加", "addForm");
-    // });
 
 
     //进行编辑操作
@@ -330,11 +401,13 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
     });
 
     //打开模态框
-    function openModal(operateName, modalName) {
+    function openModal(operateName, modalName, pid, type) {
+        commonFun.loadRadioSelect(type);
+        commonFun.loadPmenuSelect(pid);
         layer.open({
             title: operateName,
             content: $('#' + modalName),
-            area: ['700px', '450px'],
+            area: ['580px', '430px'],
             //点击遮罩关闭窗口
             shadeClose: true,
             //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）

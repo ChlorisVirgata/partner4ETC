@@ -28,6 +28,13 @@ public class ResponseBean<T>  {
         return new HashMap<String, Object>();
     }
 
+    public static HashMap okMap() {
+        HashMap map =  new HashMap<String, Object>();
+        map.put("code", 0);
+        map.put("msg", "success");
+        return map;
+    }
+
     public static ResponseBean okData() {
         return new ResponseBean(0, "操作成功");
     }

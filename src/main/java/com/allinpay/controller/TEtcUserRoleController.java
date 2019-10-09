@@ -6,7 +6,6 @@ import com.allinpay.service.ITEtcSysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * <p>
@@ -30,8 +29,5 @@ public class TEtcUserRoleController extends BaseController implements CommandLin
         map.put("roleMenuId", maxRoleId);
     }
 
-    @RequestMapping("/manage/index")
-    public String index() {
-        return "common/index";
-    }
+
 }

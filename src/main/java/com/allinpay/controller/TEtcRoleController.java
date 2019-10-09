@@ -6,7 +6,7 @@ import com.allinpay.core.common.ResponseBean;
 import com.allinpay.entity.TEtcSysRole;
 import com.allinpay.service.ITEtcSysMenuService;
 import com.allinpay.service.ITEtcSysRoleService;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,12 +36,10 @@ public class TEtcRoleController extends BaseController {
     private ITEtcSysMenuService itEtcSysMenuService;
 
     @RequestMapping("/list")
+    @RequiresPermissions("role:list")
     public ResponseBean roleList(Integer pageNo, Integer pageSize, String rolename) {
         HashMap map = new HashMap<>();
-        if (!StringUtils.isBlank(rolename)) {
-            map.put("role_name", rolename);
-        }
-        ResponseBean data = itEtcSysRoleService.queryPage(pageNo, pageSize, map);
+        ResponseBean data = itEtcSysRoleService.queryPage(pageNo, pageSize, rolename);
         return data;
     }
 
@@ -54,6 +52,7 @@ public class TEtcRoleController extends BaseController {
 
     @RequestMapping(value = "/operate", method = RequestMethod.POST)
     @ResponseBody
+    @RequiresPermissions("role:operate")
     public ResponseBean add(TEtcSysRole etcSysRole, String opreate) {
         if (opreate.equals("edit")) {
             etcSysRole.setUpdateTime(new Date());
@@ -69,6 +68,7 @@ public class TEtcRoleController extends BaseController {
     }
 
     @RequestMapping("/del")
+    @RequiresPermissions("role:del")
     public ResponseBean del(Integer id) {
         itEtcSysMenuService.removeMenuById(id);
         return ResponseBean.result(itEtcSysRoleService.removeById(id));
