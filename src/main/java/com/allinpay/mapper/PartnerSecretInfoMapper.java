@@ -11,4 +11,6 @@ public interface PartnerSecretInfoMapper {
     int insert(@Param("secretInfo") PartnerSecretInfo secretInfo);
 
     int updateInfo(@Param("secretInfo") PartnerSecretInfo secretInfo);
+
+    PartnerSecretInfo selectOne(@Param("partnerId") String partnerId);
 }
