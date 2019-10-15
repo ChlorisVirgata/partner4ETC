@@ -21,24 +21,34 @@ public class PassageMoneyBack {
     private String partnerId;
 
     /**
-     * 机构名称
+     * 用户编号
      */
-    private String partnerName;
+    private String authId;
+
+    /**
+     * 账户
+     */
+    private String accountNo;
+
+    /**
+     * 用户名称
+     */
+    private String authName;
 
     /**
      * 车牌号
      */
-    private String license;
+    private String carNo;
 
     /**
-     * 流水号
+     * 交易结果
      */
-    private String orderNo;
+    private String status;
 
     /**
      * 创建时间
      */
-    private String tradedate;
+    private String transeTime;
 
     /**
      * 金额
@@ -46,14 +56,14 @@ public class PassageMoneyBack {
     private String amount;
 
     /**
-     * 入口
+     * 出入口
      */
-    private String entrance;
+    private String passageway;
 
     /**
-     * 出口
+     * 插入时间
      */
-    private String exitway;
+    private String insertTime;
 
 
 }

@@ -71,30 +71,38 @@
     <!--通行费纪录查询-->
     <resultMap id="PassageMoneyResultMap" type="com.allinpay.entity.PassageMoneyBack">
         <id column="PARTNER_ID" property="partnerId" jdbcType="VARCHAR"/>
-        <result column="PARTNER_NAME" property="partnerName" jdbcType="VARCHAR"/>
-        <result column="LICENSE" property="license" jdbcType="VARCHAR"/>
-        <result column="ORDERNO" property="orderNo" jdbcType="VARCHAR"/>
-        <result column="TRADE_DATE" property="tradedate" jdbcType="VARCHAR"/>
+        <result column="AUTH_ID" property="authId" jdbcType="VARCHAR"/>
+        <result column="AUTH_NAME" property="authName" jdbcType="VARCHAR"/>
+        <result column="ACCOUNT_NO" property="accountNo" jdbcType="VARCHAR"/>
+        <result column="CAR_NO" property="carNo" jdbcType="VARCHAR"/>
+        <!--        <result column="ORDERNO" property="orderNo" jdbcType="VARCHAR"/>-->
+        <result column="TRANSE_TIME" property="transeTime" jdbcType="VARCHAR"/>
         <result column="AMOUNT" property="amount" jdbcType="VARCHAR"/>
-        <result column="ENTRANCE" property="entrance" jdbcType="VARCHAR"/>
-        <result column="EXITWAY" property="exitway" jdbcType="VARCHAR"/>
+        <result column="PASSAGEWAY" property="passageway" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"/>
     </resultMap>
     <select id="queryPassagemoney" resultMap="PassageMoneyResultMap" parameterType="com.allinpay.entity.PassageMoneyVo">
-        select PARTNER_ID,PARTNER_NAME,LICENSE,ORDERNO, to_char(TRADE_DATE,'yyyy-mm-dd HH24:mi:ss') TRADE_DATE,
-        AMOUNT,ENTRANCE,EXITWAY
-        from T_ETC_PASSAGEMONEY_DATE passmo
+        select PARTNER_ID,
+        AUTH_ID,
+        AUTH_NAME,
+        ACCOUNT_NO,
+        CAR_NO,AMOUNT,
+        TRANSE_TIME,
+        PASSAGEWAY,
+        STATUS
+        from T_ETC_TRANSIT passmo
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="passm.partnerId != null and passm.partnerId != ''">
                 AND passmo.PARTNER_ID =#{passm.partnerId}
             </if>
             <if test="passm.license != null and passm.license != ''">
-                AND passmo.LICENSE like '%' || #{passm.license} || '%'
+                AND passmo.CAR_NO like '%' || #{passm.license} || '%'
             </if>
-            <if test="passm.createTimeStart != null">
-                AND passmo.TRADE_DATE between #{passm.createTimeStart} and #{passm.createTimeEnd}
+            <if test="passm.startTime != null and passm.startTime != ''">
+                AND passmo.TRANSE_TIME between #{passm.startTime} and #{passm.endTime}
             </if>
         </trim>
-        order by TRADE_DATE desc
+        order by TRANSE_TIME desc
     </select>
 
     <!--发卡记录查询-->

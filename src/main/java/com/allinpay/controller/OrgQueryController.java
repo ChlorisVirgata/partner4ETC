@@ -51,13 +51,26 @@ public class OrgQueryController {
     /**
      * 通行费记录查询
      *
-     * @param passm
+     * @param
      * @return
      */
     @GetMapping("/passagemoney/getList")
     public ResponseData queryPassagemoney(PassageMoneyVo passm) {
         PageVO<PassageMoneyBack> querylist = orgquery.queryPassagemoney(passm);
         return ResponseData.success().setData(querylist);
+    }
+
+    /**
+     * 通行费记录导出
+     *
+     * @param passm
+     * @return
+     */
+    @GetMapping("/passagemoney/export")
+    public PageVO<PassageMoneyBack> exportPassageMoneyBack(PassageMoneyVo passm) {
+        passm.setPageSize(10000000);
+        PageVO<PassageMoneyBack> querylist = orgquery.queryPassagemoney(passm);
+        return querylist;
     }
 
     /**

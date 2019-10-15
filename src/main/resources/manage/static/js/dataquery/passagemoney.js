@@ -21,8 +21,8 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             where: {
                 partnerId: $("#chanelidquery").val(),//机构编号
                 license: $("#licensequery").val(),//车牌号
-                createTimeStart: $("#creatdate").val() == "" ? "" : $("#creatdate").val().substr(0, 10),//查询创建时间起
-                createTimeEnd: $("#creatdate").val() == "" ? "" : $("#creatdate").val().substr(12, 11),//查询创建时间止
+                startTime: $("#creatdate").val() == "" ? "" : $("#creatdate").val().substr(0, 10) + " 00:00:00",//查询创建时间起
+                endTime: $("#creatdate").val() == "" ? "" : $("#creatdate").val().substr(13, 11) + " 00:00:00",//查询创建时间止
             },
             //分页信息
             request: {
@@ -58,13 +58,15 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             //单元格设置
             cols: [[
                 {field: 'partnerId',  title: '机构编号'},
-                {field: 'partnerName',  title: '机构名称'},
-                {field: 'license',  title: '车牌号'},
-                {field: 'orderNo',  title: '流水号'},
-                {field: 'tradedate',  title: '请求时间'},
+                {field: 'authId', title: '用户编号'},
+                {field: 'accountNo', title: '账户'},
+                {field: 'authName', title: '用户名称'},
+                {field: 'carNo', title: '车牌号'},
+                {field: 'status', title: '交易结果'},
+                {field: 'transeTime', title: '请求时间'},
                 {field: 'amount',  title: '金额'},
-                {field: 'entrance',  title: '入口'},
-                {field: 'exitway',  title: '出口'}
+                {field: 'passageway', title: '出入口'}
+                // {field: 'insertTime',  title: '插入时间'}
             ]]
         });
     };
@@ -90,6 +92,40 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
     form.on('submit(addFilter)', function (data) {
         return false;
     });
+
+
+    //导出改为单独的事件，每次点击导出才会执行
+    $("#export").click(function () {
+        var ins1 = table.render({
+            elem: '#data_export',
+            url: '/manage/query/passagemoney/export', //数据接口
+            method: 'get',
+            title: '通行费记录表',
+            //请求参数
+            where: {
+                partnerId: $("#chanelidquery").val(),//机构编号
+                license: $("#licensequery").val(),//车牌号
+                startTime: $("#creatdate").val() == "" ? "" : $("#creatdate").val().substr(0, 10) + " 00:00:00",//查询创建时间起
+                endTime: $("#creatdate").val() == "" ? "" : $("#creatdate").val().substr(12, 11) + " 00:00:00",//查询创建时间止
+            },
+            cols: [[
+                {field: 'partnerId', title: '机构编号'},
+                {field: 'authId', title: '用户编号'},
+                {field: 'accountNo', title: '账户'},
+                {field: 'authName', title: '用户名称'},
+                {field: 'carNo', title: '车牌号'},
+                {field: 'status', title: '交易结果'},
+                {field: 'transeTime', title: '请求时间'},
+                {field: 'amount', title: '金额'},
+                {field: 'passageway', title: '出入口'}
+                // {field: 'insertTime',  title: '插入时间'}
+            ]],
+            done: function (res, curr, count) {
+                exportData = res.list;
+                table.exportFile(ins1.config.id, exportData, 'xls');
+            }
+        });
+    })
 });
 
 
