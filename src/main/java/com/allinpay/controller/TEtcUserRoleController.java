@@ -25,8 +25,8 @@ public class TEtcUserRoleController extends BaseController implements CommandLin
     public void run(String... args) {
         Integer maxId = etcSysUserService.selectMaxId();
         Integer maxRoleId = etcSysUserService.selectMaxRoleId();
-        map.put("roleId", maxId);
-        map.put("roleMenuId", maxRoleId);
+        map.put("roleId", maxId == null ? 0 : maxId);
+        map.put("roleMenuId", maxRoleId == null ? 0 : maxRoleId);
     }
 
 

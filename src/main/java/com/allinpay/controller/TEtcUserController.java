@@ -108,4 +108,6 @@ public class TEtcUserController extends BaseController {
         TEtcSysRole role = sysRoleService.getById(roleId);
         return ResponseBean.ok(role);
     }
+
+
 }
