@@ -140,7 +140,7 @@
                 AND suerhair.REQ_NO like '%' || #{usrh.orderNo} || '%'
             </if>
             <if test="usrh.signsStatus != null and usrh.signsStatus != ''">
-                AND suerhair.ISSUE_MSG like '%' || #{usrh.signsStatus} || '%'
+                AND suerhair.ISSUE_STATUS like '%' || #{usrh.signsStatus} || '%'
             </if>
             <if test="usrh.queryTimeStart != null and usrh.queryTimeStart != ''">
                 AND suerhair.FINISH_TIME between #{usrh.queryTimeStart} and #{usrh.queryTimeEnd}
