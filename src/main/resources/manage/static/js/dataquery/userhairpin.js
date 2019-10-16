@@ -85,11 +85,11 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             done: function (res, curr, count) {
 
                 $("[data-field='issuestatus']").children().each(function () {
-                    if ($(this).text() == '1') {
+                    if ($(this).text() == '0') {
                         $(this).text("完成")
-                    } else if ($(this).text() == '2') {
+                    } else if ($(this).text() == '1') {
                         $(this).text("进行中")
-                    } else if ($(this).text() == '3') {
+                    } else if ($(this).text() == '2') {
                         $(this).text("失败")
                     }
                 });

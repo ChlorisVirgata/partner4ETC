@@ -126,7 +126,7 @@
                  FINISH_TIME
         from T_ETC_ISSUE suerhair
         <trim prefix="WHERE" prefixOverrides="AND">
-
+            ISSUE_STATUS !='1'
             <if test="usrh.authId != null and usrh.authId != ''">
                 AND suerhair.AUTH_ID like '%' || #{usrh.authId} || '%'
             </if>
