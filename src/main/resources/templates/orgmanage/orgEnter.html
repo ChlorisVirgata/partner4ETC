@@ -9,6 +9,12 @@
     <link href="/manage/static/layui/css/layui.css" rel="stylesheet">
     <link href="/manage/static/css/common.css" rel="stylesheet">
     <style type="text/css">
+        .layui-layout-admin .layui-body {
+            position: fixed;
+            top: 0px;
+            bottom: 0px;
+            margin-left: -200px;
+        }
         .layui-form-label {
             width: 115px;
         }
@@ -25,8 +31,6 @@
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
-    <div th:include="common/header :: header"></div>
-    <div th:include="common/menu :: menu"></div>
     <div class="layui-body">
         <!--面包屑-->
         <div style="margin: 10px">

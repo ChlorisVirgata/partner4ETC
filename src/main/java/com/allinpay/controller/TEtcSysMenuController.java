@@ -32,7 +32,6 @@ public class TEtcSysMenuController extends BaseController {
     private ITEtcSysMenuService etcSysMenuService;
 
     @RequestMapping("/list")
-    @RequiresPermissions("menu:list")
     public ResponseBean roleList(Integer pageNo, Integer pageSize, String name, Integer type) {
         ResponseBean data = etcSysMenuService.queryPage(pageNo, pageSize, name,type);
         return data;
@@ -53,7 +52,6 @@ public class TEtcSysMenuController extends BaseController {
 
     @RequestMapping("/addmenu")
     @ResponseBody
-    @RequiresPermissions("menu:add")
     public ResponseBean add(TEtcSysMenu sysMenu, String operate) {
         if (operate != null && operate.equals("edit")) {
             String dateStr = getString(sysMenu);
@@ -74,7 +72,6 @@ public class TEtcSysMenuController extends BaseController {
     }
 
     @RequestMapping("/del")
-    @RequiresPermissions("menu:del")
     public ResponseBean del(Integer id) {
         return ResponseBean.result(etcSysMenuService.removeById(id));
     }
@@ -89,7 +86,6 @@ public class TEtcSysMenuController extends BaseController {
      * 导航菜单
      */
     @RequestMapping("/nav")
-//    @RequiresPermissions("menu:nav")
     public HashMap nav() {
         List<MenuInfo> menuList = etcSysMenuService.getUserMenuList(getUserId());
         HashMap map = new HashMap();

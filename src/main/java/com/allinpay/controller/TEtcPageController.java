@@ -57,7 +57,6 @@ public class TEtcPageController {
     }
 
     @GetMapping("/addUser")
-    @RequiresPermissions("user:addpage")
     public ModelAndView userAdd() {
         List<TEtcSysRole> tEtcSysRoles = sysRoleService.list(new QueryWrapper<TEtcSysRole>().eq("status", 1).orderByDesc("ROLE_ID"));
         ModelAndView modelAndView = new ModelAndView("backstage/operation/addUser");
@@ -66,7 +65,6 @@ public class TEtcPageController {
     }
 
     @GetMapping("/editUser")
-    @RequiresPermissions("user:editpage")
     public ModelAndView userUpdate(String userId, String roleIds, String opreate, String status) {
         List<TEtcSysRole> tEtcSysRoles = sysRoleService.list();
         ModelAndView modelAndView = new ModelAndView("backstage/operation/editUser");
@@ -85,7 +83,6 @@ public class TEtcPageController {
     }
 
     @GetMapping("/addRole")
-    @RequiresPermissions("role:addpage")
     public ModelAndView roleAdd() {
         ModelAndView modelAndView = new ModelAndView("backstage/operation/addRole");
         return modelAndView;
@@ -93,7 +90,6 @@ public class TEtcPageController {
 
 
     @GetMapping("/editRole")
-    @RequiresPermissions("role:editpage")
     public ModelAndView editRole(Integer roleId) {
         ModelAndView modelAndView = new ModelAndView("backstage/operation/addRole");
         TEtcSysRole role = sysRoleService.getById(roleId);

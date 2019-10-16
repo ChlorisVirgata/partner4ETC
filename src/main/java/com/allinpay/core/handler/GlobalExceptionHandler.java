@@ -4,6 +4,7 @@ import com.allinpay.core.common.ResponseData;
 import com.allinpay.core.constant.enums.BizEnums;
 import com.allinpay.core.exception.AllinpayException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -37,10 +38,10 @@ public class GlobalExceptionHandler {
         return ResponseData.failure(e.getErrorCode(), e.getErrorMsg());
     }
 
-//    @ExceptionHandler(UnauthorizedException.class)
-//    public String unauthorizedExceptionHandler(UnauthorizedException e) {
-//        return "common/403";
-//    }
+    @ExceptionHandler(UnauthorizedException.class)
+    public String unauthorizedExceptionHandler(UnauthorizedException e) {
+        return "common/403";
+    }
 
     @ExceptionHandler(Exception.class)
     @ResponseBody

@@ -42,7 +42,6 @@ public class TEtcUserController extends BaseController {
     private ITEtcUserRoleService etcUserRoleService;
 
     @RequestMapping("/list")
-    @RequiresPermissions("user:list")
     public ResponseBean list(Integer pageNo, Integer pageSize, String username) {
         ResponseBean data = etcSysUserService.queryPage(pageNo, pageSize, username);
         return data;
@@ -52,14 +51,12 @@ public class TEtcUserController extends BaseController {
     @RequestMapping("/add")
     @ResponseBody
     @Transactional
-    @RequiresPermissions("user:add")
     public ResponseBean add(TEtcSysUser etcSysUser, String opreate, Integer[] roleId) {
         return etcSysUserService.addUser(etcSysUser, opreate);
     }
 
 
     @RequestMapping("/del")
-    @RequiresPermissions("user:delete")
     public ResponseBean del(Integer id) {
         return ResponseBean.result(etcSysUserService.removeById(id));
     }
@@ -92,15 +89,14 @@ public class TEtcUserController extends BaseController {
     }
 
     @RequestMapping("/password")
-    @RequiresPermissions("user:password")
-    public ResponseBean password(String password, String newPassword, Integer userId) {
-        TEtcSysUser user = etcSysUserService.getById(userId);
+    public ResponseBean password(String password, String newPassword) {
+        TEtcSysUser user = etcSysUserService.getById(getUserId());
         if (StringUtils.isBlank(newPassword)) {
             throw new AllinpayException("新密码不为能空");
         }
         password = ShiroUtils.sha256(password, user.getSalt());
         newPassword = ShiroUtils.sha256(newPassword, user.getSalt());
-        boolean flag = etcSysUserService.updatePassword(userId, password, newPassword);
+        boolean flag = etcSysUserService.updatePassword(getUserId(), password, newPassword);
         if (!flag) {
             return ResponseBean.error("原密码不正确");
         }

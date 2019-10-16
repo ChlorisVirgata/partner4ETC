@@ -9,24 +9,25 @@
     <link href="/manage/static/layui/css/layui.css" rel="stylesheet">
     <link href="/manage/static/css/common.css" rel="stylesheet">
     <script src="/manage/static/layui/layui.js"></script>
-    <head>
-        <meta charset="UTF-8">
-        <title>Title</title>
-    </head>
+
+    <style type="text/css">
+        .layui-layout-admin .layui-body {
+            position: fixed;
+            top: 0px;
+            bottom: 0px;
+            margin-left: -200px;
+        }
+    </style>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
-    <div th:include="common/header :: header"></div>
-    <div th:include="common/menu :: menu"></div>
     <!--查询页面 -->
     <div class="layui-body">
-        <!--面包屑-->
         <div style="margin: 10px">
             <span class="layui-breadcrumb">
                 <a href="">后台管理</a>
                 <a><cite>角色管理</cite></a>
             </span>
         </div>
-
         <div class="layui-inline" id="layerDemo">
             <!--查询条件-->
             <form class="layui-form" id="formDemo" lay-filter="queryFilter">
@@ -59,7 +60,6 @@
             <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
         </script>
     </div>
-    <!--<div th:include="common/footer :: footer"></div>-->
 
 </div>
 </body>

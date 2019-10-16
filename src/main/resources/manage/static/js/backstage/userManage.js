@@ -118,7 +118,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
     });
 
     //打开模态框
-    function openModal(operateName, modalName,w,h) {
+    function openModal(operateName, modalName, w, h) {
         layer.open({
             //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
             type: 1,
@@ -138,12 +138,12 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
 
     //监听form表单提交事件 防止页面跳转
     $("#dataSubmit").on("click", function () {
-      /*  if ($("#editPassWord").find("input[name=password]").val() == ''){
-           layui.alert('旧密码不能为空');
-        }
-        if ($("#editPassWord").find("input[name=newPassword]").val() == ''){
-            layui.alert('新密码不能为空');
-        }*/
+        /*  if ($("#editPassWord").find("input[name=password]").val() == ''){
+             layui.alert('旧密码不能为空');
+          }
+          if ($("#editPassWord").find("input[name=newPassword]").val() == ''){
+              layui.alert('新密码不能为空');
+          }*/
         $.ajax({
             url: '/manage/user/password',
             type: 'post',
@@ -205,7 +205,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             form.val("addFilter", {
                 "userId": data.userId,
             });
-            openModal("修改密码", "editPassWord", '450px', '280px');
+            openModal("修改密码2", "editPassWord", '250px', '160px');
         }
     });
 

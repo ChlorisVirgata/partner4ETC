@@ -53,19 +53,14 @@ var vm = new Vue({
                 }
                 vm.menuList = r.menuList;
             });
-        }
-        , getUser: function () {
-            $.getJSON("/manage/user/info?_" + $.now(), function (r) {
-                alert(JSON.stringify(r));
-                vm.user = r.user;
-            });
         },
+
         updatePassword: function () {
             layer.open({
                 type: 1,
-                // skin: 'layui-layer-molv',
+                skin: 'layui-layer-molv',
                 title: "修改密码",
-                area: ['550px', '250px'],
+                area: ['330px', '205px'],
                 shadeClose: true,
                 shade: 0.05,
                 content: jQuery("#passwordLayer"),
@@ -96,7 +91,6 @@ var vm = new Vue({
     },
     created: function () {
         this.getMenuList();
-        this.getUser();
     },
     updated: function () {
         //路由

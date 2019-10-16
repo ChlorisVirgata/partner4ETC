@@ -3,6 +3,12 @@
     /*//6666CC*/
 }
 
+.layui-layout-admin .layui-body {
+    position: fixed;
+    top: 0px;
+    bottom: 0px;
+    margin-left: -200px;
+}
 
 .layui-layout-admin .layui-side {
     position: absolute;

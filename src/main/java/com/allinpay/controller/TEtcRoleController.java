@@ -36,7 +36,6 @@ public class TEtcRoleController extends BaseController {
     private ITEtcSysMenuService itEtcSysMenuService;
 
     @RequestMapping("/list")
-    @RequiresPermissions("role:list")
     public ResponseBean roleList(Integer pageNo, Integer pageSize, String rolename) {
         HashMap map = new HashMap<>();
         ResponseBean data = itEtcSysRoleService.queryPage(pageNo, pageSize, rolename);
@@ -52,7 +51,6 @@ public class TEtcRoleController extends BaseController {
 
     @RequestMapping(value = "/operate", method = RequestMethod.POST)
     @ResponseBody
-    @RequiresPermissions("role:operate")
     public ResponseBean add(TEtcSysRole etcSysRole, String opreate) {
         if (opreate.equals("edit")) {
             etcSysRole.setUpdateTime(new Date());
@@ -68,7 +66,6 @@ public class TEtcRoleController extends BaseController {
     }
 
     @RequestMapping("/del")
-    @RequiresPermissions("role:del")
     public ResponseBean del(Integer id) {
         itEtcSysMenuService.removeMenuById(id);
         return ResponseBean.result(itEtcSysRoleService.removeById(id));
