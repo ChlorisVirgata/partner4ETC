@@ -165,7 +165,30 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate'], function () {
         var myData = obj.data;
         //审核
         if (obj.event === 'audit') {
+            var notifyConfig = "";
             //form表单初始化
+            $.ajax({
+                url: '/manage/sign/getOne',
+                type: 'get',
+                async: false,
+                data: {
+                    partnerId: myData.partnerId
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code == "00000") {
+                        var config = data.data;
+                        notifyConfig = "手机号-" + formatStatus(config.phone)
+                            + " 车牌号-" + formatStatus(config.carNo)
+                            + " 身份证号-" + formatStatus(config.userId)
+                            + " 姓名-" + formatStatus(config.userName)
+                            + " 银行卡-" + formatStatus(config.cardNo)
+                    }
+                },
+                error: function () {
+
+                }
+            });
             form.val("formFilter", {
                 "partnerId": myData.partnerId,
                 "partnerName": myData.partnerName,
@@ -182,7 +205,8 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate'], function () {
                 "failReason": myData.failReason,
                 "createTime": myData.createTime,
                 "modifyTime": myData.modifyTime,
-                "rank": myData.rank
+                "rank": myData.rank,
+                "notifyConfig": notifyConfig
             });
             showImg(myData);
             //打开模态框
@@ -221,5 +245,19 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate'], function () {
             $('#legalBackImg').attr('src', "/manage/etcimg/temp/" + myData.partnerId + "/back/" + myData.idBack);
         $.trim(myData.agreement) == "" ? $("#pdfUrl").val("")
             : $("#pdfUrl").val("/manage/etcimg/temp/" + myData.partnerId + "/back/" + myData.agreement);
+    }
+
+    function formatStatus(value) {
+        if (value == "0") {
+            return "不回传";
+        }
+        if (value == "1") {
+            return "回传";
+        }
+        if (value == "2") {
+            return "脱敏回传";
+        } else {
+            return "";
+        }
     }
 });

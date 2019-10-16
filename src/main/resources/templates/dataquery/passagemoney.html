@@ -93,8 +93,16 @@
         </form>
 
 
-        <div class="querydiv" style="margin-left: 25px;">
+        <div class="querydiv" style="margin-left: 25px;margin-top: 10px;">
             <button class="layui-btn" id="queryBtn" lay-filter="formDemo" lay-submit>查询</button>
+            <!--导出按钮 或其他触发事件-->
+            <button class="layui-btn" id="export" lay-filter="formDemo" lay-submit>导出报表</button>
+
+        </div>
+        <!--导出表 不展示-->
+        <div style="display: none;">
+            <table id="data_export">
+            </table>
         </div>
 
         <!-- 数据展示 table框 -->

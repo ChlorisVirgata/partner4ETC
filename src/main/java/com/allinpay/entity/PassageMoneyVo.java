@@ -19,4 +19,14 @@ public class PassageMoneyVo extends OrgQueryVo {
      * 车牌号
      */
     private String license;
+
+    /**
+     * 开始时间
+     */
+    private String startTime;
+
+    /**
+     * 结束时间
+     */
+    private String endTime;
 }

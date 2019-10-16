@@ -28,4 +28,11 @@ public interface ISignNotifyConfigService {
      * @param secretInfo
      */
     void editNotifyResultConfigInfo(PartnerSecretInfo secretInfo);
+
+    /**
+     * 查询机构通知结果配置信息
+     *
+     * @param partnerId
+     */
+    PartnerSecretInfo getByPartnerId(String partnerId);
 }

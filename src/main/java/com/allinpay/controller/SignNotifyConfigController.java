@@ -13,6 +13,12 @@ public class SignNotifyConfigController {
     @Autowired
     private ISignNotifyConfigService signNotifyService;
 
+    @GetMapping("/getOne")
+    public ResponseData getOne(@RequestParam String partnerId) {
+        PartnerSecretInfo secretInfo = signNotifyService.getByPartnerId(partnerId);
+        return ResponseData.success().setData(secretInfo);
+    }
+
     @GetMapping("/getList")
     public ResponseData getList(String partnerId, @RequestParam int pageNum,
                                 @RequestParam int pageSize) {

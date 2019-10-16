@@ -16,6 +16,12 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             url: '/manage/query/userhairpin/getList',
             //是否分页
             page: true,
+            // toolbar: '#toolbarDemo', //开启头部工具栏，并为其绑定左侧模板
+            // defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+            //     title: '提示'
+            //     ,layEvent: 'LAYTABLE_TIPS'
+            //     ,icon: 'layui-icon-tips'
+            // }],
             //请求参数
             where: {
                 authId: $("#useridquery").val(),//用户标识
@@ -111,6 +117,49 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
     form.on('submit(addFilter)', function (data) {
         return false;
     });
+
+
+    //导出改为单独的事件，每次点击导出才会执行
+    $("#export").click(function () {
+        var ins1 = table.render({
+            elem: '#data_export',
+            url: '/manage/query/userhairpin/export', //数据接口
+            method: 'get',
+            title: '用户发行数据表',
+            //请求参数
+            where: {
+                export: "1",
+                authId: $("#useridquery").val(),//用户标识
+                authName: $("#usernamequery").val(),//用户名称
+                partnerId: $("#chanelidquery").val(),//机构编号
+                orderNo: $("#serialnumberquery").val(),//流水号
+                signsStatus: $("#chanetype").val(),//签约结果
+                queryTimeStart: $("#creatdate").val() == "" ? "" : $("#creatdate").val().substr(0, 10),//查询创建时间起
+                queryTimeEnd: $("#creatdate").val() == "" ? "" : $("#creatdate").val().substr(12, 11)//查询创建时间止
+            },
+            cols: [[
+                {field: 'partnerId', title: '机构编号'},
+                {field: 'authId', title: '用户标识'},
+                {field: 'authName', title: '用户名称'},
+                {field: 'phone', title: '机构请求手机号'},
+                {field: 'orderNo', title: '请求流水号'},
+                {field: 'reqtime', title: '请求时间'},
+                {field: 'issuestatus', title: '发行状态'},
+                {field: 'carno', title: '车牌号'},
+                {field: 'realphone', title: '绑定手机号'},
+                {field: 'id', title: '车主身份证'},
+                {field: 'realname', title: '车主姓名'},
+                {field: 'issuemsg', title: '发行结果'},
+                {field: 'finishtime', title: '请求完成时间'}
+
+            ]],
+            done: function (res, curr, count) {
+                exportData = res.list;
+                table.exportFile(ins1.config.id, exportData, 'xls');
+            }
+        });
+    })
+
 });
 
 
