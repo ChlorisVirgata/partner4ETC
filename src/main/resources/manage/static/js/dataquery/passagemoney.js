@@ -121,8 +121,43 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 // {field: 'insertTime',  title: '插入时间'}
             ]],
             done: function (res, curr, count) {
-                exportData = res.list;
-                table.exportFile(ins1.config.id, exportData, 'xls');
+
+                // exportData = res.list;
+                // table.exportFile(ins1.config.id, exportData, 'xls');
+                var data = res.list;
+                var excel = layui.excel;
+                // console.log(res);
+                // 重点！！！如果后端给的数据顺序和映射关系不对，请执行梳理函数后导出
+                data = excel.filterExportData(data, [
+                    'partnerId'
+                    , 'authId'
+                    , 'accountNo'
+                    , 'authName'
+                    , 'carNo'
+                    , 'status'
+                    , 'transeTime'
+                    , 'amount'
+                    , 'passageway'
+                ]);
+                // 重点2！！！一般都需要加一个表头，表头的键名顺序需要与最终导出的数据一致
+                data.unshift({
+                    partnerId: "机构编号",
+                    authId: "用户编号",
+                    accountNo: "账户",
+                    authName: "用户名称",
+                    carNo: "车牌号",
+                    status: "交易结果",
+                    transeTime: "请求时间",
+                    amount: "金额",
+                    passageway: "出入口"
+                });
+
+                var timestart = Date.now();
+                excel.exportExcel(data, '通行费记录表.xlsx', 'xlsx');
+                //	var timeend = Date.now();
+
+                //	var spent = (timeend - timestart) / 1000;
+                //	layer.alert('单纯导出耗时 '+spent+' s');
             }
         });
     })

@@ -122,7 +122,12 @@
         <result column="FINISH_TIME" property="finishtime" jdbcType="VARCHAR"/>
     </resultMap>
     <select id="queryUserhairpin" resultMap="UserhairMap" parameterType="com.allinpay.entity.UserhairpinVo">
-        select PARTNER_ID,AUTH_ID,AUTH_NAME,PHONE,REQ_NO,REQ_TIME,ISSUE_STATUS,CAR_NO,REAL_PHONE,ID,REAL_NAME,ISSUE_MSG,
+        select PARTNER_ID,AUTH_ID,AUTH_NAME,PHONE,REQ_NO,REQ_TIME,
+        case
+        when ISSUE_STATUS ='0' then '完成'
+        when ISSUE_STATUS ='2' then '失败'
+        else ''
+        end ISSUE_STATUS,CAR_NO,REAL_PHONE,ID,REAL_NAME,ISSUE_MSG,
                  FINISH_TIME
         from T_ETC_ISSUE suerhair
         <trim prefix="WHERE" prefixOverrides="AND">

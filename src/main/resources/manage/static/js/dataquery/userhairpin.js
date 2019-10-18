@@ -84,15 +84,15 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
 
             done: function (res, curr, count) {
 
-                $("[data-field='issuestatus']").children().each(function () {
-                    if ($(this).text() == '0') {
-                        $(this).text("完成")
-                    } else if ($(this).text() == '1') {
-                        $(this).text("进行中")
-                    } else if ($(this).text() == '2') {
-                        $(this).text("失败")
-                    }
-                });
+                // $("[data-field='issuestatus']").children().each(function () {
+                //     if ($(this).text() == '0') {
+                //         $(this).text("完成")
+                //     } else if ($(this).text() == '1') {
+                //         $(this).text("进行中")
+                //     } else if ($(this).text() == '2') {
+                //         $(this).text("失败")
+                //     }
+                // });
             }
         });
     };
@@ -154,13 +154,58 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
 
             ]],
             done: function (res, curr, count) {
-                exportData = res.list;
-                table.exportFile(ins1.config.id, exportData, 'xls');
+                // exportData = res.list;
+                // table.exportFile(ins1.config.id, exportData, 'xls');
+                var data = res.list;
+                var excel = layui.excel;
+                // console.log(res);
+                // 重点！！！如果后端给的数据顺序和映射关系不对，请执行梳理函数后导出
+                data = excel.filterExportData(data, [
+                    'partnerId'
+                    , 'authId'
+                    , 'authName'
+                    , 'phone'
+                    , 'orderNo'
+                    , 'reqtime'
+                    , 'issuestatus'
+                    , 'carno'
+                    , 'realphone'
+                    , 'id'
+                    , 'realname'
+                    // ,'issuemsg'
+                    , 'finishtime'
+                ]);
+                // 重点2！！！一般都需要加一个表头，表头的键名顺序需要与最终导出的数据一致
+                data.unshift({
+                    partnerId: "机构编号",
+                    authId: "用户标识",
+                    authName: "用户名称",
+                    phone: "机构请求手机号",
+                    orderNo: "请求流水号",
+                    reqtime: "请求时间",
+                    issuestatus: "发行状态",
+                    carno: "车牌号",
+                    realphone: "绑定手机号",
+                    id: "车主身份证",
+                    realname: "车主姓名",
+                    // issuemsg:"发行结果",
+                    finishtime: "请求完成时间"
+                });
+
+                var timestart = Date.now();
+                excel.exportExcel(data, '用户发行数据表.xlsx', 'xlsx');
+                //	var timeend = Date.now();
+
+                //	var spent = (timeend - timestart) / 1000;
+                //	layer.alert('单纯导出耗时 '+spent+' s');
+
             }
         });
     })
 
 });
+
+
 
 
 
