@@ -178,11 +178,15 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate'], function () {
                 success: function (data) {
                     if (data.code == "00000") {
                         var config = data.data;
-                        notifyConfig = "手机号-" + formatStatus(config.phone)
-                            + " 车牌号-" + formatStatus(config.carNo)
-                            + " 身份证号-" + formatStatus(config.userId)
-                            + " 姓名-" + formatStatus(config.userName)
-                            + " 银行卡-" + formatStatus(config.cardNo)
+                        if (!$.trim(config)) {
+                            return;
+                        } else {
+                            notifyConfig = "手机号-" + formatStatus(config.phone)
+                                + " 车牌号-" + formatStatus(config.carNo)
+                                + " 身份证号-" + formatStatus(config.userId)
+                                + " 姓名-" + formatStatus(config.userName)
+                                + " 银行卡-" + formatStatus(config.cardNo)
+                        }
                     }
                 },
                 error: function () {
