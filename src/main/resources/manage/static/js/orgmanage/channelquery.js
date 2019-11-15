@@ -171,7 +171,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
     });
 
     $("#agreementBtn").on("click", function () {
-        window.open($("#serverUrl").val() + $("#pdfUrl").val());
+        window.open($("#pdfUrl").val());
     });
 
     function showinfo(data){

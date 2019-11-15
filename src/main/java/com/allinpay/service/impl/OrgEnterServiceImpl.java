@@ -26,7 +26,7 @@ import java.util.Date;
 
 @Service
 @Slf4j
-@PropertySource("classpath:resource.properties")
+@PropertySource("file:config/resource.properties")
 public class OrgEnterServiceImpl implements IOrgEnterService {
     @Autowired
     private PartnerStorageMapper storageMapper;

@@ -34,7 +34,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-@PropertySource("classpath:resource.properties")
+@PropertySource("file:config/resource.properties")
 public class OrgModifyServiceImpl implements IOrgModifyService {
     @Autowired
     private PartnerAuditMapper auditMapper;

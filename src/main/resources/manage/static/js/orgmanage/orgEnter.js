@@ -9,7 +9,7 @@ layui.use('jquery', function () {
         success: function (data) {
             if (data.code == "00000") {
                 var myData = data.data;
-                $("#orgSelector").find("select").html("<option value=''>请选择</option>");
+                $("#orgSelector").find("select").html("<option value=''>请选择</option><option value='0'>暂无</option>");
                 for (var i = 0; i < myData.length; i++) {
                     $("#orgSelector").find("select").append("<option value=" + myData[i].partnerId + ">" + myData[i].partnerName + "</option>");
                 }

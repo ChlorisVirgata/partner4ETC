@@ -99,7 +99,7 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate'], function () {
     });
 
     $("#agreementBtn").on("click", function () {
-        window.open($("#serverUrl").val() + $("#pdfUrl").val());
+        window.open($("#pdfUrl").val());
     });
 
     //审核失败
@@ -248,7 +248,7 @@ layui.use(['table', 'element', 'layer', 'form', 'laydate'], function () {
         $.trim(myData.idBack) == "" ? $('#legalBackImg').attr('src', "") :
             $('#legalBackImg').attr('src', "/manage/etcimg/temp/" + myData.partnerId + "/back/" + myData.idBack);
         $.trim(myData.agreement) == "" ? $("#pdfUrl").val("")
-            : $("#pdfUrl").val("/manage/etcimg/temp/" + myData.partnerId + "/back/" + myData.agreement);
+            : $("#pdfUrl").val("/manage/etcimg/temp/" + myData.partnerId + "/agreement/" + myData.agreement);
     }
 
     function formatStatus(value) {
