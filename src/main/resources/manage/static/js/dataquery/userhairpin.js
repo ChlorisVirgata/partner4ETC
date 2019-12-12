@@ -29,6 +29,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 partnerId: $("#chanelidquery").val(),//机构编号
                 orderNo: $("#serialnumberquery").val(),//流水号
                 signsStatus: $("#chanetype").val(),//签约结果
+                carNo:$("#querycarno").val(),//车牌号
                 queryTimeStart: $("#creatdate").val() == "" ? "" : $("#creatdate").val().substr(0, 10),//查询创建时间起
                 queryTimeEnd: $("#creatdate").val() == "" ? "" : $("#creatdate").val().substr(12, 11)//查询创建时间止
             },
@@ -66,13 +67,12 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             limit: 10,
             //单元格设置
             cols: [[
-                {field: 'partnerId', title: '机构编号'},
-                {field: 'authId',  title: '用户标识'},
-                {field: 'authName',  title: '用户名称'},
-                {field: 'phone',  title: '机构请求手机号'},
-                {field: 'orderNo',  title: '请求流水号'},
-                {field: 'reqtime',  title: '请求时间'},
-                {field: 'issuestatus',  title: '发行状态'},
+                // {field: 'partnerId', title: '机构编号'},
+                // {field: 'authId',  title: '用户标识'},
+                // {field: 'authName',  title: '用户名称'},
+                // {field: 'phone',  title: '机构请求手机号'},
+                // {field: 'orderNo',  title: '请求流水号'},
+                // {field: 'reqtime',  title: '请求时间'},
                 {field: 'carno',  title: '车牌号'},
                 {field: 'licensecolor',  title: '车牌颜色'},
                 {field: 'realphone',  title: '绑定手机号'},
@@ -80,7 +80,8 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 {field: 'realname',  title: '车主姓名'},
                 {field: 'cardno',  title: '绑定银行卡号'},
                 {field: 'deliverymethod',  title: '邮寄方式'},
-                {field: 'finishtime', title: '请求完成时间'}
+                {field: 'issuestatus',  title: '发行状态'},
+                {field: 'finishtime', title: '签约完成时间'}
 
             ]],
 
@@ -133,26 +134,27 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 authName: $("#usernamequery").val(),//用户名称
                 partnerId: $("#chanelidquery").val(),//机构编号
                 orderNo: $("#serialnumberquery").val(),//流水号
+                carNo:$("#querycarno").val(),//车牌号
                 signsStatus: $("#chanetype").val(),//签约结果
                 queryTimeStart: $("#creatdate").val() == "" ? "" : $("#creatdate").val().substr(0, 10),//查询创建时间起
                 queryTimeEnd: $("#creatdate").val() == "" ? "" : $("#creatdate").val().substr(12, 11)//查询创建时间止
             },
             cols: [[
-                {field: 'partnerId', title: '机构编号'},
-                {field: 'authId', title: '用户标识'},
-                {field: 'authName', title: '用户名称'},
-                {field: 'phone', title: '机构请求手机号'},
-                {field: 'orderNo', title: '请求流水号'},
-                {field: 'reqtime', title: '请求时间'},
-                {field: 'issuestatus', title: '发行状态'},
+                // {field: 'partnerId', title: '机构编号'},
+                // {field: 'authId', title: '用户标识'},
+                // {field: 'authName', title: '用户名称'},
                 {field: 'carno', title: '车牌号'},
+                // {field: 'phone', title: '机构请求手机号'},
+                // {field: 'orderNo', title: '请求流水号'},
+                // {field: 'reqtime', title: '请求时间'},
                 {field: 'licensecolor',  title: '车牌颜色'},
                 {field: 'realphone', title: '绑定手机号'},
                 {field: 'id', title: '车主身份证'},
                 {field: 'realname', title: '车主姓名'},
                 {field: 'cardno',  title: '绑定银行卡号'},
+                {field: 'issuestatus', title: '发行状态'},
                 {field: 'deliverymethod',  title: '邮寄方式'},
-                {field: 'finishtime', title: '请求完成时间'}
+                {field: 'finishtime', title: '签约完成时间'}
 
             ]],
             done: function (res, curr, count) {
@@ -163,39 +165,39 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 // console.log(res);
                 // 重点！！！如果后端给的数据顺序和映射关系不对，请执行梳理函数后导出
                 data = excel.filterExportData(data, [
-                    'partnerId'
-                    , 'authId'
-                    , 'authName'
-                    , 'phone'
-                    , 'orderNo'
-                    , 'reqtime'
-                    , 'issuestatus'
-                    , 'carno'
+                    // 'partnerId'
+                    // , 'authId'
+                    // , 'authName'
+                     'carno'
+                    // , 'phone'
+                    // , 'orderNo'
+                    // , 'reqtime'
                     ,'licensecolor'
                     , 'realphone'
                     , 'id'
                     , 'realname'
                     ,'cardno'
+                    , 'issuestatus'
                     ,'deliverymethod'
                     , 'finishtime'
                 ]);
                 // 重点2！！！一般都需要加一个表头，表头的键名顺序需要与最终导出的数据一致
                 data.unshift({
-                    partnerId: "机构编号",
-                    authId: "用户标识",
-                    authName: "用户名称",
-                    phone: "机构请求手机号",
-                    orderNo: "请求流水号",
-                    reqtime: "请求时间",
-                    issuestatus: "发行状态",
+                    // partnerId: "机构编号",
+                    // authId: "用户标识",
+                    // authName: "用户名称",
+                    // phone: "机构请求手机号",
+                    // orderNo: "请求流水号",
+                    // reqtime: "请求时间",
                     carno: "车牌号",
                     licensecolor:"车牌颜色",
                     realphone: "绑定手机号",
                     id: "车主身份证",
                     realname: "车主姓名",
                     cardno:"绑定银行卡号",
+                    issuestatus: "发行状态",
                     deliverymethod:"邮寄方式",
-                    finishtime: "请求完成时间"
+                    finishtime: "签约完成时间"
                 });
 
                 var timestart = Date.now();

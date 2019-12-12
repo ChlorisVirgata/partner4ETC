@@ -84,8 +84,12 @@
     <select id="queryPassagemoney" resultMap="PassageMoneyResultMap" parameterType="com.allinpay.entity.PassageMoneyVo">
         select PARTNER_ID,
         AUTH_ID,
-        decode(AUTH_NAME,'','',substr(AUTH_NAME,'0','1') || '****') AUTH_NAME,
-        decode(ACCOUNT_NO,'','',substr(ACCOUNT_NO,'0','4') || '****' || substr(ACCOUNT_NO,length(ACCOUNT_NO)-3,length(ACCOUNT_NO))) ACCOUNT_NO,
+        case
+          when length(AUTH_NAME) &lt;= 2 then substr(AUTH_NAME,'0','1') || '*'
+          when length(AUTH_NAME) &gt; 2  then substr(AUTH_NAME,'0','1') || '*' || substr(AUTH_NAME,length(AUTH_NAME),length(AUTH_NAME)-1)
+          else ''
+            end AUTH_NAME,
+        decode(ACCOUNT_NO,'','',substr(ACCOUNT_NO,'0','6') || '****' || substr(ACCOUNT_NO,length(ACCOUNT_NO)-3,length(ACCOUNT_NO))) ACCOUNT_NO,
         CAR_NO,
         AMOUNT,
         TRANSE_TIME,
@@ -129,17 +133,24 @@
         <result column="LICENSE_COLOR" property="licensecolor" jdbcType="VARCHAR"/>
     </resultMap>
     <select id="queryUserhairpin" resultMap="UserhairMap" parameterType="com.allinpay.entity.UserhairpinVo">
-        select PARTNER_ID,AUTH_ID,AUTH_NAME,PHONE,REQ_NO,REQ_TIME,
+        select PARTNER_ID,AUTH_ID,AUTH_NAME,
+        decode(suerhair.REAL_PHONE,'','',
+        (substr(suerhair.REAL_PHONE,'0','3') || '****' || substr(suerhair.REAL_PHONE,length(suerhair.REAL_PHONE)-3,length(suerhair.REAL_PHONE)))) REAL_PHONE,
+         REQ_NO,REQ_TIME,
         case
         when ISSUE_STATUS ='0' then '完成'
         when ISSUE_STATUS ='2' then '失败'
         else ''
         end ISSUE_STATUS,
         CAR_NO,
-        decode(CARD_NO,'','',substr(CARD_NO,'0','4') || '****' || substr(CARD_NO,length(CARD_NO)-3,length(CARD_NO))) CARD_NO,
-        REAL_PHONE,
-        decode(ID,'','',substr(ID,'0',length(ID)-6)|| '****') ID,
-        decode(REAL_NAME,'','',substr(REAL_NAME,'0','1') || '****') REAL_NAME,
+        decode(CARD_NO,'','',substr(CARD_NO,'0','6') || '****' || substr(CARD_NO,length(CARD_NO)-3,length(CARD_NO))) CARD_NO,
+        PHONE,
+        decode(ID,'','',substr(ID,'0','6')|| '****') ID,
+        case
+        when length(REAL_NAME) &lt;= 2 then substr(REAL_NAME,'0','1') || '*'
+        when length(REAL_NAME) &gt; 2  then substr(REAL_NAME,'0','1') || '*' || substr(REAL_NAME,length(REAL_NAME),length(REAL_NAME)-1)
+        else ''
+        end REAL_NAME,
         ISSUE_MSG,
         FINISH_TIME,
         case
@@ -171,6 +182,9 @@
             </if>
             <if test="usrh.userPartnerId != null and usrh.userPartnerId != ''">
                 and suerhair.PARTNER_ID = #{usrh.userPartnerId}
+            </if>
+            <if test="usrh.carNo != null and usrh.carNo != ''">
+                and CAR_NO  like '%' ||  #{usrh.carNo} || '%'
             </if>
         </trim>
         order by FINISH_TIME desc
@@ -207,8 +221,13 @@
         actinfo.car_no,
        issinfo.license_color,
        actinfo.auth_id,
-       issinfo.phone,
-       decode(issinfo.REAL_NAME,'','',substr(issinfo.REAL_NAME,'0','1') || '****') auth_name,
+        decode(issinfo.REAL_PHONE,'','',
+        (substr(issinfo.REAL_PHONE,'0','3') || '****' || substr(issinfo.REAL_PHONE,length(issinfo.REAL_PHONE)-3,length(issinfo.REAL_PHONE)))) phone,
+        case
+        when length(issinfo.REAL_NAME) &lt;= 2 then substr(issinfo.REAL_NAME,'0','1') || '*'
+        when length(issinfo.REAL_NAME) &gt; 2  then substr(issinfo.REAL_NAME,'0','1') || '*' || substr(issinfo.REAL_NAME,length(issinfo.REAL_NAME),length(issinfo.REAL_NAME)-1)
+        else ''
+        end auth_name,
        issinfo.finish_time,
        actinfo.obu_id,
        actinfo.open_time,
@@ -247,6 +266,7 @@
              and actinfo.PARTNER_ID = #{activation.userPartnerId}
          </if>
      </where>
+     order by issinfo.finish_time desc
 
     </select>
 </mapper>

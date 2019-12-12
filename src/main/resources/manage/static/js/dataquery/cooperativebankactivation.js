@@ -60,10 +60,10 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             limit: 10,
             //单元格设置
             cols: [[
-                {field: 'partnerId', title: '机构编号'},
+                // {field: 'partnerId', title: '机构编号'},
                 {field: 'carNo',  title: '车牌号'},
                 {field: 'licenseColor',  title: '车牌颜色'},
-                {field: 'authId',  title: '用户标识'},
+                // {field: 'authId',  title: '用户标识'},
                 {field: 'phone',  title: '手机号'},
                 {field: 'authName',  title: '车主姓名'},
                 {field: 'finishTime',  title: '签约时间'},
@@ -71,8 +71,8 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 {field: 'openTime',  title: 'OBU激活时间'},
                 {field: 'cpuId',  title: 'CPU序列号'},
                 {field: 'cpuOpenTime',  title: 'CPU激活时间'},
-                {field: 'openIs',  title: '是否激活'},
-                {field: 'deliveryMethod',  title: '邮寄方式'}
+                {field: 'openIs',  title: '是否激活'}
+                // {field: 'deliveryMethod',  title: '邮寄方式'}
 
             ]],
 
@@ -129,10 +129,10 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 queryTimeEnd:$("#creatdate").val() == "" ? "" :$("#creatdate").val().substr(13, 11)//查询创建时间止
             },
             cols: [[
-                {field: 'partnerId', title: '机构编号'},
+                // {field: 'partnerId', title: '机构编号'},
                 {field: 'carNo',  title: '车牌号'},
                 {field: 'licenesColor',  title: '车牌颜色'},
-                {field: 'authId',  title: '用户标识'},
+                // {field: 'authId',  title: '用户标识'},
                 {field: 'phone',  title: '手机号'},
                 {field: 'authName',  title: '车主姓名'},
                 {field: 'finishTime',  title: '签约时间'},
@@ -140,8 +140,8 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 {field: 'openTime',  title: 'OBU激活时间'},
                 {field: 'cpuId',  title: 'CPU序列号'},
                 {field: 'cpuOpenTime',  title: 'CPU激活时间'},
-                {field: 'openIs',  title: '是否激活'},
-                {field: 'deliveryMethod',  title: '邮寄方式'}
+                {field: 'openIs',  title: '是否激活'}
+                // {field: 'deliveryMethod',  title: '邮寄方式'}
 
             ]],
             done: function (res, curr, count) {
@@ -152,10 +152,10 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 // console.log(res);
                 // 重点！！！如果后端给的数据顺序和映射关系不对，请执行梳理函数后导出
                 data = excel.filterExportData(data, [
-                    'partnerId'
-                    , 'carNo'
+                    // 'partnerId'
+                     'carNo'
                     , 'licenseColor'
-                    , 'authId'
+                    // , 'authId'
                     , 'phone'
                     , 'authName'
                     , 'finishTime'
@@ -164,14 +164,14 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                     , 'cpuId'
                     , 'cpuOpenTime'
                     , 'openIs'
-                    ,'deliveryMethod'
+                    // ,'deliveryMethod'
                 ]);
                 // 重点2！！！一般都需要加一个表头，表头的键名顺序需要与最终导出的数据一致
                 data.unshift({
-                partnerId: "机构编号",
+                // partnerId: "机构编号",
                 carNo: "车牌号",
                 licenseColor: "车牌颜色",
-                authId: "用户标识",
+                // authId: "用户标识",
                 phone: "手机号",
                 authName: "车主姓名",
                 finishTime: "签约时间",
@@ -179,8 +179,8 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 openTime: "OBU激活时间",
                 cpuId: "CPU序列号",
                  cpuOpenTime: "CPU激活时间",
-                openIs:"是否激活",
-                deliveryMethod: "邮寄方式"
+                openIs:"是否激活"
+                // deliveryMethod: "邮寄方式"
                 });
 
                 var timestart = Date.now();

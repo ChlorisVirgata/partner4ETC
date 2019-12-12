@@ -51,4 +51,10 @@ public class UserhairpinVo extends OrgQueryVo {
      *  机构编号
      */
     private String userPartnerId;
+
+    /**
+     * 车牌号
+     *
+     */
+    private String carNo;
 }

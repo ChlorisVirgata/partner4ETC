@@ -57,13 +57,13 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             limit: 10,
             //单元格设置
             cols: [[
-                {field: 'partnerId',  title: '机构编号'},
-                {field: 'authId', title: '用户编号'},
+                // {field: 'partnerId',  title: '机构编号'},
+                // {field: 'authId', title: '用户编号'},
+                {field: 'carNo', title: '车牌号'},
                 {field: 'accountNo', title: '账户'},
                 {field: 'authName', title: '车主姓名'},
-                {field: 'carNo', title: '车牌号'},
-                {field: 'status', title: '交易结果'},
-                {field: 'transeTime', title: '请求时间'},
+                // {field: 'status', title: '交易结果'},
+                {field: 'transeTime', title: '通行时间'},
                 {field: 'amount',  title: '金额'},
                 {field: 'passageway', title: '出入口'}
                 // {field: 'insertTime',  title: '插入时间'}
@@ -109,13 +109,13 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 endTime: $("#creatdate").val() == "" ? "" : $("#creatdate").val().substr(12, 11) + " 00:00:00",//查询创建时间止
             },
             cols: [[
-                {field: 'partnerId', title: '机构编号'},
-                {field: 'authId', title: '用户编号'},
+                // {field: 'partnerId', title: '机构编号'},
+                // {field: 'authId', title: '用户编号'},
+                {field: 'carNo', title: '车牌号'},
                 {field: 'accountNo', title: '账户'},
                 {field: 'authName', title: '车主姓名'},
-                {field: 'carNo', title: '车牌号'},
-                {field: 'status', title: '交易结果'},
-                {field: 'transeTime', title: '请求时间'},
+                // {field: 'status', title: '交易结果'},
+                {field: 'transeTime', title: '通行时间'},
                 {field: 'amount', title: '金额'},
                 {field: 'passageway', title: '出入口'}
                 // {field: 'insertTime',  title: '插入时间'}
@@ -129,25 +129,25 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 // console.log(res);
                 // 重点！！！如果后端给的数据顺序和映射关系不对，请执行梳理函数后导出
                 data = excel.filterExportData(data, [
-                    'partnerId'
-                    , 'authId'
+                    // 'partnerId'
+                      'carNo'
+                    // , 'authId'
                     , 'accountNo'
                     , 'authName'
-                    , 'carNo'
-                    , 'status'
+                    // , 'status'
                     , 'transeTime'
                     , 'amount'
                     , 'passageway'
                 ]);
                 // 重点2！！！一般都需要加一个表头，表头的键名顺序需要与最终导出的数据一致
                 data.unshift({
-                    partnerId: "机构编号",
-                    authId: "用户编号",
+                    // partnerId: "机构编号",
+                    // authId: "用户编号",
+                    carNo: "车牌号",
                     accountNo: "账户",
                     authName: "车主姓名",
-                    carNo: "车牌号",
-                    status: "交易结果",
-                    transeTime: "请求时间",
+                    // status: "交易结果",
+                    transeTime: "通行时间",
                     amount: "金额",
                     passageway: "出入口"
                 });
