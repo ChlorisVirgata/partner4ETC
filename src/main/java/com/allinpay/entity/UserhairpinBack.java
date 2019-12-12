@@ -110,4 +110,9 @@ public class UserhairpinBack {
      *  车牌颜色
      */
     private String licensecolor;
+
+    /**
+     *  绑定银行卡号
+     */
+    private String cardno;
 }

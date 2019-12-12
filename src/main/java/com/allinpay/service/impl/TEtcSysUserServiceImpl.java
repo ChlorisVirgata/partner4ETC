@@ -57,6 +57,7 @@ public class TEtcSysUserServiceImpl extends ServiceImpl<TEtcUserMapper, TEtcSysU
             user.setUpdateTime(dateStr);
             user.setStatus(etcSysUser.getStatus());
             user.setPartnerName(etcSysUser.getPartnerName());
+            user.setPartnerId(etcSysUser.getPartnerId());
             return ResponseBean.ok(tEtcUserMapper.updateById(user) > 0);
         }
         TEtcSysUser user = tEtcUserMapper.selectOne(new QueryWrapper<TEtcSysUser>().eq("username", etcSysUser.getUsername()));

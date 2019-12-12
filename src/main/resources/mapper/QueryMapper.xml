@@ -86,7 +86,8 @@
         AUTH_ID,
         AUTH_NAME,
         ACCOUNT_NO,
-        CAR_NO,AMOUNT,
+        CAR_NO,
+        AMOUNT,
         TRANSE_TIME,
         PASSAGEWAY,
         STATUS
@@ -121,6 +122,7 @@
         <result column="REAL_PHONE" property="realphone" jdbcType="VARCHAR"/>
         <result column="ID" property="id" jdbcType="VARCHAR"/>
         <result column="REAL_NAME" property="realname" jdbcType="VARCHAR"/>
+        <result column="CARD_NO" property="cardno" jdbcType="VARCHAR"/>
         <result column="ISSUE_MSG" property="issuemsg" jdbcType="VARCHAR"/>
         <result column="FINISH_TIME" property="finishtime" jdbcType="VARCHAR"/>
         <result column="DELIVERY_METHOD" property="deliverymethod" jdbcType="VARCHAR"/>
@@ -132,8 +134,14 @@
         when ISSUE_STATUS ='0' then '完成'
         when ISSUE_STATUS ='2' then '失败'
         else ''
-        end ISSUE_STATUS,CAR_NO,REAL_PHONE,ID,REAL_NAME,ISSUE_MSG,
-                 FINISH_TIME,
+        end ISSUE_STATUS,
+        CAR_NO,
+        decode(CARD_NO,'','',substr(CARD_NO,'0','4') || '****' || substr(CARD_NO,length(CARD_NO)-3,length(CARD_NO))) CARD_NO,
+        REAL_PHONE,
+        decode(ID,'','',substr(ID,'0',length(ID)-6)|| '****') ID,
+        decode(REAL_NAME,'','',substr(REAL_NAME,'0','1') || '****') REAL_NAME,
+        ISSUE_MSG,
+        FINISH_TIME,
         case
         WHEN DELIVERY_METHOD='1' then '快递'
         WHEN DELIVERY_METHOD='2' then '自提'
@@ -142,7 +150,7 @@
         LICENSE_COLOR
         from T_ETC_ISSUE suerhair
         <trim prefix="WHERE" prefixOverrides="AND">
-            ISSUE_STATUS !='1'
+            ISSUE_STATUS ='0'
             <if test="usrh.authId != null and usrh.authId != ''">
                 AND suerhair.AUTH_ID like '%' || #{usrh.authId} || '%'
             </if>
@@ -196,11 +204,11 @@
     </resultMap>
     <select id="queryActivation" resultMap="activationMap" parameterType="com.allinpay.entity.ActivationVo">
       select actinfo.partner_id,
-       actinfo.car_no,
+        actinfo.car_no,
        issinfo.license_color,
        actinfo.auth_id,
        issinfo.phone,
-       issinfo.auth_name,
+       decode(issinfo.REAL_NAME,'','',substr(issinfo.REAL_NAME,'0','1') || '****') auth_name,
        issinfo.finish_time,
        actinfo.obu_id,
        actinfo.open_time,

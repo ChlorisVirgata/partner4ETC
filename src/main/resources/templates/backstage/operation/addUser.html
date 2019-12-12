@@ -172,6 +172,9 @@
             var partnerId = sels.options[indexs].value;
 
             var partnerName = sels.options[indexs].text;
+            if('请选择机构' == partnerName){
+                partnerName = '';
+            }
 
             var statusId = document.getElementById('status');
             var statusValue = statusId.checked ? '1' : '0';

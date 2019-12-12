@@ -13,24 +13,18 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             //表格生成的位置：#ID
             elem: '#orginfotable',
             //请求地址getList
-            url: '/manage/query/userhairpin/getList',
+            url: '/manage/query/activation/getList',
             //是否分页
             page: true,
-            // toolbar: '#toolbarDemo', //开启头部工具栏，并为其绑定左侧模板
-            // defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
-            //     title: '提示'
-            //     ,layEvent: 'LAYTABLE_TIPS'
-            //     ,icon: 'layui-icon-tips'
-            // }],
             //请求参数
             where: {
                 authId: $("#useridquery").val(),//用户标识
                 authName: $("#usernamequery").val(),//用户名称
                 partnerId: $("#chanelidquery").val(),//机构编号
-                orderNo: $("#serialnumberquery").val(),//流水号
-                signsStatus: $("#chanetype").val(),//签约结果
+                obuId: $("#obuid").val(),//obu序列号
+                openIs: $("#isopen").val(),//激活状态
                 queryTimeStart: $("#creatdate").val() == "" ? "" : $("#creatdate").val().substr(0, 10),//查询创建时间起
-                queryTimeEnd: $("#creatdate").val() == "" ? "" : $("#creatdate").val().substr(12, 11)//查询创建时间止
+                queryTimeEnd: $("#creatdate").val() == "" ? "" : $("#creatdate").val().substr(13, 11)//查询创建时间止
             },
             //分页信息
             request: {
@@ -67,25 +61,22 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
             //单元格设置
             cols: [[
                 {field: 'partnerId', title: '机构编号'},
+                {field: 'carNo',  title: '车牌号'},
+                {field: 'licenseColor',  title: '车牌颜色'},
                 {field: 'authId',  title: '用户标识'},
-                {field: 'authName',  title: '用户名称'},
-                {field: 'phone',  title: '机构请求手机号'},
-                {field: 'orderNo',  title: '请求流水号'},
-                {field: 'reqtime',  title: '请求时间'},
-                {field: 'issuestatus',  title: '发行状态'},
-                {field: 'carno',  title: '车牌号'},
-                {field: 'licensecolor',  title: '车牌颜色'},
-                {field: 'realphone',  title: '绑定手机号'},
-                {field: 'id',  title: '车主身份证'},
-                {field: 'realname',  title: '车主姓名'},
-                {field: 'cardno',  title: '绑定银行卡号'},
-                {field: 'deliverymethod',  title: '邮寄方式'},
-                {field: 'finishtime', title: '请求完成时间'}
+                {field: 'phone',  title: '手机号'},
+                {field: 'authName',  title: '用户姓名'},
+                {field: 'finishTime',  title: '签约时间'},
+                {field: 'obuId',  title: 'OBU序列号'},
+                {field: 'openTime',  title: 'OBU激活时间'},
+                {field: 'cpuId',  title: 'CPU序列号'},
+                {field: 'cpuOpenTime',  title: 'CPU激活时间'},
+                {field: 'openIs',  title: '是否激活'},
+                {field: 'deliveryMethod',  title: '邮寄方式'}
 
             ]],
 
             done: function (res, curr, count) {
-
                 // $("[data-field='deliverymethod']").children().each(function () {
                 //     if ($(this).text() == '1') {
                 //         $(this).text("快递")
@@ -123,36 +114,34 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
     $("#export").click(function () {
         var ins1 = table.render({
             elem: '#data_export',
-            url: '/manage/query/userhairpin/export', //数据接口
+            url: '/manage/query/activation/export', //数据接口
             method: 'get',
-            title: '用户发行数据表',
+            title: 'OBU激活信息数据表',
             //请求参数
             where: {
                 export: "1",
                 authId: $("#useridquery").val(),//用户标识
                 authName: $("#usernamequery").val(),//用户名称
                 partnerId: $("#chanelidquery").val(),//机构编号
-                orderNo: $("#serialnumberquery").val(),//流水号
-                signsStatus: $("#chanetype").val(),//签约结果
-                queryTimeStart: $("#creatdate").val() == "" ? "" : $("#creatdate").val().substr(0, 10),//查询创建时间起
-                queryTimeEnd: $("#creatdate").val() == "" ? "" : $("#creatdate").val().substr(12, 11)//查询创建时间止
+                obuId: $("#obuid").val(),//obu序列号
+                openIs: $("#isopen").val(),//激活状态
+                queryTimeStart:$("#creatdate").val() == "" ? "" :$("#creatdate").val().substr(0, 10),//查询创建时间起
+                queryTimeEnd:$("#creatdate").val() == "" ? "" :$("#creatdate").val().substr(13, 11)//查询创建时间止
             },
             cols: [[
                 {field: 'partnerId', title: '机构编号'},
-                {field: 'authId', title: '用户标识'},
-                {field: 'authName', title: '用户名称'},
-                {field: 'phone', title: '机构请求手机号'},
-                {field: 'orderNo', title: '请求流水号'},
-                {field: 'reqtime', title: '请求时间'},
-                {field: 'issuestatus', title: '发行状态'},
-                {field: 'carno', title: '车牌号'},
-                {field: 'licensecolor',  title: '车牌颜色'},
-                {field: 'realphone', title: '绑定手机号'},
-                {field: 'id', title: '车主身份证'},
-                {field: 'realname', title: '车主姓名'},
-                {field: 'cardno',  title: '绑定银行卡号'},
-                {field: 'deliverymethod',  title: '邮寄方式'},
-                {field: 'finishtime', title: '请求完成时间'}
+                {field: 'carNo',  title: '车牌号'},
+                {field: 'licenesColor',  title: '车牌颜色'},
+                {field: 'authId',  title: '用户标识'},
+                {field: 'phone',  title: '手机号'},
+                {field: 'authName',  title: '用户姓名'},
+                {field: 'finishTime',  title: '签约时间'},
+                {field: 'obuId',  title: 'OBU序列号'},
+                {field: 'openTime',  title: 'OBU激活时间'},
+                {field: 'cpuId',  title: 'CPU序列号'},
+                {field: 'cpuOpenTime',  title: 'CPU激活时间'},
+                {field: 'openIs',  title: '是否激活'},
+                {field: 'deliveryMethod',  title: '邮寄方式'}
 
             ]],
             done: function (res, curr, count) {
@@ -164,46 +153,38 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 // 重点！！！如果后端给的数据顺序和映射关系不对，请执行梳理函数后导出
                 data = excel.filterExportData(data, [
                     'partnerId'
+                    , 'carNo'
+                    , 'licenseColor'
                     , 'authId'
-                    , 'authName'
                     , 'phone'
-                    , 'orderNo'
-                    , 'reqtime'
-                    , 'issuestatus'
-                    , 'carno'
-                    ,'licensecolor'
-                    , 'realphone'
-                    , 'id'
-                    , 'realname'
-                    ,'cardno'
-                    ,'deliverymethod'
-                    , 'finishtime'
+                    , 'authName'
+                    , 'finishTime'
+                    , 'obuId'
+                    ,'openTime'
+                    , 'cpuId'
+                    , 'cpuOpenTime'
+                    , 'openIs'
+                    ,'deliveryMethod'
                 ]);
                 // 重点2！！！一般都需要加一个表头，表头的键名顺序需要与最终导出的数据一致
                 data.unshift({
-                    partnerId: "机构编号",
-                    authId: "用户标识",
-                    authName: "用户名称",
-                    phone: "机构请求手机号",
-                    orderNo: "请求流水号",
-                    reqtime: "请求时间",
-                    issuestatus: "发行状态",
-                    carno: "车牌号",
-                    licensecolor:"车牌颜色",
-                    realphone: "绑定手机号",
-                    id: "车主身份证",
-                    realname: "车主姓名",
-                    cardno:"绑定银行卡号",
-                    deliverymethod:"邮寄方式",
-                    finishtime: "请求完成时间"
+                partnerId: "机构编号",
+                carNo: "车牌号",
+                licenseColor: "车牌颜色",
+                authId: "用户标识",
+                phone: "手机号",
+                authName: "用户姓名",
+                finishTime: "签约时间",
+                obuId:"OBU序列号",
+                openTime: "OBU激活时间",
+                cpuId: "CPU序列号",
+                 cpuOpenTime: "CPU激活时间",
+                openIs:"是否激活",
+                deliveryMethod: "邮寄方式"
                 });
 
                 var timestart = Date.now();
-                excel.exportExcel(data, '用户发行数据表.xlsx', 'xlsx');
-                //	var timeend = Date.now();
-
-                //	var spent = (timeend - timestart) / 1000;
-                //	layer.alert('单纯导出耗时 '+spent+' s');
+                excel.exportExcel(data, 'OBU激活信息数据表.xlsx', 'xlsx');
 
             }
         });
