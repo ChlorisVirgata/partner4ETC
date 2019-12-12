@@ -84,8 +84,8 @@
     <select id="queryPassagemoney" resultMap="PassageMoneyResultMap" parameterType="com.allinpay.entity.PassageMoneyVo">
         select PARTNER_ID,
         AUTH_ID,
-        AUTH_NAME,
-        ACCOUNT_NO,
+        decode(AUTH_NAME,'','',substr(AUTH_NAME,'0','1') || '****') AUTH_NAME,
+        decode(ACCOUNT_NO,'','',substr(ACCOUNT_NO,'0','4') || '****' || substr(ACCOUNT_NO,length(ACCOUNT_NO)-3,length(ACCOUNT_NO))) ACCOUNT_NO,
         CAR_NO,
         AMOUNT,
         TRANSE_TIME,
@@ -235,7 +235,7 @@
              and  actinfo.auth_id like '%' || #{activation.authId} || '%'
          </if>
          <if test="activation.authName != null and activation.authName != ''">
-             and  issinfo.auth_name like '%' || #{activation.authName} || '%'
+             and  issinfo.REAL_NAME like '%' || #{activation.authName} || '%'
          </if>
          <if test="activation.obuId != null and activation.obuId != ''">
              and  actinfo.obu_id like '%' || #{activation.obuId} || '%'
