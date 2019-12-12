@@ -8,6 +8,7 @@ import com.allinpay.mapper.QueryMapper;
 import com.allinpay.service.IOrgQueryService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +46,8 @@ public class OrgQueryServiceImpl implements IOrgQueryService {
 
     @Override
     public PageVO<PassageMoneyBack> queryPassagemoney(PassageMoneyVo passm) {
+        TEtcSysUser user = getUser();//获取登录用户信息
+        passm.setUserPartnerId(user.getPartnerId());
         PageHelper.startPage(passm.getPageNum(), passm.getPageSize());
         List<PassageMoneyBack> partnerAuditList = queryMapper.queryPassagemoney(passm);
         PageVO<PassageMoneyBack> pageVO = PageVOUtil.convert(new PageInfo(partnerAuditList));
@@ -53,6 +56,8 @@ public class OrgQueryServiceImpl implements IOrgQueryService {
 
     @Override
     public PageVO<UserhairpinBack> queryUserhairpin(UserhairpinVo usrh) {
+        TEtcSysUser user = getUser();//获取登录用户信息
+        usrh.setUserPartnerId(user.getPartnerId());
         PageHelper.startPage(usrh.getPageNum(), usrh.getPageSize());
         List<UserhairpinBack> partnerAuditList = queryMapper.queryUserhairpin(usrh);
         PageVO<UserhairpinBack> pageVO = PageVOUtil.convert(new PageInfo(partnerAuditList));
@@ -63,5 +68,29 @@ public class OrgQueryServiceImpl implements IOrgQueryService {
     @Override
     public List<PartnerInfo> selectByNormalStatus() {
         return queryMapper.selectNormalList();
+    }
+
+    /**
+     *  合作银行obu激活信息查询
+     * @param activationVo
+     * @return
+     */
+    @Override
+    public PageVO<ActivationBack> queryActivation(ActivationVo activationVo) {
+        TEtcSysUser user = getUser();//获取登录用户信息
+        activationVo.setUserPartnerId(user.getPartnerId());
+        PageHelper.startPage(activationVo.getPageNum(), activationVo.getPageSize());
+        List<ActivationBack> partnerAuditList = queryMapper.queryActivation(activationVo);
+        PageVO<ActivationBack> pageVO = PageVOUtil.convert(new PageInfo(partnerAuditList));
+        return pageVO;
+    }
+
+    /**
+     *  获取登录用户信息
+     *
+     * @return TEtcSysUser
+     */
+    private TEtcSysUser getUser(){
+        return  (TEtcSysUser) SecurityUtils.getSubject().getPrincipal();
     }
 }

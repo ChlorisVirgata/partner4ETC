@@ -6,12 +6,12 @@
     <meta content="webkit" name="renderer">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
-    <title>用户发行数据信息查询</title>
+    <title>激活信息查询</title>
     <link href="/manage/static/layui/css/layui.css" rel="stylesheet">
     <link href="/manage/static/css/common.css" rel="stylesheet">
     <script src="/manage/static/layui/layui.js"></script>
     <script src="/manage/static/layui/layui_exts/excel.js"></script>
-    <script src="/manage/static/js/dataquery/userhairpin.js" th:inline="none"></script>
+    <script src="/manage/static/js/dataquery/cooperativebankactivation.js" th:inline="none"></script>
     <link href="/manage/static/layui/css/layui.css" media="all" rel="stylesheet">
     <style type="text/css">
         .layui-layout-admin .layui-body {
@@ -60,7 +60,7 @@
         <div style="margin: 10px">
             <span class="layui-breadcrumb">
                 <a href="">数据查询</a>
-                <a><cite>用户发行数据</cite></a>
+                <a><cite>合作银行激活信息</cite></a>
             </span>
         </div>
 
@@ -69,7 +69,7 @@
             <div class="layui-form-item" style="margin-top: 20px;">
 
                 <div class="layui-inline">
-                    <label class="layui-form-label">查询时间：</label>
+                    <label class="layui-form-label">激活时间：</label>
                     <div class="layui-input-inline">
                         <input class="layui-input" id="creatdate" placeholder="开始时间~结束时间" type="text">
                     </div>
@@ -100,21 +100,20 @@
                 </div>
 
                 <div class="layui-inline">
-                    <label class="layui-form-label">流水号：</label>
+                    <label class="layui-form-label">OBU序列号：</label>
                     <div class="layui-input-inline">
-                        <input autocomplete="off" class="layui-input" id="serialnumberquery" placeholder="可输入部分信息"
+                        <input autocomplete="off" class="layui-input" id="obuid" placeholder="可输入部分信息"
                                type="text">
                     </div>
                 </div>
 
                 <div class="layui-inline">
-                    <label class="layui-form-label">发行状态：</label>
+                    <label class="layui-form-label">激活状态：</label>
                     <div class="layui-input-block">
-                        <select id="chanetype" lay-verify="required">
+                        <select id="isopen" lay-verify="required">
                             <option value=""></option>
-                            <!--                            <option value="签约中">签约中</option>-->
-                            <option value="0">签约完成</option>
-                            <option value="2">签约失败</option>
+                            <option value="已激活">已激活</option>
+                            <option value="未激活">未激活</option>
                         </select>
                     </div>
                 </div>

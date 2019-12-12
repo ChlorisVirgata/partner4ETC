@@ -5,8 +5,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import com.allinpay.core.common.BaseEntity;
-import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
@@ -55,7 +53,13 @@ public class TEtcSysUser{
     @TableField("LAST_LOGIN_TIME")
     private String lastLoginTime;
 
+    //机构编号
+    @TableField("PARTNER_ID")
+    private String partnerId;
 
+    //机构名称
+    @TableField("PARTNER_NAME")
+    private String partnerName;
 
 
 }

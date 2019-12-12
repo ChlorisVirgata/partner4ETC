@@ -101,6 +101,9 @@
             <if test="passm.startTime != null and passm.startTime != ''">
                 AND passmo.TRANSE_TIME between #{passm.startTime} and #{passm.endTime}
             </if>
+            <if test="passm.userPartnerId != null and passm.userPartnerId != ''">
+                AND passmo.PARTNER_ID = #{passm.userPartnerId}
+            </if>
         </trim>
         order by TRANSE_TIME desc
     </select>
@@ -120,6 +123,8 @@
         <result column="REAL_NAME" property="realname" jdbcType="VARCHAR"/>
         <result column="ISSUE_MSG" property="issuemsg" jdbcType="VARCHAR"/>
         <result column="FINISH_TIME" property="finishtime" jdbcType="VARCHAR"/>
+        <result column="DELIVERY_METHOD" property="deliverymethod" jdbcType="VARCHAR"/>
+        <result column="LICENSE_COLOR" property="licensecolor" jdbcType="VARCHAR"/>
     </resultMap>
     <select id="queryUserhairpin" resultMap="UserhairMap" parameterType="com.allinpay.entity.UserhairpinVo">
         select PARTNER_ID,AUTH_ID,AUTH_NAME,PHONE,REQ_NO,REQ_TIME,
@@ -128,7 +133,13 @@
         when ISSUE_STATUS ='2' then '失败'
         else ''
         end ISSUE_STATUS,CAR_NO,REAL_PHONE,ID,REAL_NAME,ISSUE_MSG,
-                 FINISH_TIME
+                 FINISH_TIME,
+        case
+        WHEN DELIVERY_METHOD='1' then '快递'
+        WHEN DELIVERY_METHOD='2' then '自提'
+        else ''
+        end DELIVERY_METHOD,
+        LICENSE_COLOR
         from T_ETC_ISSUE suerhair
         <trim prefix="WHERE" prefixOverrides="AND">
             ISSUE_STATUS !='1'
@@ -150,6 +161,9 @@
             <if test="usrh.queryTimeStart != null and usrh.queryTimeStart != ''">
                 AND suerhair.FINISH_TIME between #{usrh.queryTimeStart} and #{usrh.queryTimeEnd}
             </if>
+            <if test="usrh.userPartnerId != null and usrh.userPartnerId != ''">
+                and suerhair.PARTNER_ID = #{usrh.userPartnerId}
+            </if>
         </trim>
         order by FINISH_TIME desc
     </select>
@@ -162,5 +176,69 @@
     </update>
     <select id="selectNormalList" resultMap="BaseResultMap">
       select * from T_ETC_PARTNER_INFO where STATUS = 1
+    </select>
+
+    <!--合作银行obu激活信息查询-->
+    <resultMap id="activationMap" type="com.allinpay.entity.ActivationBack">
+        <id column="PARTNER_ID" property="partnerId" jdbcType="VARCHAR"/>
+        <result column="CAR_NO" property="carNo" jdbcType="VARCHAR"/>
+        <result column="LICENSE_COLOR" property="licenseColor" jdbcType="VARCHAR"/>
+        <result column="AUTH_ID" property="authId" jdbcType="VARCHAR"/>
+        <result column="PHONE" property="phone" jdbcType="NUMERIC"/>
+        <result column="AUTH_NAME" property="authName" jdbcType="VARCHAR"/>
+        <result column="FINISH_TIME" property="finishTime" jdbcType="VARCHAR"/>
+        <result column="OBU_ID" property="obuId" jdbcType="VARCHAR"/>
+        <result column="OPEN_TIME" property="openTime" jdbcType="VARCHAR"/>
+        <result column="CPU_ID" property="cpuId" jdbcType="VARCHAR"/>
+        <result column="CPU_OPEN_TIME" property="cpuOpenTime" jdbcType="VARCHAR"/>
+        <result column="OPEN_IS" property="openIs" jdbcType="VARCHAR"/>
+        <result column="DELIVERY_METHOD" property="deliveryMethod" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="queryActivation" resultMap="activationMap" parameterType="com.allinpay.entity.ActivationVo">
+      select actinfo.partner_id,
+       actinfo.car_no,
+       issinfo.license_color,
+       actinfo.auth_id,
+       issinfo.phone,
+       issinfo.auth_name,
+       issinfo.finish_time,
+       actinfo.obu_id,
+       actinfo.open_time,
+       actinfo.cpu_id,
+       actinfo.cpu_open_time,
+       actinfo.open_is,
+       case
+         when issinfo.delivery_method='1' then '快递'
+         when issinfo.delivery_method='2' then '自提'
+         else ''
+           end delivery_method
+    from T_ETC_ACTIVATION actinfo
+    left join T_ETC_ISSUE  issinfo on actinfo.partner_id = issinfo.partner_id
+              and actinfo.car_no = issinfo.car_no
+     <where>
+         issinfo.ISSUE_STATUS='0'
+         <if test="activation.queryTimeStart != null and activation.queryTimeStart != ''">
+             AND actinfo.OPEN_TIME between #{activation.queryTimeStart} and #{activation.queryTimeEnd}
+         </if>
+         <if test="activation.partnerId != null and activation.partnerId != ''">
+             and actinfo.PARTNER_ID = #{activation.partnerId}
+         </if>
+         <if test="activation.authId != null and activation.authId != ''">
+             and  actinfo.auth_id like '%' || #{activation.authId} || '%'
+         </if>
+         <if test="activation.authName != null and activation.authName != ''">
+             and  issinfo.auth_name like '%' || #{activation.authName} || '%'
+         </if>
+         <if test="activation.obuId != null and activation.obuId != ''">
+             and  actinfo.obu_id like '%' || #{activation.obuId} || '%'
+         </if>
+         <if test="activation.openIs != null and activation.openIs != ''">
+             and  actinfo.open_is like '%' || #{activation.openIs} || '%'
+         </if>
+         <if test="activation.userPartnerId != null and activation.userPartnerId != ''">
+             and actinfo.PARTNER_ID = #{activation.userPartnerId}
+         </if>
+     </where>
+
     </select>
 </mapper>

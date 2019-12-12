@@ -9,12 +9,12 @@ import lombok.ToString;
 @ToString
 
 /**
- * 用户发卡信息查询参数实体类
+ * 合作银行obu激活查询参数实体类
  *
  * @author xuming
- * @date 2019-07-02
+ * @date 2019-12-11
  */
-public class UserhairpinVo extends OrgQueryVo {
+public class ActivationVo extends OrgQueryVo {
 
     /**
      * 用户标识
@@ -27,14 +27,14 @@ public class UserhairpinVo extends OrgQueryVo {
     private String authName;
 
     /**
-     * 流水号
+     * OBU序列号
      */
-    private String orderNo;
+    private String obuId;
 
     /**
-     * 签约结果
+     * 激活状态
      */
-    private String signsStatus;
+    private String openIs;
 
 
     /**
@@ -49,6 +49,11 @@ public class UserhairpinVo extends OrgQueryVo {
 
     /**
      *  机构编号
+     */
+    private String partnerId;
+
+    /**
+     *  机构编号用户编号
      */
     private String userPartnerId;
 }

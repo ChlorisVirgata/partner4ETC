@@ -29,4 +29,9 @@ public class PassageMoneyVo extends OrgQueryVo {
      * 结束时间
      */
     private String endTime;
+
+    /**
+     *  机构编号登录用户标识
+     */
+    private String userPartnerId;
 }

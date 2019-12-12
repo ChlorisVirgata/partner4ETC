@@ -1,11 +1,12 @@
 package com.allinpay.controller;
 
+import com.allinpay.entity.PartnerInfo;
 import com.allinpay.entity.TEtcSysMenu;
 import com.allinpay.entity.TEtcSysRole;
+import com.allinpay.service.IOrgQueryService;
 import com.allinpay.service.ITEtcSysMenuService;
 import com.allinpay.service.ITEtcSysRoleService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,8 @@ public class TEtcPageController {
     @Autowired
     private ITEtcSysMenuService sysMenuService;
 
+    @Autowired
+    private IOrgQueryService iOrgQueryService;
 
     @RequestMapping(value = {"/", "login.html"})
     public String login() {
@@ -59,20 +62,25 @@ public class TEtcPageController {
     @GetMapping("/addUser")
     public ModelAndView userAdd() {
         List<TEtcSysRole> tEtcSysRoles = sysRoleService.list(new QueryWrapper<TEtcSysRole>().eq("status", 1).orderByDesc("ROLE_ID"));
+        List<PartnerInfo> partnerInfos = iOrgQueryService.selectByNormalStatus();//合作机构信息
         ModelAndView modelAndView = new ModelAndView("backstage/operation/addUser");
         modelAndView.addObject("roles", tEtcSysRoles);
+        modelAndView.addObject("partners", partnerInfos);
         return modelAndView;
     }
 
     @GetMapping("/editUser")
-    public ModelAndView userUpdate(String userId, String roleIds, String opreate, String status) {
+    public ModelAndView userUpdate(String userId, String roleIds, String partnerId, String opreate, String status) {
         List<TEtcSysRole> tEtcSysRoles = sysRoleService.list();
+        List<PartnerInfo> partnerInfos = iOrgQueryService.selectByNormalStatus();//合作机构信息
         ModelAndView modelAndView = new ModelAndView("backstage/operation/editUser");
         modelAndView.addObject("userId", userId);
         modelAndView.addObject("roleIds", roleIds);
         modelAndView.addObject("opreate", opreate);
         modelAndView.addObject("status", status);
         modelAndView.addObject("roles", tEtcSysRoles);
+        modelAndView.addObject("partners", partnerInfos);
+        modelAndView.addObject("partnerIds", partnerId);
         return modelAndView;
     }
 

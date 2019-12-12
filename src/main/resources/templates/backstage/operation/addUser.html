@@ -75,6 +75,17 @@
         </div>
     </div>
 
+    <div class="layui-form-item">
+        <label class="layui-form-label">机构</label>
+        <div class="layui-input-inline">
+            <select id="partnerId" name="partnerId" >
+                <option value="">请选择机构</option>
+                <option th:each="partner:${partners}" th:selected="${#arrays.contains((partNers == null ? #arrays.toIntegerArray(new Integer[]{}) : partNers), partner.partnerId)}" th:text="${partner.partnerName}"
+                        th:value="${partner.partnerId}"></option>
+            </select>
+        </div>
+    </div>
+
 
     <div class="layui-form-item">
         <label class="layui-form-label">状态</label>
@@ -106,6 +117,7 @@
                     $("#username").val(data.data.username);
                     $("#password").val(data.data.password);
                     $("#roleId").eq(data.data.roleId).attr("selected", 'true');
+                    $("#partnerId").eq(data.data.partnerId).attr("selected", 'true');
                     $("input[name='status']").eq(data.data.status).attr("checked", 'checked');
                 }, error: function () {
                 }
@@ -154,6 +166,13 @@
             var sel = document.getElementById('roleId');
             var index = sel.selectedIndex;
             var roleId = sel.options[index].value;
+
+            var sels = document.getElementById('partnerId');
+            var indexs = sels.selectedIndex;
+            var partnerId = sels.options[indexs].value;
+
+            var partnerName = sels.options[indexs].text;
+
             var statusId = document.getElementById('status');
             var statusValue = statusId.checked ? '1' : '0';
 
@@ -177,7 +196,9 @@
                 data: {
                     username: $("#username").val(),
                     password: $("#password").val(),
+                    partnerName:partnerName,
                     roleId: roleId,
+                    partnerId:partnerId,
                     status: statusValue
                 },
                 // async: false,

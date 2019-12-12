@@ -69,6 +69,21 @@
         </div>
     </div>
 
+    <div class="layui-form-item">
+        <label class="layui-form-label">机构</label>
+        <div class="layui-input-inline">
+            <select id="partnerId" name="partnerId" >
+                <option value="">请选择机构</option>
+                <option th:each="partner:${partners}" th:selected="${partnerIds} == ${partner.partnerId}" th:text="${partner.partnerName}"
+                        th:value="${partner.partnerId}"
+                ></option>
+
+                <!--<option th:each="partner:${partners}" th:value="${partner.partnerId}" th:text="${partner.partnerName}"-->
+                        <!--th:selected="${#arrays.contains((partNers == null ? #arrays.toIntegerArray(new Integer[]{}) : partNers), partner.partnerId)}"></option>-->
+            </select>
+        </div>
+    </div>
+
     <!--  th:selected="${#arrays.contains((roleIds == null ? #arrays.toIntegerArray(new Integer[]{}) : roleIds), role.roleId)}" -->
     <!--<div class="layui-form-item">-->
     <!--<label class="layui-form-label">角色</label>-->
@@ -234,6 +249,7 @@
                     $("#username").val(data.data.username);
                     $("#password").val(data.data.password);
                     $("#roleIds").val(data.data.roleId);
+                    $("#partnerIds").val(data.data.partnerId);
                     // $("#roleId").eq(data.data.roleId).attr("selected", 'true');
                     $("input[name='status']").eq(data.data.status).attr("checked", 'checked');
                 }, error: function () {
@@ -260,6 +276,13 @@
             var sel = document.getElementById('roleId');
             var index = sel.selectedIndex;
             var roleId = sel.options[index].value;
+
+            var sels = document.getElementById('partnerId');
+            var indexs = sels.selectedIndex;
+            var partnerId = sels.options[indexs].value;
+
+            var partnerName = sels.options[indexs].text;
+
             var statusId = document.getElementById('status');
             var statusValue = statusId.checked ? '1' : '0';
 
@@ -280,6 +303,8 @@
                     userId: $("#userId").val(),
                     opreate: $("#opreate").val(),
                     roleId: roleId,
+                    partnerName:partnerName,
+                    partnerId:partnerId,
                     status: statusValue
                 },
                 // async: false,

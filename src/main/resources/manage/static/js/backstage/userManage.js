@@ -59,6 +59,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 {field: 'password', width: 120, title: '密码', sort: true},
                 {field: 'status', width: 100, title: '状态', templet: statusTpl},
                 {field: 'roleName', width: 100, title: '角色', sort: true},
+                {field: 'partnerName', width: 100, title: '所属机构', sort: true},
                 {field: 'createTime', width: 170, title: '创建时间', sort: true},
                 {field: 'updateTime', width: 170, title: '修改时间', sort: true},
                 // {field: 'lastLoginTime', width: 130, title: '最后登录时间', sort: true},
@@ -193,7 +194,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 shadeClose: true,
                 shade: 0.1,
                 area: ['515px', '400px'],
-                content: '/manage/editUser?opreate=edit&userId=' + data.userId + '&roleIds=' + data.roleId + '&status=' + data.status, //iframe的url
+                content: '/manage/editUser?opreate=edit&userId=' + data.userId + '&roleIds=' + data.roleId + '&status=' + data.status+'&partnerId='+data.partnerId+'&partnerName='+data.partnerName, //iframe的url
                 btn: ['关闭'],
                 yes: function () {
                     search();

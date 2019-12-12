@@ -7,6 +7,7 @@ import com.allinpay.entity.TEtcSysRole;
 import com.allinpay.entity.TEtcSysUser;
 import com.allinpay.mapper.TEtcRoleMapper;
 import com.allinpay.mapper.TEtcUserMapper;
+import com.allinpay.service.IOrgQueryService;
 import com.allinpay.service.ITEtcSysUserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -36,6 +37,9 @@ public class TEtcSysUserServiceImpl extends ServiceImpl<TEtcUserMapper, TEtcSysU
     @Autowired
     private TEtcRoleMapper tEtcRoleMapper;
 
+    @Autowired
+    private IOrgQueryService iOrgQueryService;
+
     @Override
     public ResponseBean queryPage(Integer pageNo, Integer pageSize, String username) {
         Page page = PageHelper.startPage(pageNo, pageSize);
@@ -52,6 +56,7 @@ public class TEtcSysUserServiceImpl extends ServiceImpl<TEtcUserMapper, TEtcSysU
             user.setRoleId(etcSysUser.getRoleId());
             user.setUpdateTime(dateStr);
             user.setStatus(etcSysUser.getStatus());
+            user.setPartnerName(etcSysUser.getPartnerName());
             return ResponseBean.ok(tEtcUserMapper.updateById(user) > 0);
         }
         TEtcSysUser user = tEtcUserMapper.selectOne(new QueryWrapper<TEtcSysUser>().eq("username", etcSysUser.getUsername()));

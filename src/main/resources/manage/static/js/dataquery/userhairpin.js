@@ -74,23 +74,23 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 {field: 'reqtime',  title: '请求时间'},
                 {field: 'issuestatus',  title: '发行状态'},
                 {field: 'carno',  title: '车牌号'},
+                {field: 'licensecolor',  title: '车牌颜色'},
                 {field: 'realphone',  title: '绑定手机号'},
                 {field: 'id',  title: '车主身份证'},
                 {field: 'realname',  title: '车主姓名'},
                 {field: 'issuemsg',  title: '发行结果'},
+                {field: 'deliverymethod',  title: '邮寄方式'},
                 {field: 'finishtime', title: '请求完成时间'}
 
             ]],
 
             done: function (res, curr, count) {
 
-                // $("[data-field='issuestatus']").children().each(function () {
-                //     if ($(this).text() == '0') {
-                //         $(this).text("完成")
-                //     } else if ($(this).text() == '1') {
-                //         $(this).text("进行中")
+                // $("[data-field='deliverymethod']").children().each(function () {
+                //     if ($(this).text() == '1') {
+                //         $(this).text("快递")
                 //     } else if ($(this).text() == '2') {
-                //         $(this).text("失败")
+                //         $(this).text("自提")
                 //     }
                 // });
             }
@@ -146,10 +146,12 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 {field: 'reqtime', title: '请求时间'},
                 {field: 'issuestatus', title: '发行状态'},
                 {field: 'carno', title: '车牌号'},
+                {field: 'licensecolor',  title: '车牌颜色'},
                 {field: 'realphone', title: '绑定手机号'},
                 {field: 'id', title: '车主身份证'},
                 {field: 'realname', title: '车主姓名'},
                 {field: 'issuemsg', title: '发行结果'},
+                {field: 'deliverymethod',  title: '邮寄方式'},
                 {field: 'finishtime', title: '请求完成时间'}
 
             ]],
@@ -169,10 +171,11 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                     , 'reqtime'
                     , 'issuestatus'
                     , 'carno'
+                    ,'licensecolor'
                     , 'realphone'
                     , 'id'
                     , 'realname'
-                    // ,'issuemsg'
+                    ,'deliverymethod'
                     , 'finishtime'
                 ]);
                 // 重点2！！！一般都需要加一个表头，表头的键名顺序需要与最终导出的数据一致
@@ -185,10 +188,11 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                     reqtime: "请求时间",
                     issuestatus: "发行状态",
                     carno: "车牌号",
+                    licensecolor:"车牌颜色",
                     realphone: "绑定手机号",
                     id: "车主身份证",
                     realname: "车主姓名",
-                    // issuemsg:"发行结果",
+                    deliverymethod:"邮寄方式",
                     finishtime: "请求完成时间"
                 });
 

@@ -28,4 +28,11 @@ public interface IOrgQueryService {
      * @Return: List<PartnerInfo>
      */
     List<PartnerInfo> selectByNormalStatus();
+
+    /**
+     *  合作银行obu激活信息查询
+     * @param activationVo
+     * @return
+     */
+    PageVO<ActivationBack> queryActivation(ActivationVo activationVo);
 }

@@ -99,6 +99,31 @@ public class OrgQueryController {
     }
 
     /**
+     * 合作银行obu激活数据查询
+     *
+     * @param activationVo
+     * @return
+     */
+    @GetMapping("/activation/getList")
+    public ResponseData queryActivation(ActivationVo activationVo) {
+        PageVO<ActivationBack> querylist = orgquery.queryActivation(activationVo);
+        return ResponseData.success().setData(querylist);
+    }
+
+    /**
+     * 合作银行obu激活数据导出
+     *
+     * @param activationVo
+     * @return
+     */
+    @GetMapping("/activation/export")
+    public PageVO<ActivationBack> exportActivation(ActivationVo activationVo) {
+        activationVo.setPageSize(10000000);
+        PageVO<ActivationBack> querylist = orgquery.queryActivation(activationVo);
+        return querylist;
+    }
+
+    /**
      * 冻结、解冻、注销机构
      *
      * @param orgque

@@ -1,6 +1,5 @@
 package com.allinpay.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -101,4 +100,14 @@ public class UserhairpinBack {
      * 请求完成时间
      */
     private String finishtime;
+
+    /**
+     *  配送方式，1-快递，2-自提
+     */
+    private String deliverymethod;
+
+    /**
+     *  车牌颜色
+     */
+    private String licensecolor;
 }

@@ -1,6 +1,7 @@
 package com.allinpay.mapper;
 
 import com.allinpay.entity.*;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  * @author xuming
  * @date: 2019-07-02 16:58
  */
-public interface QueryMapper {
+public interface QueryMapper extends BaseMapper<TEtcPartnerInfo> {
     List queryOrgInfo(@Param("orgque") OrgQueryVo orgque);
 
     void blockOrg(String departid);
@@ -23,4 +24,6 @@ public interface QueryMapper {
     List<PassageMoneyBack> queryPassagemoney(@Param("passm") OrgQueryVo orgque);
 
     List<UserhairpinBack> queryUserhairpin(@Param("usrh") UserhairpinVo usrh);
+
+    List<ActivationBack> queryActivation(@Param("activation") ActivationVo activation);
 }
