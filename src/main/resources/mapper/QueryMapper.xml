@@ -131,35 +131,40 @@
         <result column="FINISH_TIME" property="finishtime" jdbcType="VARCHAR"/>
         <result column="DELIVERY_METHOD" property="deliverymethod" jdbcType="VARCHAR"/>
         <result column="LICENSE_COLOR" property="licensecolor" jdbcType="VARCHAR"/>
+        <result column="REFERER" property="referer" jdbcType="VARCHAR"/>
+        <result column="SERVICE_ADDRESS" property="serviceaddress" jdbcType="VARCHAR"/>
     </resultMap>
     <select id="queryUserhairpin" resultMap="UserhairMap" parameterType="com.allinpay.entity.UserhairpinVo">
-        select PARTNER_ID,AUTH_ID,AUTH_NAME,
+        select suerhair.PARTNER_ID,suerhair.AUTH_ID,suerhair.AUTH_NAME,
         decode(suerhair.REAL_PHONE,'','',
         (substr(suerhair.REAL_PHONE,'0','3') || '****' || substr(suerhair.REAL_PHONE,length(suerhair.REAL_PHONE)-3,length(suerhair.REAL_PHONE)))) REAL_PHONE,
-         REQ_NO,REQ_TIME,
+        suerhair.REQ_NO,suerhair.REQ_TIME,
         case
-        when ISSUE_STATUS ='0' then '完成'
-        when ISSUE_STATUS ='2' then '失败'
+        when suerhair.ISSUE_STATUS ='0' then '完成'
+        when suerhair.ISSUE_STATUS ='2' then '失败'
         else ''
         end ISSUE_STATUS,
-        CAR_NO,
-        decode(CARD_NO,'','',substr(CARD_NO,'0','6') || '****' || substr(CARD_NO,length(CARD_NO)-3,length(CARD_NO))) CARD_NO,
-        PHONE,
-        decode(ID,'','',substr(ID,'0','6')|| '****') ID,
+        suerhair.CAR_NO,
+        decode(suerhair.CARD_NO,'','',substr(suerhair.CARD_NO,'0','6') || '****' || substr(suerhair.CARD_NO,length(suerhair.CARD_NO)-3,length(suerhair.CARD_NO))) CARD_NO,
+        suerhair.PHONE,
+        decode(suerhair.ID,'','',substr(suerhair.ID,'0','6')|| '****') ID,
         case
-        when length(REAL_NAME) &lt;= 2 then substr(REAL_NAME,'0','1') || '*'
-        when length(REAL_NAME) &gt; 2  then substr(REAL_NAME,'0','1') || '*' || substr(REAL_NAME,length(REAL_NAME),length(REAL_NAME)-1)
+        when length(suerhair.REAL_NAME) &lt;= 2 then substr(suerhair.REAL_NAME,'0','1') || '*'
+        when length(suerhair.REAL_NAME) &gt; 2  then substr(suerhair.REAL_NAME,'0','1') || '*' || substr(suerhair.REAL_NAME,length(suerhair.REAL_NAME),length(suerhair.REAL_NAME)-1)
         else ''
         end REAL_NAME,
-        ISSUE_MSG,
-        FINISH_TIME,
+        suerhair.ISSUE_MSG,
+        suerhair.FINISH_TIME,
         case
-        WHEN DELIVERY_METHOD='1' then '快递'
-        WHEN DELIVERY_METHOD='2' then '自提'
+        WHEN suerhair.DELIVERY_METHOD='1' then '快递'
+        WHEN suerhair.DELIVERY_METHOD='2' then '自提'
         else ''
         end DELIVERY_METHOD,
-        LICENSE_COLOR
+        suerhair.LICENSE_COLOR,
+        paruser.REFERER,
+        paruser.SERVICE_ADDRESS
         from T_ETC_ISSUE suerhair
+        left join T_ETC_PARTNER_USER paruser on suerhair.auth_id = paruser.user_id
         <trim prefix="WHERE" prefixOverrides="AND">
             ISSUE_STATUS ='0'
             <if test="usrh.authId != null and usrh.authId != ''">

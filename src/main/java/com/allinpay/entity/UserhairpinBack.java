@@ -115,4 +115,14 @@ public class UserhairpinBack {
      *  绑定银行卡号
      */
     private String cardno;
+
+    /**
+     * 推荐人
+     */
+    private String referer;
+
+    /**
+     * 银行网点
+     */
+    private String serviceaddress;
 }

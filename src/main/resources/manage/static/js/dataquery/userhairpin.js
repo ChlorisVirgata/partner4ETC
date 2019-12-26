@@ -78,8 +78,9 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 {field: 'realphone',  title: '绑定手机号'},
                 {field: 'id',  title: '车主身份证'},
                 {field: 'realname',  title: '车主姓名'},
+                {field: 'referer',  title: '推荐人'},
                 {field: 'cardno',  title: '绑定银行卡号'},
-                {field: 'deliverymethod',  title: '邮寄方式'},
+                {field: 'serviceaddress',  title: '银行网点'},
                 {field: 'issuestatus',  title: '发行状态'},
                 {field: 'finishtime', title: '签约完成时间'}
 
@@ -151,7 +152,9 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 {field: 'realphone', title: '绑定手机号'},
                 {field: 'id', title: '车主身份证'},
                 {field: 'realname', title: '车主姓名'},
+                {field: 'referer',  title: '推荐人'},
                 {field: 'cardno',  title: '绑定银行卡号'},
+                {field: 'serviceaddress',  title: '银行网点'},
                 {field: 'issuestatus', title: '发行状态'},
                 {field: 'deliverymethod',  title: '邮寄方式'},
                 {field: 'finishtime', title: '签约完成时间'}
@@ -176,7 +179,9 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                     , 'realphone'
                     , 'id'
                     , 'realname'
+                    ,'referer'
                     ,'cardno'
+                    ,'serviceaddress'
                     , 'issuestatus'
                     ,'deliverymethod'
                     , 'finishtime'
@@ -194,7 +199,9 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                     realphone: "绑定手机号",
                     id: "车主身份证",
                     realname: "车主姓名",
+                    referer:"推荐人",
                     cardno:"绑定银行卡号",
+                    serviceaddress: "银行网点",
                     issuestatus: "发行状态",
                     deliverymethod:"邮寄方式",
                     finishtime: "签约完成时间"
