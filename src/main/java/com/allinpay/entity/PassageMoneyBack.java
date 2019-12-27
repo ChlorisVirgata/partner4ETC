@@ -46,7 +46,7 @@ public class PassageMoneyBack {
     private String status;
 
     /**
-     * 创建时间
+     * 扣款时间
      */
     private String transeTime;
 
@@ -64,6 +64,11 @@ public class PassageMoneyBack {
      * 插入时间
      */
     private String insertTime;
+
+    /**
+     * 通行时间
+     */
+    private String passTime;
 
 
 }

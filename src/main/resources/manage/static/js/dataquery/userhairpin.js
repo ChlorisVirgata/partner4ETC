@@ -82,6 +82,7 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 {field: 'cardno',  title: '绑定银行卡号'},
                 {field: 'serviceaddress',  title: '银行网点'},
                 {field: 'issuestatus',  title: '发行状态'},
+                {field: 'deliverymethod',  title: '邮寄方式'},
                 {field: 'finishtime', title: '签约完成时间'}
 
             ]],

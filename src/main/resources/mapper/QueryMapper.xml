@@ -80,6 +80,7 @@
         <result column="AMOUNT" property="amount" jdbcType="VARCHAR"/>
         <result column="PASSAGEWAY" property="passageway" jdbcType="VARCHAR"/>
         <result column="STATUS" property="status" jdbcType="VARCHAR"/>
+        <result column="PASS_TIME" property="passTime" jdbcType="VARCHAR"/>
     </resultMap>
     <select id="queryPassagemoney" resultMap="PassageMoneyResultMap" parameterType="com.allinpay.entity.PassageMoneyVo">
         select PARTNER_ID,
@@ -94,7 +95,8 @@
         AMOUNT,
         TRANSE_TIME,
         PASSAGEWAY,
-        STATUS
+        STATUS,
+        PASS_TIME
         from T_ETC_TRANSIT passmo
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="passm.partnerId != null and passm.partnerId != ''">
@@ -147,7 +149,7 @@
         suerhair.CAR_NO,
         decode(suerhair.CARD_NO,'','',substr(suerhair.CARD_NO,'0','6') || '****' || substr(suerhair.CARD_NO,length(suerhair.CARD_NO)-3,length(suerhair.CARD_NO))) CARD_NO,
         suerhair.PHONE,
-        decode(suerhair.ID,'','',substr(suerhair.ID,'0','6')|| '****') ID,
+        decode(suerhair.ID,'','',substr(suerhair.ID,'0','6')|| '****' || substr(suerhair.ID,length(suerhair.ID)-3,length(suerhair.ID))) ID,
         case
         when length(suerhair.REAL_NAME) &lt;= 2 then substr(suerhair.REAL_NAME,'0','1') || '*'
         when length(suerhair.REAL_NAME) &gt; 2  then substr(suerhair.REAL_NAME,'0','1') || '*' || substr(suerhair.REAL_NAME,length(suerhair.REAL_NAME),length(suerhair.REAL_NAME)-1)

@@ -63,9 +63,10 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 {field: 'accountNo', title: '账户'},
                 {field: 'authName', title: '车主姓名'},
                 // {field: 'status', title: '交易结果'},
-                {field: 'transeTime', title: '通行时间'},
-                {field: 'amount',  title: '金额'},
-                {field: 'passageway', title: '出入口'}
+                {field: 'passTime', title: '通行时间'},
+                {field: 'amount',  title: '金额（元）'},
+                {field: 'passageway', title: '出入口'},
+                {field: 'transeTime', title: '扣款时间'}
                 // {field: 'insertTime',  title: '插入时间'}
             ]]
         });
@@ -115,9 +116,10 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                 {field: 'accountNo', title: '账户'},
                 {field: 'authName', title: '车主姓名'},
                 // {field: 'status', title: '交易结果'},
-                {field: 'transeTime', title: '通行时间'},
-                {field: 'amount', title: '金额'},
-                {field: 'passageway', title: '出入口'}
+                {field: 'passTime', title: '通行时间'},
+                {field: 'amount', title: '金额（元）'},
+                {field: 'passageway', title: '出入口'},
+                {field: 'transeTime', title: '扣款时间'}
                 // {field: 'insertTime',  title: '插入时间'}
             ]],
             done: function (res, curr, count) {
@@ -135,9 +137,10 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                     , 'accountNo'
                     , 'authName'
                     // , 'status'
-                    , 'transeTime'
+                    , 'passTime'
                     , 'amount'
                     , 'passageway'
+                    ,'transeTime'
                 ]);
                 // 重点2！！！一般都需要加一个表头，表头的键名顺序需要与最终导出的数据一致
                 data.unshift({
@@ -147,9 +150,10 @@ layui.use(['table', 'element', 'laypage', 'layer', 'form'], function () {
                     accountNo: "账户",
                     authName: "车主姓名",
                     // status: "交易结果",
-                    transeTime: "通行时间",
-                    amount: "金额",
-                    passageway: "出入口"
+                    passTime: "通行时间",
+                    amount: "金额（元）",
+                    passageway: "出入口",
+                    transeTime: "扣款时间"
                 });
 
                 var timestart = Date.now();
